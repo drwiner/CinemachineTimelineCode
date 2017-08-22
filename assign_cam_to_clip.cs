@@ -16,7 +16,7 @@ public class assign_cam_to_clip : MonoBehaviour {
     public List<GameObject> special_shots;
 
     // Use this for initialization
-    void Start() {
+    void Awake() {
         cam_dict = new Dictionary<string, CinemachineVirtualCamera>();
 
         foreach(CinemachineVirtualCamera Cam in prim_cams)
@@ -28,10 +28,7 @@ public class assign_cam_to_clip : MonoBehaviour {
         PlayableDirector director = GetComponent<PlayableDirector>();
         
 
-        
-
         TimelineAsset timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
-
         TrackAsset track = timeline.CreateTrack<CinemachineTrack>(null, "trackname");
 
 
