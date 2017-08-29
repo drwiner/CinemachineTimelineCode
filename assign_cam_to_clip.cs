@@ -20,7 +20,7 @@ public class assign_cam_to_clip : MonoBehaviour {
     public string story_xml_path;
 
     private GameObject main_camera_object;
-    string p2 = "D://Unity projects//ShootingWorld//ShootingWorld//storyPlans//test_world.xml";
+    string p2 = "D://Unity projects//ShootingWorld//ShootingWorld//Assets//Scripts//CinemachineTimelineCode//xml_docs//test_world.xml";
 
     void createTrack(string track_name, bool control_track)
     {
