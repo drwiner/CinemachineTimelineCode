@@ -66,31 +66,43 @@ public class assign_cam_to_clip : MonoBehaviour {
     }
 
     
-    void extract2()
+    List<List<string>> extract2()
     {
+        List<List<string>> clipList = new List<List<string>>();
+        List<string> clipItems;
+
         XmlTextReader xml_doc = new XmlTextReader(p2);
         // cycle through each child noed 
         while (xml_doc.Read())
         {
             switch (xml_doc.NodeType)
             {
+                
                 case XmlNodeType.Element: // if the node is an element
-                    Debug.Log("<" + xml_doc.Name + "_");
-                    Debug.Log("VALUE: " + xml_doc.Value);
+                   // Debug.Log("<" + xml_doc.Name + "_");
+                   // Debug.Log("VALUE: " + xml_doc.Value);
+                    clipItems = new List<string>();
                     while (xml_doc.MoveToNextAttribute())
+                        clipItems.Add(xml_doc.Value);
                         Debug.Log("- " + xml_doc.Name + "='" + xml_doc.Value + "'");
 
-                    Debug.Log(">");
+                    if(clipItems.Count() > 0)
+                    {
+                        clipList.Add(clipItems);
+                    }
+                    
+                 //   Debug.Log(">");
                     break;
                 case XmlNodeType.Text: //Display the text in each element.
-                    Debug.Log("Text: " + xml_doc.Value);
+                   // Debug.Log("Text: " + xml_doc.Value);
                     break;
                 //case XmlNodeType.EndElement: //Display the end of the element.
                 //    Debug.Log("</" + xml_doc.Name + ">");
                 //    break;
             }
-            Debug.Log("DOC_NAME: " +xml_doc.Name);
+          //  Debug.Log("DOC_NAME: " +xml_doc.Name);
         }
+    return clipList;
     }
 
     void extract3()
@@ -98,7 +110,7 @@ public class assign_cam_to_clip : MonoBehaviour {
         var xml_doc = XDocument.Load(p2);
         // cycle through each child noed 
         var query = from c in xml_doc.Root.Descendants("clips")
-                    select c.Element("00").Value;
+                    select c.Element("clip").Value;
 
         foreach (string name in query)
         {
@@ -108,7 +120,15 @@ public class assign_cam_to_clip : MonoBehaviour {
 
     // Use this for initialization
     void Awake() {
-        extract3();
+        List<List<string>> clipList = extract2();
+        foreach(List<string> clipItem in clipList)
+        {
+            Debug.Log("\nClip:");
+            foreach(string item in clipItem)
+            {
+                Debug.Log(item);
+            }
+        }
         main_camera_object = GameObject.Find("Main Camera");
         cam_dict = new Dictionary<string, CinemachineVirtualCamera>();
 
