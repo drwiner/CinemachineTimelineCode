@@ -76,31 +76,19 @@ public class assign_cam_to_clip : MonoBehaviour {
         while (xml_doc.Read())
         {
             switch (xml_doc.NodeType)
-            {
-                
+            {  
                 case XmlNodeType.Element: // if the node is an element
-                   // Debug.Log("<" + xml_doc.Name + "_");
-                   // Debug.Log("VALUE: " + xml_doc.Value);
                     clipItems = new List<string>();
                     while (xml_doc.MoveToNextAttribute())
                         clipItems.Add(xml_doc.Value);
-                        Debug.Log("- " + xml_doc.Name + "='" + xml_doc.Value + "'");
+                      //  Debug.Log("- " + xml_doc.Name + "='" + xml_doc.Value + "'");
 
                     if(clipItems.Count() > 0)
                     {
                         clipList.Add(clipItems);
                     }
-                    
-                 //   Debug.Log(">");
                     break;
-                case XmlNodeType.Text: //Display the text in each element.
-                   // Debug.Log("Text: " + xml_doc.Value);
-                    break;
-                //case XmlNodeType.EndElement: //Display the end of the element.
-                //    Debug.Log("</" + xml_doc.Name + ">");
-                //    break;
             }
-          //  Debug.Log("DOC_NAME: " +xml_doc.Name);
         }
     return clipList;
     }
@@ -144,47 +132,40 @@ public class assign_cam_to_clip : MonoBehaviour {
         PlayableDirector director = GetComponent<PlayableDirector>();
         
         TrackAsset track = timeline.CreateTrack<CinemachineTrack>(null, "trackname");
-
-
-      
-        var clip = track.CreateDefaultClip();
-        clip.start = 0.0;
-        clip.duration = 4;
-        clip.displayName = "justcreated";
-
-
-        // Camera 1
-        CinemachineVirtualCamera left_angle = (CinemachineVirtualCamera)prim_cams[0];
-        var cinemachineShot = clip.asset as CinemachineShot;
-        cinemachineShot.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
-        
-
-
-        // Camera 2
-        CinemachineVirtualCamera right_angle = (CinemachineVirtualCamera)prim_cams[1];
-        var clip2 = track.CreateDefaultClip();
-        clip2.start = 4;
-        clip2.duration = 4;
-        var cinemachineShot2 = clip2.asset as CinemachineShot;
-        cinemachineShot2.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
-
-        
-
-        // Camera 3
-        GameObject overhead = (GameObject) special_shots[0];
         TrackAsset ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
-        var clip3 = ctrack.CreateDefaultClip();
-        clip3.start = 8;
-        clip3.duration = 8;
-        var controlshot =  clip3.asset as ControlPlayableAsset;
-        controlshot.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
 
-        //foreach (KeyValuePair<string, TrackAsset>(exp_name, GameObject) in ClipDict){
-        //    director.SetReferenceValue(exp_name, GameObject);
-        //}
-        director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, left_angle);
-        director.SetReferenceValue(cinemachineShot2.VirtualCamera.exposedName, right_angle);
-        director.SetReferenceValue(controlshot.sourceGameObject.exposedName, overhead);
+        foreach (List<string> clipitem_list in clipList)
+        {
+            string name = clipitem_list[0];
+            string type = clipitem_list[1];
+            float start = float.Parse(clipitem_list[2]);
+            float dur = float.Parse(clipitem_list[3]);
+            string gameobj_name = clipitem_list[4];
+
+            if (type.Equals("cam")){
+                var clip = track.CreateDefaultClip();
+                clip.start = start;
+                clip.duration = dur;
+                clip.displayName = name;
+
+                CinemachineVirtualCamera new_cam = GameObject.Find(gameobj_name).GetComponent<CinemachineVirtualCamera>();
+                var cinemachineShot = clip.asset as CinemachineShot;
+                cinemachineShot.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
+                director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, new_cam);
+            }
+            else // assume control track
+            {
+                var clip = ctrack.CreateDefaultClip();
+                clip.start = start;
+                clip.duration = dur;
+                clip.displayName = name;
+                CinemachineVirtualCamera new_cam = GameObject.Find(gameobj_name).GetComponent<CinemachineVirtualCamera>();
+                var controlshot = clip.asset as ControlPlayableAsset;
+                controlshot.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
+                director.SetReferenceValue(controlshot.sourceGameObject.exposedName, new_cam);
+            }
+        }
+
         // Set cinemachine brain as track's game object
         director.SetGenericBinding(track, main_camera_object);
 
