@@ -12,66 +12,19 @@ using System.Xml;
 using System.Xml.Linq;
 
 public class assign_cam_to_clip : MonoBehaviour {
-    private Dictionary<string, CinemachineVirtualCamera> cam_dict;
     private TimelineAsset timeline;
-
-    public List<CinemachineVirtualCamera> prim_cams;
-    public List<GameObject> special_shots;
-    public string story_xml_path;
+    private string story_xml_path;
 
     private GameObject main_camera_object;
     string p2 = "D://Unity projects//ShootingWorld//ShootingWorld//Assets//Scripts//CinemachineTimelineCode//xml_docs//test_world.xml";
-
-    void createTrack(string track_name, bool control_track)
-    {
-
-        if (control_track)
-        {
-            TrackAsset track = timeline.CreateTrack<CinemachineTrack>(null, "trackname");
-        }
-
-    }
-
-    void addClip(PlayableDirector director, string expName, GameObject gameobject)
-    {
-        director.SetReferenceValue(expName, gameobject);
-    }
-
-    List<KeyValuePair<string, GameObject>> extractClips()
-    {
-        XmlTextReader xml_doc = new XmlTextReader(story_xml_path);
-        List<KeyValuePair<string, GameObject>> clips = new List<KeyValuePair<string, GameObject>>();
-        // cycle through each child noed 
-        while(xml_doc.Read()){
-            switch (xml_doc.NodeType)
-            {
-                case XmlNodeType.Element: // if the node is an element
-                    Console.Write("<" + xml_doc.Name);
-                    Console.WriteLine(">");
-                    break;
-                case XmlNodeType.Text: //Display the text in each element.
-                    Console.WriteLine(xml_doc.Value);
-                    break;
-                case XmlNodeType.EndElement: //Display the end of the element.
-                    Console.Write("</" + xml_doc.Name);
-                    Console.WriteLine(">");
-                    break;
-            }
-            Console.WriteLine(xml_doc.Name);
-        }
-   
-
-
-        return clips;
-    }
-
+    string p3 = "Assets//Scripts//xml_docs//block_world.xml";
     
-    List<List<string>> extract2()
+    List<List<string>> readDiscourse()
     {
         List<List<string>> clipList = new List<List<string>>();
         List<string> clipItems;
 
-        XmlTextReader xml_doc = new XmlTextReader(p2);
+        XmlTextReader xml_doc = new XmlTextReader(p3);
         // cycle through each child noed 
         while (xml_doc.Read())
         {
@@ -90,25 +43,13 @@ public class assign_cam_to_clip : MonoBehaviour {
                     break;
             }
         }
-    return clipList;
+        return clipList;
     }
 
-    void extract3()
-    {
-        var xml_doc = XDocument.Load(p2);
-        // cycle through each child noed 
-        var query = from c in xml_doc.Root.Descendants("clips")
-                    select c.Element("clip").Value;
-
-        foreach (string name in query)
-        {
-            Debug.Log("THe clip: " + name);
-        }
-    }
 
     // Use this for initialization
     void Awake() {
-        List<List<string>> clipList = extract2();
+        List<List<string>> clipList = readDiscourse();
         foreach(List<string> clipItem in clipList)
         {
             Debug.Log("\nClip:");
@@ -118,17 +59,9 @@ public class assign_cam_to_clip : MonoBehaviour {
             }
         }
         main_camera_object = GameObject.Find("Main Camera");
-        cam_dict = new Dictionary<string, CinemachineVirtualCamera>();
-
-        // Load dictionary from public list
-        foreach(CinemachineVirtualCamera Cam in prim_cams)
-        {
-            cam_dict.Add(Cam.Name, Cam);
-        }
 
         timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
 
-        
         PlayableDirector director = GetComponent<PlayableDirector>();
         
         TrackAsset track = timeline.CreateTrack<CinemachineTrack>(null, "trackname");
@@ -159,7 +92,7 @@ public class assign_cam_to_clip : MonoBehaviour {
                 clip.start = start;
                 clip.duration = dur;
                 clip.displayName = name;
-                CinemachineVirtualCamera new_cam = GameObject.Find(gameobj_name).GetComponent<CinemachineVirtualCamera>();
+                GameObject new_cam = GameObject.Find(gameobj_name);
                 var controlshot = clip.asset as ControlPlayableAsset;
                 controlshot.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
                 director.SetReferenceValue(controlshot.sourceGameObject.exposedName, new_cam);

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<clips>
+  <clip name="00" type="control" start ="0.0" dur="4.0" gameObj="over_head_Cube"></clip>
+  <clip name="01" type="cam" start ="4.0" dur="4.0" gameObj ="LeftAngleShot_Cube"></clip>
+  <clip name="02" type ="cam" start ="8.0" dur="4.0" gameObj="RightAngleShot_Cube"></clip>
+
+</clips>
