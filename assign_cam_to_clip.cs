@@ -52,7 +52,7 @@ public class assign_cam_to_clip : MonoBehaviour {
         List<List<string>> clipList = readDiscourse();
         foreach(List<string> clipItem in clipList)
         {
-            Debug.Log("\nClip:");
+            Debug.Log("Clip:");
             foreach(string item in clipItem)
             {
                 Debug.Log(item);
