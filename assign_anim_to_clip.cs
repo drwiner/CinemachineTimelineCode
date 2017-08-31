@@ -1,24 +1,17 @@
-﻿using Cinemachine.Timeline;
-using Cinemachine;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.Animations;
-using System.Xml;
-using System.Xml.Linq;
 
-public class assign_cam_to_clip : MonoBehaviour {
+public class assign_anim_to_clip : MonoBehaviour {
     private TimelineAsset timeline;
 
-    private GameObject main_camera_object;
     string p2 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//test_world.xml";
     string p3 = "Assets//Scripts//xml_docs//block_world.xml";
-    
-    List<List<string>> readDiscourse()
+
+    List<List<string>> readFabula()
     {
         List<List<string>> clipList = new List<List<string>>();
         List<string> clipItems;
@@ -28,14 +21,14 @@ public class assign_cam_to_clip : MonoBehaviour {
         while (xml_doc.Read())
         {
             switch (xml_doc.NodeType)
-            {  
+            {
                 case XmlNodeType.Element: // if the node is an element
                     clipItems = new List<string>();
                     while (xml_doc.MoveToNextAttribute())
                         clipItems.Add(xml_doc.Value);
-                      //  Debug.Log("- " + xml_doc.Name + "='" + xml_doc.Value + "'");
+                    //  Debug.Log("- " + xml_doc.Name + "='" + xml_doc.Value + "'");
 
-                    if(clipItems.Count() > 0)
+                    if (clipItems.Count > 0)
                     {
                         clipList.Add(clipItems);
                     }
@@ -45,25 +38,23 @@ public class assign_cam_to_clip : MonoBehaviour {
         return clipList;
     }
 
-
     // Use this for initialization
-    void Awake() {
-        List<List<string>> clipList = readDiscourse();
-        foreach(List<string> clipItem in clipList)
+    void Awake () {
+        List<List<string>> clipList = readFabula();
+        foreach (List<string> clipItem in clipList)
         {
             Debug.Log("Clip:");
-            foreach(string item in clipItem)
+            foreach (string item in clipItem)
             {
                 Debug.Log(item);
             }
         }
-        main_camera_object = GameObject.Find("Main Camera");
 
         timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
 
         PlayableDirector director = GetComponent<PlayableDirector>();
-        
-        TrackAsset track = timeline.CreateTrack<CinemachineTrack>(null, "trackname");
+
+        TrackAsset track = timeline.CreateTrack<AnimationTrack>(null, "trackname");
         TrackAsset ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
 
         foreach (List<string> clipitem_list in clipList)
@@ -74,16 +65,20 @@ public class assign_cam_to_clip : MonoBehaviour {
             float dur = float.Parse(clipitem_list[3]);
             string gameobj_name = clipitem_list[4];
 
-            if (type.Equals("cam")){
+            if (type.Equals("anim"))
+            {
+                // Treat like animation
                 var clip = track.CreateDefaultClip();
                 clip.start = start;
                 clip.duration = dur;
                 clip.displayName = name;
 
-                CinemachineVirtualCamera new_cam = GameObject.Find(gameobj_name).GetComponent<CinemachineVirtualCamera>();
-                var cinemachineShot = clip.asset as CinemachineShot;
-                cinemachineShot.VirtualCamera.exposedName = UnityEditor.GUID.Generate().ToString();
-                director.SetReferenceValue(cinemachineShot.VirtualCamera.exposedName, new_cam);
+                AnimationClip anim_clip = GameObject.Find(gameobj_name).GetComponent<AnimationClip>();
+
+                //anim_clip.
+                //var animAsset = anim_clip.asset as AnimationPlayableAsset;
+                //animAsset.clip.exposedName = UnityEditor.GUID.Generate().ToString();
+                //director.SetReferenceValue(.exposedName, new_cam);
             }
             else // assume control track
             {
@@ -99,14 +94,14 @@ public class assign_cam_to_clip : MonoBehaviour {
         }
 
         // Set cinemachine brain as track's game object
-        director.SetGenericBinding(track, main_camera_object);
+        //director.SetGenericBinding(track, main_camera_object);
 
         // Set it to play when ready.
         director.Play(timeline);
     }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 }
