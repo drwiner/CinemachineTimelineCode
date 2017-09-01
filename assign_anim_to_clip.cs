@@ -64,6 +64,18 @@ public class assign_anim_to_clip : MonoBehaviour {
             float start = float.Parse(clipitem_list[2]);
             float dur = float.Parse(clipitem_list[3]);
             string gameobj_name = clipitem_list[4];
+            string [] start_pos_str = clipitem_list[5].Split('(', ')');
+            Vector3 start_pos;
+            start_pos.x = float.Parse(start_pos_str[1]);
+            start_pos.y = float.Parse(start_pos_str[2]);
+            start_pos.z = float.Parse(start_pos_str[3]);
+
+            string[] finish_pos_str = clipitem_list[5].Split('(', ')');
+            Vector3 finish_pos;
+            finish_pos.x = float.Parse(finish_pos_str[1]);
+            finish_pos.y = float.Parse(finish_pos_str[2]);
+            finish_pos.z = float.Parse(finish_pos_str[3]);
+
 
             if (type.Equals("anim"))
             {
@@ -72,14 +84,21 @@ public class assign_anim_to_clip : MonoBehaviour {
                 clip.start = start;
                 clip.duration = dur;
                 clip.displayName = name;
-
-                AnimationClip anim_clip = GameObject.Find(gameobj_name).GetComponent<AnimationClip>();
+                
+                var anim = Resources.Load(gameobj_name) as AnimationClip;
+                var anim_asset = clip.asset as AnimationPlayableAsset;
+                
+                anim_asset.ResetOffsets();
+             //   anim_asset.position = 
+               // director.SetReferenceValue(anim_asset.name, anim);
+            }
+            //AnimationClip anim_clip = GameObject.Find(gameobj_name).GetComponent<AnimationClip>();
 
                 //anim_clip.
                 //var animAsset = anim_clip.asset as AnimationPlayableAsset;
                 //animAsset.clip.exposedName = UnityEditor.GUID.Generate().ToString();
                 //director.SetReferenceValue(.exposedName, new_cam);
-            }
+            //}
             else // assume control track
             {
                 var clip = ctrack.CreateDefaultClip();
