@@ -4,19 +4,19 @@ using System.Xml;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using System.Linq;
 
 public class assign_anim_to_clip : MonoBehaviour {
     private TimelineAsset timeline;
 
-    string p2 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//test_world.xml";
-    string p3 = "Assets//Scripts//xml_docs//block_world.xml";
+    string p3 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//anim_world.xml";
 
     List<List<string>> readFabula()
     {
         List<List<string>> clipList = new List<List<string>>();
         List<string> clipItems;
 
-        XmlTextReader xml_doc = new XmlTextReader(p2);
+        XmlTextReader xml_doc = new XmlTextReader(p3);
         // cycle through each child noed 
         while (xml_doc.Read())
         {
@@ -63,59 +63,34 @@ public class assign_anim_to_clip : MonoBehaviour {
             string type = clipitem_list[1];
             float start = float.Parse(clipitem_list[2]);
             float dur = float.Parse(clipitem_list[3]);
-            string gameobj_name = clipitem_list[4];
-            string [] start_pos_str = clipitem_list[5].Split('(', ')');
-            Vector3 start_pos;
-            start_pos.x = float.Parse(start_pos_str[1]);
-            start_pos.y = float.Parse(start_pos_str[2]);
-            start_pos.z = float.Parse(start_pos_str[3]);
+            string start_location = clipitem_list[4];
+            string end_location = clipitem_list[5];
+            string animation_obj = clipitem_list[6];
 
-            string[] finish_pos_str = clipitem_list[5].Split('(', ')');
-            Vector3 finish_pos;
-            finish_pos.x = float.Parse(finish_pos_str[1]);
-            finish_pos.y = float.Parse(finish_pos_str[2]);
-            finish_pos.z = float.Parse(finish_pos_str[3]);
+            var clip = ctrack.CreateDefaultClip();
+            clip.start = start;
+            clip.duration = dur;
+            clip.displayName = name;
+            GameObject animTimeline = GameObject.Find(animation_obj);
+            var controlAnim = clip.asset as ControlPlayableAsset;
+            Vector3 start_pos = GameObject.Find(start_location).transform.position;
+            Vector3 end_pos = GameObject.Find(end_location).transform.position;
+
+            // SET ATTRIBUTES OF TARGET TIMELINE, a child of some gameobject is the convention
+            PlayableDirector anim_director = animTimeline.GetComponent<PlayableDirector>();
+            List<PlayableBinding> playable_list = anim_director.playableAsset.outputs.ToList();
+            TrackAsset target_anim_track = playable_list[0].sourceObject as AnimationTrack;
+            List<TimelineClip> track_clips = target_anim_track.GetClips().ToList();
+            AnimationPlayableAsset target_anim_clip = track_clips[0].asset as AnimationPlayableAsset;
+            target_anim_clip.position = start_pos;
+
+            // Set control clip to be on fabula timeline
+            controlAnim.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
+            director.SetReferenceValue(controlAnim.sourceGameObject.exposedName, animTimeline);
 
 
-            if (type.Equals("anim"))
-            {
-                // Treat like animation
-                var clip = track.CreateDefaultClip();
-                clip.start = start;
-                clip.duration = dur;
-                clip.displayName = name;
-                
-                var anim = Resources.Load(gameobj_name) as AnimationClip;
-                var anim_asset = clip.asset as AnimationPlayableAsset;
-                
-                anim_asset.ResetOffsets();
-             //   anim_asset.position = 
-               // director.SetReferenceValue(anim_asset.name, anim);
-            }
-            //AnimationClip anim_clip = GameObject.Find(gameobj_name).GetComponent<AnimationClip>();
-
-                //anim_clip.
-                //var animAsset = anim_clip.asset as AnimationPlayableAsset;
-                //animAsset.clip.exposedName = UnityEditor.GUID.Generate().ToString();
-                //director.SetReferenceValue(.exposedName, new_cam);
-            //}
-            else // assume control track
-            {
-                var clip = ctrack.CreateDefaultClip();
-                clip.start = start;
-                clip.duration = dur;
-                clip.displayName = name;
-                GameObject new_cam = GameObject.Find(gameobj_name);
-                var controlshot = clip.asset as ControlPlayableAsset;
-                controlshot.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
-                director.SetReferenceValue(controlshot.sourceGameObject.exposedName, new_cam);
-            }
         }
 
-        // Set cinemachine brain as track's game object
-        //director.SetGenericBinding(track, main_camera_object);
-
-        // Set it to play when ready.
         director.Play(timeline);
     }
 	

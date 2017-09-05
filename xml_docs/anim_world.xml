@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<clips>
+  Text on top.
+  <clip name="Dying" type="anim" start ="0.0" dur="4.0" 
+        start_pos ="Location1" end_pos ="Location1" 
+        animation_name="Bandit_Dying">
+  </clip>
+</clips>
