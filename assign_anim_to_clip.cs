@@ -69,9 +69,8 @@ public class assign_anim_to_clip : MonoBehaviour {
             {
                 float start = float.Parse(clipitem_list[2]);
                 float dur = float.Parse(clipitem_list[3]);
-                string start_location = clipitem_list[4];
-                string end_location = clipitem_list[5];
-                string animation_obj = clipitem_list[6];
+                string anim_location = clipitem_list[4];
+                string animation_obj = clipitem_list[5];
 
                 var clip = ctrack.CreateDefaultClip();
                 clip.start = start;
@@ -79,22 +78,9 @@ public class assign_anim_to_clip : MonoBehaviour {
                 clip.displayName = name;
                 GameObject animTimeline = GameObject.Find(animation_obj);
                 var controlAnim = clip.asset as ControlPlayableAsset;
-                Vector3 start_pos = GameObject.Find(start_location).transform.position;
-                Vector3 end_pos = GameObject.Find(end_location).transform.position;
+                Vector3 anim_loc = GameObject.Find(anim_location).transform.position;
 
-                // SET ATTRIBUTES OF TARGET TIMELINE, a child of some gameobject is the convention
-
-                //PlayableDirector anim_director = animTimeline.GetComponent<PlayableDirector>();
-                //List<PlayableBinding> playable_list = anim_director.playableAsset.outputs.ToList();
-
-                // this is the animation track, always; here, we are setting an offset
-                //TrackAsset target_anim_track = playable_list[0].sourceObject as AnimationTrack;
-                //List<TimelineClip> track_clips = target_anim_track.GetClips().ToList();
-                //AnimationPlayableAsset target_anim_clip = track_clips[0].asset as AnimationPlayableAsset;
-                //target_anim_clip.position = start_pos;
-
-                // this is the lerp track, always; here, we set destination
-                //TrackAsset target_lerp_track = playable_list[1].sourceObject as PlayableTrack;
+                setClipOffset(animTimeline, anim_loc);
                 //List<TimelineClip> lerp_clips = target_lerp_track.GetClips().ToList();
 
                 // Set control clip to be on fabula timeline
@@ -166,6 +152,7 @@ public class assign_anim_to_clip : MonoBehaviour {
     // Use this to spawn a location halfway between two transforms, to divide navigation a priori into distinct phases.
     GameObject spawn_location(Transform start_pos, Transform end_pos)
     {
+        //nma.autoBraking = false;
         GameObject new_loc = new GameObject();
         new_loc.transform.rotation = start_pos.rotation;
         new_loc.transform.position = halfwaypoint(start_pos.position, end_pos.position);
@@ -175,5 +162,29 @@ public class assign_anim_to_clip : MonoBehaviour {
     Vector3 halfwaypoint(Vector3 p1, Vector3 p2)
     {
         return p1 + (p2 - p1) * 0.5f;
+    }
+
+    void setClipOffset(GameObject animTimeline, Vector3 anim_location)
+    {
+
+        // SET ATTRIBUTES OF TARGET TIMELINE, a child of some gameobject is the convention
+
+        PlayableDirector anim_director = animTimeline.GetComponent<PlayableDirector>();
+        List<PlayableBinding> playable_list = anim_director.playableAsset.outputs.ToList();
+        TrackAsset target_anim_track = playable_list[0].sourceObject as AnimationTrack;
+        foreach(TimelineClip track_clip in target_anim_track.GetClips()){
+            AnimationPlayableAsset target_anim_clip = track_clip.asset as AnimationPlayableAsset;
+            target_anim_clip.position = anim_location;
+        }
+
+        // this is the animation track, always; here, we are setting an offset
+        //TrackAsset target_anim_track = playable_list[0].sourceObject as AnimationTrack;
+        //List<TimelineClip> track_clips = target_anim_track.GetClips().ToList();
+        //AnimationPlayableAsset target_anim_clip = track_clips[0].asset as AnimationPlayableAsset;
+        //target_anim_clip.position = start_pos;
+
+        // this is the lerp track, always; here, we set destination
+        //TrackAsset target_lerp_track = playable_list[1].sourceObject as PlayableTrack;
+        //List<TimelineClip> lerp_clips = target_lerp_track.GetClips().ToList();
     }
 }

@@ -12,4 +12,8 @@
        animation_name="Basic_BanditPrefab"
         speed ="1.0">
   </clip>
+  <clip name="Bandit_shoots" type="animate" start ="8.0" dur="12.0"
+    anim_location="Location2"
+    animation_name="Bandit_Shooting" >
+  </clip>
 </clips>
