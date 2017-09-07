@@ -107,7 +107,7 @@ public class assign_anim_to_clip : MonoBehaviour {
                 string start_location = clipitem_list[4];
                 string end_location = clipitem_list[5];
                 string agent = clipitem_list[6];
-
+                float speed = float.Parse(clipitem_list[7]);
 
                 //ntrack
                 ////var clip = ctrack.CreateDefaultClip();
@@ -131,10 +131,10 @@ public class assign_anim_to_clip : MonoBehaviour {
 
                 var navclip = clip.asset as SetAgentTargetAsset;
                 var lerpclip = lerp_clip.asset as LerpMoveObjectAsset;
-
+    
                
 
-                navclip.AgentSpeed = 2.0f;
+                navclip.AgentSpeed = speed;
                 //navclip.Agent = navigatingAgent as NavMeshAgent;
 
                 navclip.Target.exposedName = UnityEditor.GUID.Generate().ToString();
@@ -162,4 +162,18 @@ public class assign_anim_to_clip : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    // Use this to spawn a location halfway between two transforms, to divide navigation a priori into distinct phases.
+    GameObject spawn_location(Transform start_pos, Transform end_pos)
+    {
+        GameObject new_loc = new GameObject();
+        new_loc.transform.rotation = start_pos.rotation;
+        new_loc.transform.position = halfwaypoint(start_pos.position, end_pos.position);
+        return new_loc;
+    }
+
+    Vector3 halfwaypoint(Vector3 p1, Vector3 p2)
+    {
+        return p1 + (p2 - p1) * 0.5f;
+    }
 }

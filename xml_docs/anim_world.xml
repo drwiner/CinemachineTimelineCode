@@ -9,6 +9,7 @@
   </clip>
   <clip name="Walk_Bandit_1_2" type="navigate" start ="4.0" dur="4.0"
        start_pos ="Location1" end_pos ="Location4"
-       animation_name="Basic_BanditPrefab">
+       animation_name="Basic_BanditPrefab"
+        speed ="1.0">
   </clip>
 </clips>
