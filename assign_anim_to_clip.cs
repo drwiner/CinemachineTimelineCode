@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Linq;
+using UnityEngine.AI;
 
 public class assign_anim_to_clip : MonoBehaviour {
     private TimelineAsset timeline;
@@ -54,39 +55,102 @@ public class assign_anim_to_clip : MonoBehaviour {
 
         PlayableDirector director = GetComponent<PlayableDirector>();
 
-        TrackAsset track = timeline.CreateTrack<AnimationTrack>(null, "trackname");
         TrackAsset ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
+        PlayableTrack ntrack = timeline.CreateTrack<PlayableTrack>(null, "nav_track");
 
         foreach (List<string> clipitem_list in clipList)
         {
+
+
             string name = clipitem_list[0];
             string type = clipitem_list[1];
-            float start = float.Parse(clipitem_list[2]);
-            float dur = float.Parse(clipitem_list[3]);
-            string start_location = clipitem_list[4];
-            string end_location = clipitem_list[5];
-            string animation_obj = clipitem_list[6];
 
-            var clip = ctrack.CreateDefaultClip();
-            clip.start = start;
-            clip.duration = dur;
-            clip.displayName = name;
-            GameObject animTimeline = GameObject.Find(animation_obj);
-            var controlAnim = clip.asset as ControlPlayableAsset;
-            Vector3 start_pos = GameObject.Find(start_location).transform.position;
-            Vector3 end_pos = GameObject.Find(end_location).transform.position;
+            if (type.Equals("animate"))
+            {
+                float start = float.Parse(clipitem_list[2]);
+                float dur = float.Parse(clipitem_list[3]);
+                string start_location = clipitem_list[4];
+                string end_location = clipitem_list[5];
+                string animation_obj = clipitem_list[6];
 
-            // SET ATTRIBUTES OF TARGET TIMELINE, a child of some gameobject is the convention
-            PlayableDirector anim_director = animTimeline.GetComponent<PlayableDirector>();
-            List<PlayableBinding> playable_list = anim_director.playableAsset.outputs.ToList();
-            TrackAsset target_anim_track = playable_list[0].sourceObject as AnimationTrack;
-            List<TimelineClip> track_clips = target_anim_track.GetClips().ToList();
-            AnimationPlayableAsset target_anim_clip = track_clips[0].asset as AnimationPlayableAsset;
-            target_anim_clip.position = start_pos;
+                var clip = ctrack.CreateDefaultClip();
+                clip.start = start;
+                clip.duration = dur;
+                clip.displayName = name;
+                GameObject animTimeline = GameObject.Find(animation_obj);
+                var controlAnim = clip.asset as ControlPlayableAsset;
+                Vector3 start_pos = GameObject.Find(start_location).transform.position;
+                Vector3 end_pos = GameObject.Find(end_location).transform.position;
 
-            // Set control clip to be on fabula timeline
-            controlAnim.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
-            director.SetReferenceValue(controlAnim.sourceGameObject.exposedName, animTimeline);
+                // SET ATTRIBUTES OF TARGET TIMELINE, a child of some gameobject is the convention
+
+                //PlayableDirector anim_director = animTimeline.GetComponent<PlayableDirector>();
+                //List<PlayableBinding> playable_list = anim_director.playableAsset.outputs.ToList();
+
+                // this is the animation track, always; here, we are setting an offset
+                //TrackAsset target_anim_track = playable_list[0].sourceObject as AnimationTrack;
+                //List<TimelineClip> track_clips = target_anim_track.GetClips().ToList();
+                //AnimationPlayableAsset target_anim_clip = track_clips[0].asset as AnimationPlayableAsset;
+                //target_anim_clip.position = start_pos;
+
+                // this is the lerp track, always; here, we set destination
+                //TrackAsset target_lerp_track = playable_list[1].sourceObject as PlayableTrack;
+                //List<TimelineClip> lerp_clips = target_lerp_track.GetClips().ToList();
+
+                // Set control clip to be on fabula timeline
+                controlAnim.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
+                director.SetReferenceValue(controlAnim.sourceGameObject.exposedName, animTimeline);
+            }
+            else if(type.Equals("navigate")){
+                float start = float.Parse(clipitem_list[2]);
+                float dur = float.Parse(clipitem_list[3]);
+                string start_location = clipitem_list[4];
+                string end_location = clipitem_list[5];
+                string agent = clipitem_list[6];
+
+
+                //ntrack
+                ////var clip = ctrack.CreateDefaultClip();
+                var lerp_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
+                var clip = ntrack.CreateClip<SetAgentTargetAsset>();
+
+
+                //var navclip = clip.asset as SetAgentTargetAsset;
+                lerp_clip.start = start;
+                lerp_clip.duration = .05f;
+                lerp_clip.displayName = "lerp";
+                
+                clip.start = start + .05f;
+                clip.duration = dur - .05f;
+                clip.displayName = name;
+                GameObject movingObj = GameObject.Find(agent);
+                NavMeshAgent navigatingAgent = movingObj.GetComponent<NavMeshAgent>();
+
+                Transform start_pos = GameObject.Find(start_location).transform;
+                Transform end_pos = GameObject.Find(end_location).transform;
+
+                var navclip = clip.asset as SetAgentTargetAsset;
+                var lerpclip = lerp_clip.asset as LerpMoveObjectAsset;
+
+               
+
+                navclip.AgentSpeed = 2.0f;
+                //navclip.Agent = navigatingAgent as NavMeshAgent;
+
+                navclip.Target.exposedName = UnityEditor.GUID.Generate().ToString();
+                navclip.Agent.exposedName = UnityEditor.GUID.Generate().ToString();
+                director.SetReferenceValue(navclip.Agent.exposedName, navigatingAgent);
+                director.SetReferenceValue(navclip.Target.exposedName, start_pos);
+                lerpclip.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
+                lerpclip.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
+                director.SetReferenceValue(lerpclip.ObjectToMove.exposedName, movingObj);
+                director.SetReferenceValue(lerpclip.LerpMoveTo.exposedName, end_pos);
+            }
+            else
+            {
+                Debug.Log("incorrect clip type");
+            }
+           
 
 
         }
