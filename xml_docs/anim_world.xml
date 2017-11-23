@@ -2,6 +2,12 @@
 
 <clips>
 
+ <!-- <clip name="stand" type="animate" start ="0.0" dur="4.0" 
+        start_pos ="Location1" end_pos ="Location4"
+        animation_name="Basic_BanditPrefab"
+        speed ="1.0">
+  </clip> -->
+
   <clip name="Walk_Bandit_1_1" type="navigate" start ="0.0" dur="4.0" 
         start_pos ="Location1" end_pos ="Location4"
         animation_name="Basic_BanditPrefab"

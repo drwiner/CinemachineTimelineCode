@@ -9,15 +9,21 @@ using UnityEngine.AI;
 
 public class assign_anim_to_clip : MonoBehaviour {
     private TimelineAsset timeline;
-
-    string p3 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//anim_world.xml";
+    public string xml_name;
+    private Transform start_pos;
+    private Transform anim_transform;
+    private Vector3 anim_loc;
+    private GameObject animTimeline;
+    private Quaternion anim_rot;
+    //= "Assets//Scripts//CinemachineTimelineCode//xml_docs//anim_world.xml";
+    //string p3 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//anim_world.xml";
 
     List<List<string>> readFabula()
     {
         List<List<string>> clipList = new List<List<string>>();
         List<string> clipItems;
 
-        XmlTextReader xml_doc = new XmlTextReader(p3);
+        XmlTextReader xml_doc = new XmlTextReader(xml_name);
         // cycle through each child noed 
         while (xml_doc.Read())
         {
@@ -72,16 +78,27 @@ public class assign_anim_to_clip : MonoBehaviour {
                 string anim_location = clipitem_list[4];
                 string animation_obj = clipitem_list[5];
 
+                start_pos = GameObject.Find(anim_location).transform;
+                var lerp_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
+                var lerpclip = lerp_clip.asset as LerpMoveObjectAsset;
+
                 var clip = ctrack.CreateDefaultClip();
                 clip.start = start;
                 clip.duration = dur;
                 clip.displayName = name;
-                GameObject animTimeline = GameObject.Find(animation_obj);
+                animTimeline = GameObject.Find(animation_obj);
                 var controlAnim = clip.asset as ControlPlayableAsset;
-                Vector3 anim_loc = GameObject.Find(anim_location).transform.position;
+                anim_transform = animTimeline.transform;
+                anim_loc = anim_transform.position;
+                anim_rot = anim_transform.rotation;
 
-                setClipOffset(animTimeline, anim_loc);
+                setClipOffset(animTimeline, anim_loc, anim_rot);
                 //List<TimelineClip> lerp_clips = target_lerp_track.GetClips().ToList();
+                
+                lerpclip.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
+                lerpclip.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
+                director.SetReferenceValue(lerpclip.ObjectToMove.exposedName, movingObj);
+                director.SetReferenceValue(lerpclip.LerpMoveTo.exposedName, start_pos);
 
                 // Set control clip to be on fabula timeline
                 controlAnim.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
@@ -112,7 +129,7 @@ public class assign_anim_to_clip : MonoBehaviour {
                 GameObject movingObj = GameObject.Find(agent);
                 NavMeshAgent navigatingAgent = movingObj.GetComponent<NavMeshAgent>();
 
-                Transform start_pos = GameObject.Find(start_location).transform;
+                start_pos = GameObject.Find(start_location).transform;
                 Transform end_pos = GameObject.Find(end_location).transform;
 
                 var navclip = clip.asset as SetAgentTargetAsset;
@@ -126,11 +143,11 @@ public class assign_anim_to_clip : MonoBehaviour {
                 navclip.Target.exposedName = UnityEditor.GUID.Generate().ToString();
                 navclip.Agent.exposedName = UnityEditor.GUID.Generate().ToString();
                 director.SetReferenceValue(navclip.Agent.exposedName, navigatingAgent);
-                director.SetReferenceValue(navclip.Target.exposedName, start_pos);
+                director.SetReferenceValue(navclip.Target.exposedName, end_pos);
                 lerpclip.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
                 lerpclip.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
                 director.SetReferenceValue(lerpclip.ObjectToMove.exposedName, movingObj);
-                director.SetReferenceValue(lerpclip.LerpMoveTo.exposedName, end_pos);
+                director.SetReferenceValue(lerpclip.LerpMoveTo.exposedName, start_pos);
             }
             else
             {
@@ -164,7 +181,7 @@ public class assign_anim_to_clip : MonoBehaviour {
         return p1 + (p2 - p1) * 0.5f;
     }
 
-    void setClipOffset(GameObject animTimeline, Vector3 anim_location)
+    void setClipOffset(GameObject animTimeline, Vector3 anim_location, Quaternion anim_rotation)
     {
 
         // SET ATTRIBUTES OF TARGET TIMELINE, a child of some gameobject is the convention
@@ -175,6 +192,7 @@ public class assign_anim_to_clip : MonoBehaviour {
         foreach(TimelineClip track_clip in target_anim_track.GetClips()){
             AnimationPlayableAsset target_anim_clip = track_clip.asset as AnimationPlayableAsset;
             target_anim_clip.position = anim_location;
+            target_anim_clip.rotation = anim_rotation;
         }
 
         // this is the animation track, always; here, we are setting an offset

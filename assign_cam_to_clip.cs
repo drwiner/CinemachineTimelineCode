@@ -15,15 +15,17 @@ public class assign_cam_to_clip : MonoBehaviour {
     private TimelineAsset timeline;
 
     private GameObject main_camera_object;
-    string p2 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//test_world.xml";
-    string p3 = "Assets//Scripts//xml_docs//block_world.xml";
+
+    public string cam_script_name;
+   // string p2 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//test_world.xml";
+  //  string p3 = "Assets//Scripts//xml_docs//block_world.xml";
     
     List<List<string>> readDiscourse()
     {
         List<List<string>> clipList = new List<List<string>>();
         List<string> clipItems;
 
-        XmlTextReader xml_doc = new XmlTextReader(p2);
+        XmlTextReader xml_doc = new XmlTextReader(cam_script_name);
         // cycle through each child noed 
         while (xml_doc.Read())
         {
