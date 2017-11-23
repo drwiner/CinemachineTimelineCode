@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<clips>
+
+  <clip name="01" type="cam" start ="4.0" dur="4.0" gameObj ="OH_bandit"></clip>
+  <clip name="02" type ="cam" start ="8.0" dur="4.0" gameObj="OH_cowboy"></clip>
+  <clip name="03" type ="cam" start ="12.0" dur="4.0" gameObj="ECU_cowboy"></clip>
+  <clip name="04" type ="cam" start ="16.0" dur="4.0" gameObj="ECU_bandit"></clip>
+</clips>

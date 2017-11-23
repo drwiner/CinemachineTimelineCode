@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<clips>
+
+
+<clip name="ReadyDuelIdle" type="animate" start="0.0" dur = "3.0"
+		start_pos = "DuelLeft" animation_name="Ready_Idle" speed="1.0"></clip>
+
+<!-- <clip name="ReadyDuelFrozen" type="animate" start="3.0" dur= "2.0" -->
+	<!-- start_pos = "DuelLeft" animation_name="idle_ready" speed = "1.0"> </clip> -->
+
+  <!-- <clip name="Walk_Bandit_1_1" type="navigate" start ="0.0" dur="2.0"  -->
+        <!-- start_pos ="Location1" end_pos ="duel_position_1" -->
+        <!-- animation_name="Basic_BanditPrefab" -->
+        <!-- speed ="1.0"> -->
+  <!-- </clip> -->
+  
+  <!-- <clip name="Walk_Bandit_1_1" type="navigate" start ="1.0" dur="2.0" -->
+       <!-- start_pos ="Location2" end_pos ="duel_position_2" -->
+       <!-- animation_name="Cowboy" -->
+        <!-- speed ="1.0"> -->
+  <!-- </clip> -->
+  
+<!--   <clip name="Bandit_shoots" type="animate" start ="8.0" dur="12.0"
+    anim_location="Location2"
+    animation_name="Bandit_Shooting" >
+  </clip> -->
+</clips>
