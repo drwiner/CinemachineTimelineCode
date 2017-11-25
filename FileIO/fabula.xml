@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<FabulaCollection>
+  
+  <Clips>
+
+    <Clip name="Stroll" type="navigate">
+        <start>0</start>
+        <duration>12.0</duration>
+        <startingPos_string>Left</startingPos_string>
+        <endingPos_string>DuelLeft</endingPos_string>
+        <animation_string>Strut</animation_string>
+        <gameobject_name>char01</gameobject_name>
+    </Clip>
+
+      <Clip name="ReadyDuelIdle" type="animate">
+          <start>12.0</start>
+          <duration>3.0</duration>
+          <startingPos_string>DuelLeft</startingPos_string>
+          <orientation>90</orientation>
+          <animation_string>ReadyIdle</animation_string>
+          <gameobject_name>char01</gameobject_name>
+      </Clip>
+
+    <Clip name="DrawGun" type="animate">
+        <start>15.0</start>
+        <duration>4.0</duration>
+        <startingPos_string>DuelLeft</startingPos_string>
+        <orientation>90</orientation>
+        <animation_string>DrawGun</animation_string>
+        <gameobject_name>char01</gameobject_name>
+    </Clip>
+
+  </Clips>
+
+</FabulaCollection>

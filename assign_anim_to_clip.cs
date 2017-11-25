@@ -18,7 +18,7 @@ public class assign_anim_to_clip : MonoBehaviour {
     //= "Assets//Scripts//CinemachineTimelineCode//xml_docs//anim_world.xml";
     //string p3 = "Assets//Scripts//CinemachineTimelineCode//xml_docs//anim_world.xml";
 
-    List<List<string>> readFabula()
+    public List<List<string>> readFabula()
     {
         List<List<string>> clipList = new List<List<string>>();
         List<string> clipItems;
@@ -97,7 +97,7 @@ public class assign_anim_to_clip : MonoBehaviour {
                 
                 lerpclip.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
                 lerpclip.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
-                director.SetReferenceValue(lerpclip.ObjectToMove.exposedName, movingObj);
+                //director.SetReferenceValue(lerpclip.ObjectToMove.exposedName, movingObj);
                 director.SetReferenceValue(lerpclip.LerpMoveTo.exposedName, start_pos);
 
                 // Set control clip to be on fabula timeline

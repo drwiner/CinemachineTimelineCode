@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DiscourseCollection>
+  
+  <Clips>
+
+    <Clip name="Custom" type="cam_custom">
+        <start>0</start>
+        <duration>6.0</duration>
+        <fov>37.0</fov>
+        <startingPos_string>Left</startingPos_string>
+        <endingPos_string>DuelLeft</endingPos_string>
+        <targetDistance>15</targetDistance>
+        <targetOrientation>20.0</targetOrientation>
+        <aimTarget>char01</aimTarget>
+        <followTarget>char01</followTarget>
+    </Clip>
+
+    <Clip name="Custom2" type="cam_timeline">
+      <start>6.0</start>
+      <duration>6.0</duration>
+      <TimeLineObject>master</TimeLineObject>
+    </Clip>
+
+    <Clip name="Custom3" type="cntrl_timeline">
+      <start>12.0</start>
+      <duration>6.0</duration>
+      <fabulaStart>3</fabulaStart>
+      <TimeLineObject>time_test</TimeLineObject>
+    </Clip>
+
+  </Clips>
+
+</DiscourseCollection>

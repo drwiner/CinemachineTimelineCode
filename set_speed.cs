@@ -5,17 +5,19 @@ using UnityEngine.AI;
 
 public class set_speed : MonoBehaviour {
     public float speed;
-    Animator anim;
-    NavMeshAgent nma;
+    private Animator anim;
+    private Rigidbody rb;
 	// Use this for initialization
 	void Start () {
         anim = this.GetComponent<Animator>();
-        nma = this.GetComponent<NavMeshAgent>();
+        rb = this.GetComponent<Rigidbody>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        anim.SetFloat("Speed", nma.desiredVelocity.magnitude);
-        speed = nma.desiredVelocity.magnitude;
+        speed = rb.velocity.magnitude;
+        anim.SetFloat("speed", rb.velocity.magnitude);
+        //anim.SetFloat("Speed", r.desiredVelocity.magnitude);
+        //speed = nma.desiredVelocity.magnitude;
     }
 }
