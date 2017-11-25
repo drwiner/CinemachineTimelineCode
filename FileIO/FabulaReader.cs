@@ -14,7 +14,6 @@ public class FabulaReader : MonoBehaviour {
     // tracks
     private TrackAsset ctrack;
     private PlayableTrack ntrack;
-    private GoalSettingPlayableTrack gtrack;
 
     // director and timeline
     private PlayableDirector director;
@@ -94,20 +93,20 @@ public class FabulaReader : MonoBehaviour {
 
         float orientation = Mathf.Atan2(location.transform.position.z, -location.transform.position.x) * Mathf.Rad2Deg;
 
-        nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
+        nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset1>();
         nav_track_clip.start = clip.start;
         nav_track_clip.displayName = (string)clip.Name + "_transport";
         nav_track_clip.duration = (double)0.03;
-        LerpMoveObjectAsset tp_obj = nav_track_clip.asset as LerpMoveObjectAsset;
+        LerpMoveObjectAsset1 tp_obj = nav_track_clip.asset as LerpMoveObjectAsset1;
         Transform start_transform = makeCustomizedTransform(starting_location.transform.position, orientation).transform;
-        TransformBind(tp_obj, agent, start_transform);
+        TransformBind1(tp_obj, agent, start_transform);
 
         nav_track_clip2 = ntrack.CreateClip<LerpMoveObjectAsset>();
         nav_track_clip2.start = clip.start + (float)0.06;
         nav_track_clip2.duration = clip.duration - (float)0.06;
         LerpMoveObjectAsset lerp_clip = nav_track_clip2.asset as LerpMoveObjectAsset;
         Transform end_transform = makeCustomizedTransform(location.transform.position, orientation).transform;
-        TransformBind(lerp_clip, agent, end_transform);
+        TransformBind(lerp_clip, agent, start_transform, end_transform);
 
         // control track - animate
         control_track_clip = ctrack.CreateDefaultClip();
@@ -137,12 +136,22 @@ public class FabulaReader : MonoBehaviour {
         director.SetReferenceValue(tpObj.EndTransform.exposedName, end_pos);
     }
 
-    private void TransformBind(LerpMoveObjectAsset tpObj, GameObject obj_to_move, Transform end_pos)
+    private void TransformBind1(LerpMoveObjectAsset1 tpObj, GameObject obj_to_move, Transform end_pos)
     {
         tpObj.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
         tpObj.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
         director.SetReferenceValue(tpObj.ObjectToMove.exposedName, obj_to_move);
         director.SetReferenceValue(tpObj.LerpMoveTo.exposedName, end_pos);
+    }
+
+    private void TransformBind(LerpMoveObjectAsset tpObj, GameObject obj_to_move, Transform start_pos, Transform end_pos)
+    {
+        tpObj.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
+        tpObj.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
+        tpObj.LerpMoveFrom.exposedName = UnityEditor.GUID.Generate().ToString();
+        director.SetReferenceValue(tpObj.ObjectToMove.exposedName, obj_to_move);
+        director.SetReferenceValue(tpObj.LerpMoveTo.exposedName, end_pos);
+        director.SetReferenceValue(tpObj.LerpMoveFrom.exposedName, start_pos);
     }
 
     private void AnimateBind(ControlPlayableAsset cpa, GameObject ato)
