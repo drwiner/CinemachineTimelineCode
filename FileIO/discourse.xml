@@ -8,6 +8,7 @@
         <start>0</start>
         <duration>6.0</duration>
         <fov>37.0</fov>
+        <fabulaStart>12.5</fabulaStart>
         <startingPos_string>Left</startingPos_string>
         <endingPos_string>DuelLeft</endingPos_string>
         <targetDistance>15</targetDistance>
@@ -25,7 +26,7 @@
     <Clip name="Custom3" type="cntrl_timeline">
       <start>12.0</start>
       <duration>6.0</duration>
-      <fabulaStart>3</fabulaStart>
+      <fabulaStart>1</fabulaStart>
       <TimeLineObject>time_test</TimeLineObject>
     </Clip>
 

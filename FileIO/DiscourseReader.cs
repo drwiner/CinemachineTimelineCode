@@ -66,6 +66,7 @@ public class DiscourseReader : MonoBehaviour
             {
                 populateCustom(clip);
             }
+            // cam_timeline cannot time travel
             else if (clip.Type.Equals("cam_timeline"))
             {
                 populateCamObject(clip);
@@ -73,14 +74,31 @@ public class DiscourseReader : MonoBehaviour
             else if (clip.Type.Equals("cntrl_timeline"))
             {
                 populateCtrlObject(clip);
+                if (clip.fabulaStart >= 0f)
+                {
+                    addTimeTravel(clip);
+                }
             }
             else
             {
                 Debug.Log("What TYPE of discourse clip is this?");
             }
+            
         }
         director.SetGenericBinding(ftrack, main_camera_object);
         director.Play(timeline);
+    }
+
+    private void addTimeTravel(DiscourseClip clip)
+    {
+
+        time_track_clip = ptrack.CreateClip<setFloatClip>();
+        time_track_clip.start = clip.start;
+        time_track_clip.duration = clip.duration;
+        time_track_clip.displayName = clip.Name;
+        var timeControl = time_track_clip.asset as setFloatClip;
+
+        TimeBind(timeControl, agent, clip.fabulaStart);
     }
 
     private void populateCtrlObject(DiscourseClip clip)
@@ -94,18 +112,7 @@ public class DiscourseReader : MonoBehaviour
         var controlAnim = control_track_clip.asset as ControlPlayableAsset;
         AnimateBind(controlAnim, agent);
 
-        if (clip.fabulaStart >= 0f)
-        {
-            //time_track_clip = ptrack.CreateClip<setFloatClip>();
-            time_track_clip = ptrack.CreateClip<setFloatClip>();
-            time_track_clip.start = clip.start;
-            time_track_clip.duration = clip.duration;
-            //time_track_clip.duration = (double)0.05;
-            time_track_clip.displayName = clip.Name;
-            var timeControl = time_track_clip.asset as setFloatClip;
-            
-            TimeBind(timeControl, agent, clip.fabulaStart);
-        }
+       
     }
 
     // Update is called once per frame
@@ -145,11 +152,59 @@ public class DiscourseReader : MonoBehaviour
         // specialize and bind
         var cinemachineShot = film_track_clip.asset as CinemachineShot;
         CamBind(cinemachineShot, cva);
+
+        if (clip.fabulaStart >= 0f)
+        {
+            //Instantiate(Resources.Load("enemy", typeof(GameObject))) as GameObject;
+            GameObject ttravel = Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
+            ttravel.transform.parent = go.transform;
+            ttravel.GetComponent<timeStorage>().fab_time = clip.fabulaStart;
+
+
+            TimelineClip tc = ctrack.CreateDefaultClip();
+            tc.start = clip.start;
+            tc.duration = clip.duration;
+            tc.displayName = "Time Travel";
+            var time_travel_clip = tc.asset as ControlPlayableAsset;
+
+            AnimateBind(time_travel_clip, ttravel);
+
+            //time_track_clip = ptrack.CreateClip<setFloatClip>();
+            //time_track_clip.start = clip.start;
+            //time_track_clip.duration = clip.duration;
+            //time_track_clip.displayName = "Time Travel";
+            //time_track_clip.displayName = clip.Name;
+            //var timeControl = time_track_clip.asset as setFloatClip;
+
+            //TimeBind(timeControl, ttravel, clip.fabulaStart);
+
+
+            //ttravel
+
+            ////gopd.
+            ////gopd.playableAsset =
+            ////TimelineAsset ta = Instantiate(Resources.Load("time_TravelTimeline", typeof(Playable))) as TimelineAsset;
+            //TimelineAsset ta = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
+            //ActivationTrack atrack = ta.CreateTrack<ActivationTrack>(null, "local_active_track");
+            //TimelineClip tc = atrack.CreateDefaultClip();
+            //tc.start = 0f;
+            //tc.duration = clip.duration;
+
+            //GameObject son = ttravel.GetComponent<timeStorage>().setFabObj;
+            ////tc.asset = son;
+            //tc.underlyingAsset = son;
+            //var activation_clip = tc.asset as ActivationTrack;
+            ////activation_clip.postPlaybackState = ActivationTrack.PostPlaybackState.Inactive;
+
+            ////activation_clip.parent = son;
+            //ttravel.transform.parent = go.transform;
+        }
     }
 
     private void populateCamObject(DiscourseClip clip)
     {
-        new_cam = GameObject.Find(clip.TimeLineObject).GetComponent<CinemachineVirtualCamera>();
+        agent = GameObject.Find(clip.TimeLineObject);
+        new_cam = agent.GetComponent<CinemachineVirtualCamera>();
 
         film_track_clip = ftrack.CreateDefaultClip();
         film_track_clip.start = clip.start;
