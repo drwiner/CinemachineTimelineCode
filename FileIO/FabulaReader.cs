@@ -67,19 +67,19 @@ public class FabulaReader : MonoBehaviour {
 
         // control track
         control_track_clip = ctrack.CreateDefaultClip();
-        control_track_clip.start = clip.start + (float)0.06;
-        control_track_clip.duration = clip.duration - (float)0.06;
+        control_track_clip.start = clip.start + (float)0.12;
+        control_track_clip.duration = clip.duration - (float)0.12;
         control_track_clip.displayName = clip.Name;
         controlAnim = control_track_clip.asset as ControlPlayableAsset;
         AnimateBind(controlAnim, animTimelineObject);
 
         // nav track
-        nav_track_clip = ntrack.CreateClip<TeleportObject>();
+        nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
         nav_track_clip.start = clip.start;
         nav_track_clip.displayName = clip.Name;
-        nav_track_clip.duration = 0.03;
-        TeleportObject tp_obj = nav_track_clip.asset as TeleportObject;
-        TeleportBind(tp_obj, agent, agent.transform, makeCustomizedTransform(location.transform.position, clip.orientation).transform);
+        nav_track_clip.duration = 0.11;
+        LerpMoveObjectAsset tp_obj = nav_track_clip.asset as LerpMoveObjectAsset;
+        TransformBind(tp_obj, agent, agent.transform, makeCustomizedTransform(location.transform.position, clip.orientation).transform);
         //setClipOffset(animTimelineObject, anim_loc, anim_rot);
     }
 
@@ -96,22 +96,22 @@ public class FabulaReader : MonoBehaviour {
         nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset1>();
         nav_track_clip.start = clip.start;
         nav_track_clip.displayName = (string)clip.Name + "_transport";
-        nav_track_clip.duration = (double)0.03;
+        nav_track_clip.duration = (double)0.11;
         LerpMoveObjectAsset1 tp_obj = nav_track_clip.asset as LerpMoveObjectAsset1;
         Transform start_transform = makeCustomizedTransform(starting_location.transform.position, orientation).transform;
         TransformBind1(tp_obj, agent, start_transform);
 
         nav_track_clip2 = ntrack.CreateClip<LerpMoveObjectAsset>();
-        nav_track_clip2.start = clip.start + (float)0.06;
-        nav_track_clip2.duration = clip.duration - (float)0.06;
+        nav_track_clip2.start = clip.start + (float)0.12;
+        nav_track_clip2.duration = clip.duration - (float)0.12;
         LerpMoveObjectAsset lerp_clip = nav_track_clip2.asset as LerpMoveObjectAsset;
         Transform end_transform = makeCustomizedTransform(location.transform.position, orientation).transform;
         TransformBind(lerp_clip, agent, start_transform, end_transform);
 
         // control track - animate
         control_track_clip = ctrack.CreateDefaultClip();
-        control_track_clip.start = clip.start + (float)0.06;
-        control_track_clip.duration = clip.duration - (float)0.06;
+        control_track_clip.start = clip.start + (float)0.12;
+        control_track_clip.duration = clip.duration - (float)0.12;
         control_track_clip.displayName = clip.Name;
         controlAnim = control_track_clip.asset as ControlPlayableAsset;
         AnimateBind(controlAnim, animTimelineObject);

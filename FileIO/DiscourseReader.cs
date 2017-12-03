@@ -128,7 +128,7 @@ public class DiscourseReader : MonoBehaviour
         // create position of camera
         GameObject go = new GameObject();
         go.name = "anchor";
-        go.transform.position = anchor.transform.position + goal_direction + new Vector3(0f, HEIGHT, 0f);
+        go.transform.position = agent.transform.position + goal_direction + new Vector3(0f, HEIGHT, 0f);
         go.transform.parent = anchor.transform;
 
         // create position of target
@@ -145,8 +145,8 @@ public class DiscourseReader : MonoBehaviour
 
         // default clip attributes
         film_track_clip = ftrack.CreateDefaultClip();
-        film_track_clip.start = clip.start;
-        film_track_clip.duration = clip.duration;
+        film_track_clip.start = clip.start + (float)0.12;
+        film_track_clip.duration = clip.duration - (float)0.12;
         film_track_clip.displayName = clip.Name;
 
         // specialize and bind
