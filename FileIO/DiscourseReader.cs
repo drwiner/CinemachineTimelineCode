@@ -143,18 +143,11 @@ public class DiscourseReader : MonoBehaviour
         cva.m_Follow = go.transform;
         cva.m_Lens.FieldOfView = clip.fov;
 
-        // default clip attributes
-        film_track_clip = ftrack.CreateDefaultClip();
-        film_track_clip.start = clip.start + (float)0.12;
-        film_track_clip.duration = clip.duration - (float)0.12;
-        film_track_clip.displayName = clip.Name;
 
-        // specialize and bind
-        var cinemachineShot = film_track_clip.asset as CinemachineShot;
-        CamBind(cinemachineShot, cva);
-
+        bool has_fab_switch = false;
         if (clip.fabulaStart >= 0f)
         {
+            has_fab_switch = true;            
             //Instantiate(Resources.Load("enemy", typeof(GameObject))) as GameObject;
             GameObject ttravel = Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
             ttravel.transform.parent = go.transform;
@@ -199,6 +192,26 @@ public class DiscourseReader : MonoBehaviour
             ////activation_clip.parent = son;
             //ttravel.transform.parent = go.transform;
         }
+
+        // default clip attributes
+        film_track_clip = ftrack.CreateDefaultClip();
+        float start = clip.start;
+        float duration = clip.duration;
+        if (has_fab_switch)
+        {
+            start = clip.start + (float)0.16;
+            duration = clip.duration - (float)0.16;
+        } else
+        {
+
+        }
+        film_track_clip.start = start;
+        film_track_clip.duration = duration;
+        film_track_clip.displayName = clip.Name;
+
+        // specialize and bind
+        var cinemachineShot = film_track_clip.asset as CinemachineShot;
+        CamBind(cinemachineShot, cva);
     }
 
     private void populateCamObject(DiscourseClip clip)
