@@ -91,7 +91,10 @@ public class FabulaReader : MonoBehaviour {
         location = GameObject.Find(clip.endingPos_string);
         animTimelineObject = GameObject.Find(clip.animation_string);
 
-        float orientation = Mathf.Atan2(location.transform.position.z, -location.transform.position.x) * Mathf.Rad2Deg;
+        // get vector3 corresponding to destination - origin
+        Vector3 dest_minus_origin = location.transform.position - starting_location.transform.position;
+        float orientation = Mathf.Atan2(dest_minus_origin.x, -dest_minus_origin.z) * Mathf.Rad2Deg - 90f;
+        //float orientation = Mathf.Atan2(location.transform.position.z, -location.transform.position.x) * Mathf.Rad2Deg;
 
         nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset1>();
         nav_track_clip.start = clip.start;

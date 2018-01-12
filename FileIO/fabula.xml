@@ -1,36 +1,44 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
 <FabulaCollection>
-  
   <Clips>
-
-    <Clip name="Stroll" type="navigate">
-        <start>0</start>
-        <duration>18.0</duration>
-        <startingPos_string>Left</startingPos_string>
-        <endingPos_string>DuelLeft</endingPos_string>
-        <animation_string>Strut</animation_string>
-        <gameobject_name>char01</gameobject_name>
+    <Clip name="strut-2-bd6d['bandit', 'right', 'duel-right']" type="navigate">
+      <start>0</start>
+      <duration>8.813333333333334</duration>
+      <startingPos_string>right</startingPos_string>
+      <endingPos_string>duel-right</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>bandit</gameobject_name>
     </Clip>
-
-      <Clip name="ReadyDuelIdle" type="animate">
-          <start>18.0</start>
-          <duration>3.0</duration>
-          <startingPos_string>DuelLeft</startingPos_string>
-          <orientation>90</orientation>
-          <animation_string>ReadyIdle</animation_string>
-          <gameobject_name>char01</gameobject_name>
-      </Clip>
-
-    <Clip name="DrawGun" type="animate">
-        <start>21.0</start>
-        <duration>4.0</duration>
-        <startingPos_string>DuelLeft</startingPos_string>
-        <orientation>90</orientation>
-        <animation_string>DrawGun</animation_string>
-        <gameobject_name>char01</gameobject_name>
+    <Clip name="strut-1-9052['bandit', 'duel-right', 'far-right']" type="navigate">
+      <start>8.813333333333334</start>
+      <duration>19.293333333333333</duration>
+      <startingPos_string>duel-right</startingPos_string>
+      <endingPos_string>far-right</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>bandit</gameobject_name>
     </Clip>
-
+    <Clip name="strut-5-bb06['bandit', 'far-right', 'right']" type="navigate">
+      <start>28.10666666666667</start>
+      <duration>10.506666666666666</duration>
+      <startingPos_string>far-right</startingPos_string>
+      <endingPos_string>right</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>bandit</gameobject_name>
+    </Clip>
+    <Clip name="strut-3-85b5['bandit', 'right', 'far-right']" type="navigate">
+      <start>38.61333333333334</start>
+      <duration>10.506666666666666</duration>
+      <startingPos_string>right</startingPos_string>
+      <endingPos_string>far-right</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>bandit</gameobject_name>
+    </Clip>
+    <Clip name="strut-4-a908['bandit', 'far-right', 'duel-right']" type="navigate">
+      <start>49.120000000000005</start>
+      <duration>19.293333333333333</duration>
+      <startingPos_string>far-right</startingPos_string>
+      <endingPos_string>duel-right</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>bandit</gameobject_name>
+    </Clip>
   </Clips>
-
 </FabulaCollection>

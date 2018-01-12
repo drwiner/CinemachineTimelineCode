@@ -1,37 +1,64 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
 <DiscourseCollection>
-  
   <Clips>
-
-    <Clip name="Custom" type="cam_custom">
-        <start>0</start>
-        <duration>8.0</duration>
-        <fov>10.0</fov>
-        <fabulaStart>16.5</fabulaStart>
-        <startingPos_string>Left</startingPos_string>
-        <endingPos_string>DuelLeft</endingPos_string>
-        <targetDistance>15</targetDistance>
-        <targetOrientation>210.0</targetOrientation>
-        <aimTarget>char01</aimTarget>
-        <followTarget>char01</followTarget>
+    <Clip name="strut-2-bd6d['bandit', 'right', 'duel-right']" type="nav_cam">
+      <start>0</start>
+      <duration>3.525333333333334</duration>
+      <fov>25</fov>
+      <fabulaStart>0.0</fabulaStart>
+      <startingPos_string>right</startingPos_string>
+      <start_dist_offset>0.0</start_dist_offset>
+      <endingPos_string>duel-right</endingPos_string>
+      <end_dist_offset>5.288</end_dist_offset>
+      <targetOrientation>0</targetOrientation>
+      <aimTarget>bandit</aimTarget>
     </Clip>
-
-   <Clip name="IncludesTimeTravel" type="cntrl_timeline">
-      <start>8.0</start>
-      <duration>6.0</duration>
-      <fabulaStart>0</fabulaStart>
-      <TimeLineObject>time_test</TimeLineObject>
+    <Clip name="strut-5-bb06['bandit', 'far-right', 'right']" type="nav_cam">
+      <start>3.525333333333334</start>
+      <duration>4.2026666666666666</duration>
+      <fov>25</fov>
+      <fabulaStart>34.41066666666667</fabulaStart>
+      <startingPos_string>far-right</startingPos_string>
+      <start_dist_offset>9.456</start_dist_offset>
+      <endingPos_string>right</endingPos_string>
+      <end_dist_offset>15.76</end_dist_offset>
+      <targetOrientation>0</targetOrientation>
+      <aimTarget>bandit</aimTarget>
     </Clip>
-
-    <Clip name="BasicMaster" type="cam_timeline">
-      <start>14.0</start>
-      <duration>6.0</duration>
-      <TimeLineObject>master</TimeLineObject>
+    <Clip name="strut-3-85b5['bandit', 'right', 'far-right']" type="nav_cam">
+      <start>7.728000000000001</start>
+      <duration>4.2026666666666666</duration>
+      <fov>25</fov>
+      <fabulaStart>38.61333333333334</fabulaStart>
+      <startingPos_string>right</startingPos_string>
+      <start_dist_offset>0.0</start_dist_offset>
+      <endingPos_string>far-right</endingPos_string>
+      <end_dist_offset>6.304</end_dist_offset>
+      <targetOrientation>0</targetOrientation>
+      <aimTarget>bandit</aimTarget>
     </Clip>
-
-    
-
+    <Clip name="strut-3-85b5['bandit', 'right', 'far-right']" type="nav_cam">
+      <start>11.930666666666667</start>
+      <duration>4.2026666666666666</duration>
+      <fov>25</fov>
+      <fabulaStart>44.91733333333334</fabulaStart>
+      <startingPos_string>right</startingPos_string>
+      <start_dist_offset>9.456</start_dist_offset>
+      <endingPos_string>far-right</endingPos_string>
+      <end_dist_offset>15.76</end_dist_offset>
+      <targetOrientation>150</targetOrientation>
+      <aimTarget>bandit</aimTarget>
+    </Clip>
+    <Clip name="strut-4-a908['bandit', 'far-right', 'duel-right']" type="nav_cam">
+      <start>16.133333333333333</start>
+      <duration>7.717333333333333</duration>
+      <fov>25</fov>
+      <fabulaStart>49.120000000000005</fabulaStart>
+      <startingPos_string>far-right</startingPos_string>
+      <start_dist_offset>0.0</start_dist_offset>
+      <endingPos_string>duel-right</endingPos_string>
+      <end_dist_offset>11.576</end_dist_offset>
+      <targetOrientation>150</targetOrientation>
+      <aimTarget>bandit</aimTarget>
+    </Clip>
   </Clips>
-
 </DiscourseCollection>

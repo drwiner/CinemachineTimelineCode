@@ -18,6 +18,7 @@ public class DiscourseReader : MonoBehaviour
     private PlayableTrack ntrack;
     private CinemachineTrack ftrack;
     private PlayableTrack ptrack;
+    private TrackAsset pos_track;
 
     // director and timeline
     private PlayableDirector director;
@@ -30,6 +31,7 @@ public class DiscourseReader : MonoBehaviour
     private TimelineClip nav_track_clip;
     private TimelineClip film_track_clip;
     private TimelineClip time_track_clip;
+    private TimelineClip pos_track_clip;
 
     // game objects
     private GameObject agent;
@@ -59,12 +61,17 @@ public class DiscourseReader : MonoBehaviour
         ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
         ntrack = timeline.CreateTrack<PlayableTrack>(null, "nav_track");
         ptrack = timeline.CreateTrack<PlayableTrack>(null, "timetravel_track");
+        pos_track = timeline.CreateTrack<ControlTrack>(null, "pos_track");
 
         foreach (DiscourseClip clip in dc.Clips)
         {
             if (clip.Type.Equals("cam_custom"))
             {
                 populateCustom(clip);
+            }
+            else if (clip.Type.Equals("nav_cam"))
+            {
+                populateNav(clip);
             }
             // cam_timeline cannot time travel
             else if (clip.Type.Equals("cam_timeline"))
@@ -101,6 +108,90 @@ public class DiscourseReader : MonoBehaviour
         TimeBind(timeControl, agent, clip.fabulaStart);
     }
 
+    private void populateNav(DiscourseClip clip)
+    {
+        string name = clip.Name;
+        float start = clip.start;
+        float duration = clip.duration;
+        float fov = clip.fov;
+
+        float fab_start = clip.fabulaStart;
+    
+        GameObject starting_loc = GameObject.Find(clip.startingPos_string);
+        float start_offset = clip.start_dist_offset;
+        GameObject ending_loc = GameObject.Find(clip.endingPos_string);
+        float end_offset = clip.end_dist_offset;
+
+        float orient = clip.targetOrientation;
+        agent = GameObject.Find(clip.aimTarget);
+
+        bool has_follow_target = false;
+        GameObject followTarget = new GameObject();
+        if (clip.followTarget != null)
+        {
+            has_follow_target = true;
+            followTarget = GameObject.Find(clip.followTarget);
+        }
+
+        // create position of target
+        GameObject target_go = new GameObject();
+        target_go.name = "target_" + clip.Name;
+        target_go.transform.position = agent.transform.position + new Vector3(0f, HEIGHT, 0f);
+        target_go.transform.parent = agent.transform;
+
+        Vector3 dest_minus_start = (ending_loc.transform.position - starting_loc.transform.position);
+        dest_minus_start.Normalize();
+        Vector3 agent_starting_position = starting_loc.transform.position + dest_minus_start * start_offset;
+        Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_offset/2);
+
+        GameObject go = new GameObject();
+        go.name = clip.Name;
+        Vector3 goal_direction = degToVector3(orient + agent.transform.eulerAngles.y);
+        go.transform.position = agent_middle_position + (goal_direction * clip.targetDistance) + new Vector3(0f, HEIGHT, 0f);
+        CinemachineVirtualCamera cva = go.AddComponent<CinemachineVirtualCamera>();
+        CinemachineComposer cc = cva.AddCinemachineComponent<CinemachineComposer>();
+        //CinemachineComposer cc = cva.GetCinemachineComponent<CinemachineComposer>();
+        cc.m_DeadZoneWidth = 0.5f;
+        cc.m_SoftZoneWidth = 0.8f;
+        cva.m_Lens.FieldOfView = clip.fov;
+        cva.m_LookAt = target_go.transform;
+        if (has_follow_target)
+        {
+            cva.m_Follow = followTarget.transform;
+        }
+
+        bool has_fab_switch = false;
+        if (clip.fabulaStart >= 0f)
+        {
+            has_fab_switch = true;
+            GameObject ttravel = Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
+            ttravel.transform.parent = go.transform;
+            ttravel.GetComponent<timeStorage>().fab_time = clip.fabulaStart;
+            TimelineClip tc = ctrack.CreateDefaultClip();
+            tc.start = clip.start;
+            tc.duration = clip.duration;
+            tc.displayName = "Time Travel";
+            var time_travel_clip = tc.asset as ControlPlayableAsset;
+            AnimateBind(time_travel_clip, ttravel);
+        }
+
+        // default clip attributes
+        film_track_clip = ftrack.CreateDefaultClip();
+        if (has_fab_switch)
+        {
+            start = clip.start + (float)0.06;
+            duration = clip.duration;
+        }
+        film_track_clip.start = start;
+        film_track_clip.duration = duration;
+        film_track_clip.displayName = clip.Name;
+
+        // specialize and bind
+        var cinemachineShot = film_track_clip.asset as CinemachineShot;
+        CamBind(cinemachineShot, cva);
+
+    }
+
     private void populateCtrlObject(DiscourseClip clip)
     {
         agent = GameObject.Find(clip.TimeLineObject);
@@ -110,9 +201,7 @@ public class DiscourseReader : MonoBehaviour
         control_track_clip.duration = clip.duration;
         control_track_clip.displayName = clip.Name;
         var controlAnim = control_track_clip.asset as ControlPlayableAsset;
-        AnimateBind(controlAnim, agent);
-
-       
+        AnimateBind(controlAnim, agent);   
     }
 
     // Update is called once per frame
@@ -121,21 +210,34 @@ public class DiscourseReader : MonoBehaviour
         // find aim target and follow Target
         agent = GameObject.Find(clip.aimTarget);
         anchor = GameObject.Find(clip.followTarget);
+        if (anchor == null)
+        {
+            // This "anchor" hosts the actual anchor
+            anchor = new GameObject();
+            anchor.name = clip.Name;
+            GameObject VC_Host = GameObject.Find("VirtualCams");
+            anchor.transform.position = new Vector3(0f, 0f, 0f);
+            anchor.transform.parent = VC_Host.transform;
+            //anchor = GameObject.Find(clip.followTarget);
 
-        Vector3 goal_direction = degToVector3(clip.targetOrientation + anchor.transform.eulerAngles.y);
+            //anchor = agent;
+        }
+
+        // create position of target
+        GameObject target_go = new GameObject();
+        target_go.name = "target_" + clip.Name;
+        target_go.transform.position = agent.transform.position + new Vector3(0f, HEIGHT, 0f);
+        target_go.transform.parent = agent.transform;
+
+        Vector3 goal_direction = degToVector3(clip.targetOrientation + agent.transform.eulerAngles.y);
         goal_direction = goal_direction.normalized * clip.targetDistance;
         
         // create position of camera
         GameObject go = new GameObject();
-        go.name = "anchor";
+        go.name = clip.Name;
         go.transform.position = agent.transform.position + goal_direction + new Vector3(0f, HEIGHT, 0f);
         go.transform.parent = anchor.transform;
 
-        // create position of target
-        GameObject target_go = new GameObject();
-        target_go.name = "target_obj";
-        target_go.transform.position = agent.transform.position + new Vector3(0f, HEIGHT, 0f);
-        target_go.transform.parent = agent.transform;
 
         // create vcam
         CinemachineVirtualCamera cva = go.AddComponent<CinemachineVirtualCamera>();
@@ -199,8 +301,10 @@ public class DiscourseReader : MonoBehaviour
         float duration = clip.duration;
         if (has_fab_switch)
         {
-            start = clip.start + (float)0.16;
-            duration = clip.duration - (float)0.16;
+            //start = clip.start + (float)0.16;
+            //duration = clip.duration - (float)0.16;
+            start = clip.start + (float)0.06;
+            duration = clip.duration;
         } else
         {
 
@@ -208,6 +312,7 @@ public class DiscourseReader : MonoBehaviour
         film_track_clip.start = start;
         film_track_clip.duration = duration;
         film_track_clip.displayName = clip.Name;
+
 
         // specialize and bind
         var cinemachineShot = film_track_clip.asset as CinemachineShot;

@@ -19,6 +19,8 @@ public class DiscourseClip  {
     public float orientation = 0f;
     public float targetOrientation = 35f;
     public float targetDistance = 15f;
+    public float start_dist_offset;
+    public float end_dist_offset;
 
     public string startingPos_string;
     public string endingPos_string;
