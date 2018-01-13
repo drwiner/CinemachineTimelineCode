@@ -111,8 +111,8 @@ public class DiscourseReader : MonoBehaviour
     private void populateNav(DiscourseClip clip)
     {
         string name = clip.Name;
-        float start = clip.start;
-        float duration = clip.duration;
+        float start = clip.start + 0.06f;
+        float duration = clip.duration - 0.06f;
         float fov = clip.fov;
 
         float fab_start = clip.fabulaStart;
@@ -124,14 +124,7 @@ public class DiscourseReader : MonoBehaviour
 
         float orient = clip.targetOrientation;
         agent = GameObject.Find(clip.aimTarget);
-
-        bool has_follow_target = false;
-        GameObject followTarget = new GameObject();
-        if (clip.followTarget != null)
-        {
-            has_follow_target = true;
-            followTarget = GameObject.Find(clip.followTarget);
-        }
+       
 
         // create position of target
         GameObject target_go = new GameObject();
@@ -139,26 +132,50 @@ public class DiscourseReader : MonoBehaviour
         target_go.transform.position = agent.transform.position + new Vector3(0f, HEIGHT, 0f);
         target_go.transform.parent = agent.transform;
 
-        Vector3 dest_minus_start = (ending_loc.transform.position - starting_loc.transform.position);
-        dest_minus_start.Normalize();
+        Vector3 dest_minus_start = (ending_loc.transform.position - starting_loc.transform.position).normalized;
+        //dest_minus_start.Normalize();
         Vector3 agent_starting_position = starting_loc.transform.position + dest_minus_start * start_offset;
         Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_offset/2);
 
         GameObject go = new GameObject();
         go.name = clip.Name;
-        Vector3 goal_direction = degToVector3(orient + agent.transform.eulerAngles.y);
+        float orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
+
+        Vector3 goal_direction = degToVector3(orient + orientation);
+        //Debug.Log(orient + orientation);
+
         go.transform.position = agent_middle_position + (goal_direction * clip.targetDistance) + new Vector3(0f, HEIGHT, 0f);
+        go.transform.rotation.SetLookRotation(agent_starting_position);
+
         CinemachineVirtualCamera cva = go.AddComponent<CinemachineVirtualCamera>();
         CinemachineComposer cc = cva.AddCinemachineComponent<CinemachineComposer>();
-        //CinemachineComposer cc = cva.GetCinemachineComponent<CinemachineComposer>();
         cc.m_DeadZoneWidth = 0.5f;
         cc.m_SoftZoneWidth = 0.8f;
         cva.m_Lens.FieldOfView = clip.fov;
         cva.m_LookAt = target_go.transform;
-        if (has_follow_target)
+        
+
+        CinemachineBasicMultiChannelPerlin cbmcp = cva.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        cbmcp.m_NoiseProfile = Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
+        cbmcp.m_AmplitudeGain = 0.5f;
+        cbmcp.m_FrequencyGain = 1f;
+        //NoiseSettings ns = cva.AddCinemachineComponent<NoiseSettings>();
+        if (clip.followTarget != null)
         {
-            cva.m_Follow = followTarget.transform;
+            nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
+            nav_track_clip.start = clip.start + 0.16f;
+            nav_track_clip.duration = clip.duration - 0.16f;
+            LerpMoveObjectAsset lerp_clip = nav_track_clip.asset as LerpMoveObjectAsset;
+            GameObject camera_destination = new GameObject();
+            camera_destination.name = "camera lerp destination";
+            Vector3 end_camera = ending_loc.transform.position + (goal_direction * clip.targetDistance) + new Vector3(0f, HEIGHT, 0f);
+            camera_destination.transform.position = end_camera;
+            GameObject camera_origin = new GameObject();
+            camera_origin.name = "camera lerp origin";
+            camera_origin.transform.position = go.transform.position;
+            TransformBind(lerp_clip, go, camera_origin.transform, camera_destination.transform);
         }
+
 
         bool has_fab_switch = false;
         if (clip.fabulaStart >= 0f)
@@ -342,12 +359,22 @@ public class DiscourseReader : MonoBehaviour
         director.SetReferenceValue(tpObj.EndTransform.exposedName, end_pos);
     }
 
-    private void TransformBind(LerpMoveObjectAsset tpObj, GameObject obj_to_move, Transform end_pos)
+    private void TransformBind1(LerpMoveObjectAsset1 tpObj, GameObject obj_to_move, Transform end_pos)
     {
         tpObj.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
         tpObj.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
         director.SetReferenceValue(tpObj.ObjectToMove.exposedName, obj_to_move);
         director.SetReferenceValue(tpObj.LerpMoveTo.exposedName, end_pos);
+    }
+
+    private void TransformBind(LerpMoveObjectAsset tpObj, GameObject obj_to_move, Transform start_pos, Transform end_pos)
+    {
+        tpObj.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
+        tpObj.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
+        tpObj.LerpMoveFrom.exposedName = UnityEditor.GUID.Generate().ToString();
+        director.SetReferenceValue(tpObj.ObjectToMove.exposedName, obj_to_move);
+        director.SetReferenceValue(tpObj.LerpMoveTo.exposedName, end_pos);
+        director.SetReferenceValue(tpObj.LerpMoveFrom.exposedName, start_pos);
     }
 
     private void AnimateBind(ControlPlayableAsset cpa, GameObject ato)
