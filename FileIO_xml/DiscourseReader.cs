@@ -71,7 +71,11 @@ public class DiscourseReader : MonoBehaviour
             }
             else if (clip.Type.Equals("nav_cam"))
             {
-                populateNav(clip);
+                populateNavCam(clip);
+            }
+            else if (clip.Type.Equals("nav_virtual"))
+            {
+                populateNavVirtual(clip);
             }
             // cam_timeline cannot time travel
             else if (clip.Type.Equals("cam_timeline"))
@@ -108,7 +112,64 @@ public class DiscourseReader : MonoBehaviour
         TimeBind(timeControl, agent, clip.fabulaStart);
     }
 
-    private void populateNav(DiscourseClip clip)
+    private void populateNavVirtual(DiscourseClip clip)
+    {
+        // Make a copy of virtual camera and set aim and follow target
+
+        string name = clip.Name;
+        float start = clip.start + 0.06f;
+        float duration = clip.duration - 0.06f;
+        float fov = clip.fov;
+
+        float fab_start = clip.fabulaStart;
+
+        GameObject starting_loc = GameObject.Find(clip.startingPos_string);
+        float start_offset = clip.start_dist_offset;
+        GameObject ending_loc = GameObject.Find(clip.endingPos_string);
+        float end_offset = clip.end_dist_offset;
+
+        GameObject virtualCamOriginal = GameObject.Find(clip.virtualCamName);
+        GameObject virtualCam = Instantiate(virtualCamOriginal);
+        CinemachineVirtualCamera cva = virtualCam.GetComponent<CinemachineVirtualCamera>();
+        if (clip.aimTarget != null)
+        {
+            agent = GameObject.Find(clip.aimTarget);
+            
+            cva.m_LookAt = agent.transform;
+            cva.m_Lens.FieldOfView = clip.fov;
+        }
+
+        bool has_fab_switch = false;
+        if (clip.fabulaStart >= 0f)
+        {
+            has_fab_switch = true;
+            GameObject ttravel = Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
+            ttravel.transform.parent = virtualCam.transform;
+            ttravel.GetComponent<timeStorage>().fab_time = clip.fabulaStart;
+            TimelineClip tc = ctrack.CreateDefaultClip();
+            tc.start = clip.start;
+            tc.duration = clip.duration;
+            tc.displayName = "Time Travel";
+            var time_travel_clip = tc.asset as ControlPlayableAsset;
+            AnimateBind(time_travel_clip, ttravel);
+        }
+
+        film_track_clip = ftrack.CreateDefaultClip();
+        if (has_fab_switch)
+        {
+            start = clip.start + (float)0.06;
+            duration = clip.duration;
+        }
+        film_track_clip.start = start;
+        film_track_clip.duration = duration;
+        film_track_clip.displayName = clip.Name;
+
+        // specialize and bind
+        var cinemachineShot = film_track_clip.asset as CinemachineShot;
+        CamBind(cinemachineShot, cva);
+    }
+
+    private void populateNavCam(DiscourseClip clip)
     {
         string name = clip.Name;
         float start = clip.start + 0.06f;
@@ -133,7 +194,6 @@ public class DiscourseReader : MonoBehaviour
         target_go.transform.parent = agent.transform;
 
         Vector3 dest_minus_start = (ending_loc.transform.position - starting_loc.transform.position).normalized;
-        //dest_minus_start.Normalize();
         Vector3 agent_starting_position = starting_loc.transform.position + dest_minus_start * start_offset;
         Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_offset/2);
 
@@ -159,7 +219,7 @@ public class DiscourseReader : MonoBehaviour
         cbmcp.m_NoiseProfile = Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
         cbmcp.m_AmplitudeGain = 0.5f;
         cbmcp.m_FrequencyGain = 1f;
-        //NoiseSettings ns = cva.AddCinemachineComponent<NoiseSettings>();
+
         if (clip.followTarget != null)
         {
             nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
@@ -221,7 +281,7 @@ public class DiscourseReader : MonoBehaviour
         AnimateBind(controlAnim, agent);   
     }
 
-    // Update is called once per frame
+    // Update is called once per frame (DEPRECIATED)
     private void populateCustom(DiscourseClip clip)
     {
         // find aim target and follow Target

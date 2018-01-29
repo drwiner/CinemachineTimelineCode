@@ -1,0 +1,20 @@
+<FabulaCollection>
+  <Clips>
+    <Clip name="strut-3-9000['bandit', 'right', 'duel-right']" type="navigate">
+      <start>0</start>
+      <duration>8.813333333333334</duration>
+      <startingPos_string>right</startingPos_string>
+      <endingPos_string>duel-right</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>bandit</gameobject_name>
+    </Clip>
+    <Clip name="strut-20-addc['cowboy', 'left', 'duel-left']" type="navigate">
+      <start>8.813333333333334</start>
+      <duration>10.386666666666667</duration>
+      <startingPos_string>left</startingPos_string>
+      <endingPos_string>duel-left</endingPos_string>
+      <animation_string>strut</animation_string>
+      <gameobject_name>cowboy</gameobject_name>
+    </Clip>
+  </Clips>
+</FabulaCollection>

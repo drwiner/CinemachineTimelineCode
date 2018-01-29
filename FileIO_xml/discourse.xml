@@ -1,0 +1,66 @@
+<DiscourseCollection>
+  <Clips>
+    <Clip name="strut-20-addc['cowboy', 'left', 'duel-left']" type="nav_cam">
+      <start>0</start>
+      <duration>4.1546666666666665</duration>
+      <fov>25</fov>
+      <fabulaStart>8.813333333333334</fabulaStart>
+      <startingPos_string>left</startingPos_string>
+      <start_dist_offset>0.0</start_dist_offset>
+      <endingPos_string>duel-left</endingPos_string>
+      <end_dist_offset>6.232</end_dist_offset>
+      <targetOrientation>0</targetOrientation>
+      <aimTarget>cowboy</aimTarget>
+    </Clip>
+    <Clip name="strut-3-9000['bandit', 'right', 'duel-right']" type="nav_cam">
+      <start>4.1546666666666665</start>
+      <duration>3.525333333333334</duration>
+      <fov>25</fov>
+      <fabulaStart>0.0</fabulaStart>
+      <startingPos_string>right</startingPos_string>
+      <start_dist_offset>0.0</start_dist_offset>
+      <endingPos_string>duel-right</endingPos_string>
+      <end_dist_offset>5.288</end_dist_offset>
+      <targetOrientation>0</targetOrientation>
+      <aimTarget>bandit</aimTarget>
+    </Clip>
+    <Clip name="strut-20-addc['cowboy', 'left', 'duel-left']" type="nav_virtual">
+      <start>7.680000000000001</start>
+      <duration>2.0773333333333337</duration>
+      <fabulaStart>12.968</fabulaStart>
+      <aimTarget>cowboy</aimTarget>
+      <virtualCamName>master01</virtualCamName>
+    </Clip>
+    <Clip name="strut-20-addc['cowboy', 'left', 'duel-left']" type="nav_cam">
+      <start>9.757333333333335</start>
+      <duration>4.1546666666666665</duration>
+      <fov>25</fov>
+      <fabulaStart>15.045333333333335</fabulaStart>
+      <startingPos_string>left</startingPos_string>
+      <start_dist_offset>9.347999999999999</start_dist_offset>
+      <endingPos_string>duel-left</endingPos_string>
+      <end_dist_offset>15.58</end_dist_offset>
+      <targetOrientation>210</targetOrientation>
+      <aimTarget>cowboy</aimTarget>
+    </Clip>
+    <Clip name="strut-3-9000['bandit', 'right', 'duel-right']" type="nav_cam">
+      <start>13.912000000000003</start>
+      <duration>3.525333333333334</duration>
+      <fov>25</fov>
+      <fabulaStart>5.288</fabulaStart>
+      <startingPos_string>right</startingPos_string>
+      <start_dist_offset>7.932</start_dist_offset>
+      <endingPos_string>duel-right</endingPos_string>
+      <end_dist_offset>13.22</end_dist_offset>
+      <targetOrientation>150</targetOrientation>
+      <aimTarget>bandit</aimTarget>
+    </Clip>
+    <Clip name="strut-3-9000['bandit', 'right', 'duel-right']" type="nav_virtual">
+      <start>17.437333333333335</start>
+      <duration>3.525333333333334</duration>
+      <fabulaStart>5.288</fabulaStart>
+      <aimTarget>bandit</aimTarget>
+      <virtualCamName>master01</virtualCamName>
+    </Clip>
+  </Clips>
+</DiscourseCollection>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DiscourseCollection>
+  
+  <Clips>
+
+    <Clip name="Custom" type="cam_custom">
+        <start>0</start>
+        <duration>8.0</duration>
+        <fov>10.0</fov>
+        <fabulaStart>16.5</fabulaStart>
+        <startingPos_string>Left</startingPos_string>
+        <endingPos_string>DuelLeft</endingPos_string>
+        <targetDistance>15</targetDistance>
+        <targetOrientation>210.0</targetOrientation>
+        <aimTarget>char01</aimTarget>
+        <followTarget>char01</followTarget>
+    </Clip>
+
+   <Clip name="IncludesTimeTravel" type="cntrl_timeline">
+      <start>8.0</start>
+      <duration>6.0</duration>
+      <fabulaStart>0</fabulaStart>
+      <TimeLineObject>time_test</TimeLineObject>
+    </Clip>
+
+    <Clip name="BasicMaster" type="cam_timeline">
+      <start>14.0</start>
+      <duration>6.0</duration>
+      <TimeLineObject>master</TimeLineObject>
+    </Clip>
+
+    
+
+  </Clips>
+
+</DiscourseCollection>

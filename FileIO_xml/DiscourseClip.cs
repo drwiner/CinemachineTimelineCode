@@ -22,6 +22,8 @@ public class DiscourseClip  {
     public float start_dist_offset;
     public float end_dist_offset;
 
+    public string virtualCamName;
+
     public string startingPos_string;
     public string endingPos_string;
     public string aimTarget;
