@@ -4,6 +4,7 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using Cinemachine.Timeline;
 using Cinemachine;
+using XMLNamespace;
 
 public class DiscourseReader : MonoBehaviour
 {
@@ -49,7 +50,7 @@ public class DiscourseReader : MonoBehaviour
         fdirector = fabulaTimeline.GetComponent<PlayableDirector>();
         fdirector.initialTime = 0f;
 
-        dc = DiscourseContainer.Load(Path.Combine(Application.dataPath, "Scripts//CinemachineTimelineCode//FileIO//discourse.xml"));
+        dc = DiscourseContainer.Load(Path.Combine(Application.dataPath, "Scripts//CinemachineTimelineCode//FileIO_xml//discourse.xml"));
 
         timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
 

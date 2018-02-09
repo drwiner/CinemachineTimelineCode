@@ -3,6 +3,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System;
+using XMLNamespace;
 
 [Serializable, XmlRoot("DiscourseCollection")]
 public class DiscourseContainer {
