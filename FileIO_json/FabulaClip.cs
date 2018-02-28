@@ -46,7 +46,7 @@ namespace ClipNamespace
         public void SetAgentToGenericAction()
         {
             var animTimelineObject_template = GameObject.Find(animation_string);
-            animTimelineObject = Instantiate(animTimelineObject_template);
+            animTimelineObject = Object.Instantiate(animTimelineObject_template);
             var director01 = animTimelineObject.GetComponent<PlayableDirector>();
             var timeline01 = director01.playableAsset as TimelineAsset;
 

@@ -4,6 +4,7 @@ using SimpleJSON;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using ClipNamespace;
+using Cinemachine.Timeline;
 
 public class ReadClips : MonoBehaviour {
     private string disc_json_file = @"Scripts//CinemachineTimelineCode//FileIO_json//discourse.json";
@@ -14,34 +15,50 @@ public class ReadClips : MonoBehaviour {
     private TimelineAsset fab_timeline;
     private TimelineAsset disc_timeline;
 
+    public CinemachineTrack ftrack;
+
+    private GameObject fabTimelineChild;
+    private GameObject discTimelineChild;
+
     // Use this for initialization
     void Awake () {
         // read clips
         Debug.Log("Reading Clips");
+
+        fabTimelineChild = GameObject.FindGameObjectWithTag("FabulaTimeline");
+        discTimelineChild = GameObject.FindGameObjectWithTag("DiscourseTimeline");
 
         // prep fabula
         string fab_file_path = Path.Combine(Application.dataPath, fab_json_file);
         string fab_clips_as_json = File.ReadAllText(fab_file_path);
 
         fab_timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
-        fab_director = GetComponent<PlayableDirector>();
+        fab_director = fabTimelineChild.GetComponent<PlayableDirector>();
 
         // prep discourse
         string disc_file_path = Path.Combine(Application.dataPath, disc_json_file);
         string disc_clips_as_json = File.ReadAllText(disc_file_path);
 
         disc_timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
-        disc_director = GetComponent<PlayableDirector>();
+        disc_director = discTimelineChild.GetComponent<PlayableDirector>();
 
+        // read clips
+        ReadFabClipList(fab_clips_as_json);
+        ReadDiscClipList(disc_clips_as_json);
+    }
 
+    void Start()
+    {
         fab_director.Play(fab_timeline);
         disc_director.Play(disc_timeline);
     }
-	
+
     public void ReadFabClipList(string clips_as_json)
     {
         Debug.Log("Reading Fabula");
         var C = JSON.Parse(clips_as_json);
+        
+
         foreach (JSONNode clip in C)
         {
             Debug.Log(clip.ToString());
@@ -61,19 +78,39 @@ public class ReadClips : MonoBehaviour {
     {
         Debug.Log("Reading Discourse");
         var C = JSON.Parse(clips_as_json);
+        ftrack = disc_timeline.CreateTrack<CinemachineTrack>(null, "film_track");
         foreach (JSONNode clip in C)
         {
             Debug.Log(clip.ToString());
             if (clip["type"] == "nav_cam")
             {
-                new NavCustomDiscourseClip(clip, disc_timeline, disc_director);
+                new NavCustomDiscourseClip(clip, disc_timeline, disc_director, ftrack);
             }
             else if (clip["type"] == "nav_virtual")
             {
-                new NavVirtualDiscourseClip(clip, disc_timeline, disc_director);
+                new NavVirtualDiscourseClip(clip, disc_timeline, disc_director, ftrack);
             }
         }
 
+    }
+
+    public void revisedReadDiscClip(string clips_as_json)
+    {
+        var C = JSON.Parse(clips_as_json);
+        foreach(JSONNode clip in C)
+        {
+            // First, run the standard code
+            // Then, run code that's dependant on type
+            if (clip["type"] == "nav_cam")
+            {
+                // run cam, then run nav
+       
+            }
+            else if (clip["type"] == "nav_virtual")
+            {
+                // run virtual, then run nav for virtual?
+            }
+        }
     }
 
 }

@@ -10,7 +10,7 @@ using SimpleJSON;
 
 namespace ClipNamespace
 {
-    public class Clip : MonoBehaviour
+    public class Clip
     {
     
         public PlayableDirector director;
@@ -38,7 +38,7 @@ namespace ClipNamespace
 
         }
 
-            public void TeleportBind(TeleportObject tpObj, GameObject obj_to_move, Transform start_pos, Transform end_pos) 
+        public void TeleportBind(TeleportObject tpObj, GameObject obj_to_move, Transform start_pos, Transform end_pos) 
         {
             tpObj.ThingToMove.exposedName = UnityEditor.GUID.Generate().ToString();
             tpObj.StartTransform.exposedName = UnityEditor.GUID.Generate().ToString();

@@ -8,6 +8,7 @@
       <animation_string>strut</animation_string>
       <gameobject_name>bandit</gameobject_name>
     </Clip>
+    
     <Clip name="strut-20-addc['cowboy', 'left', 'duel-left']" type="navigate">
       <start>8.813333333333334</start>
       <duration>10.386666666666667</duration>
