@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Stereo 3D" {
 Properties {
    _LeftTex ("Left (RGB)", RECT) = "red" {}
@@ -67,7 +69,7 @@ SubShader {
 		
 		v2f vert( appdata_img v ) {
 			v2f o;
-			o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
+			o.pos = UnityObjectToClipPos (v.vertex);
 			float2 uv = MultiplyUV( UNITY_MATRIX_TEXTURE0, v.texcoord );
 			o.uv = uv;
 			return o;
