@@ -1,0 +1,2 @@
+CinemaSuite_FilmFormat=0
+CinemaSuite_ScreenSizeIndex=0

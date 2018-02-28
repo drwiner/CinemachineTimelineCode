@@ -50,8 +50,11 @@ public class IceBolt : MonoBehaviour {
 
     void Start()
     {
-        fab_director.Play(fab_timeline);
+        
+
         disc_director.Play(disc_timeline);
+        fab_director.Play(fab_timeline);
+        
     }
 
     public void ReadFabClipList(string clips_as_json)
@@ -78,10 +81,11 @@ public class IceBolt : MonoBehaviour {
     public void ReadDiscClipList(string clips_as_json)
     {
         Debug.Log("Reading Discourse");
-        main_camera_object = GameObject.Find("Main Camera");
+        
         var C = JSON.Parse(clips_as_json);
         ftrack = disc_timeline.CreateTrack<CinemachineTrack>(null, "film_track");
-        
+        main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
+        disc_director.SetGenericBinding(ftrack, main_camera_object);
 
         foreach (JSONNode clip in C)
         {
@@ -96,7 +100,7 @@ public class IceBolt : MonoBehaviour {
             }
         }
 
-        disc_director.SetGenericBinding(ftrack, main_camera_object);
+        //disc_director.SetGenericBinding(ftrack, main_camera_object);
 
     }
 

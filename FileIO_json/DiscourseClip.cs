@@ -16,7 +16,7 @@ namespace ClipNamespace
         public string animation_string;
         private string method_used;
         public float fab_start;
-        public float fov;
+        public float fov = 40f;
         public float orientation;
         public bool has_fab_switch;
        
@@ -58,7 +58,10 @@ namespace ClipNamespace
 
             starting_location = GameObject.Find(json["start_pos_name"].Value);
 
-            fov = json["fov"].AsFloat;
+            if (json["fov"] != null)
+            {
+                fov = json["fov"].AsFloat;
+            }
 
             has_fab_switch = false;
 
@@ -250,6 +253,7 @@ namespace ClipNamespace
             virtualCamOriginal = GameObject.Find(json["camera_name"].Value);
             virtualCam = Object.Instantiate(virtualCamOriginal);
             cva = virtualCam.GetComponent<CinemachineVirtualCamera>();
+
         }
 
 

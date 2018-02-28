@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oshmirto", "Oshmirto\Oshmirto.csproj", "{573A6D7E-02A6-49BB-907B-11663FFE4948}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oshmirto.Tester", "Oshmirto.Tester\Oshmirto.Tester.csproj", "{3B65D377-5E97-488F-8AAB-DE6D214E31D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug .NET 4.5|Any CPU = Debug .NET 4.5|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release .NET 4.5|Any CPU = Release .NET 4.5|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Unity Debug|Any CPU = Unity Debug|Any CPU
+		Unity Release|Any CPU = Unity Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Debug .NET 4.5|Any CPU.ActiveCfg = Debug .NET 4.5|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Debug .NET 4.5|Any CPU.Build.0 = Debug .NET 4.5|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Release .NET 4.5|Any CPU.ActiveCfg = Release .NET 4.5|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Release .NET 4.5|Any CPU.Build.0 = Release .NET 4.5|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Unity Debug|Any CPU.ActiveCfg = Unity Debug|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Unity Debug|Any CPU.Build.0 = Unity Debug|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Unity Release|Any CPU.ActiveCfg = Unity Release|Any CPU
+		{573A6D7E-02A6-49BB-907B-11663FFE4948}.Unity Release|Any CPU.Build.0 = Unity Release|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Debug .NET 4.5|Any CPU.ActiveCfg = Debug .NET 4.5|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Debug .NET 4.5|Any CPU.Build.0 = Debug .NET 4.5|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Release .NET 4.5|Any CPU.ActiveCfg = Release .NET 4.5|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Release .NET 4.5|Any CPU.Build.0 = Release .NET 4.5|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Unity Debug|Any CPU.ActiveCfg = Unity Debug|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Unity Debug|Any CPU.Build.0 = Unity Debug|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Unity Release|Any CPU.ActiveCfg = Unity Release|Any CPU
+		{3B65D377-5E97-488F-8AAB-DE6D214E31D0}.Unity Release|Any CPU.Build.0 = Unity Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
