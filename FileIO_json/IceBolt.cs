@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 using ClipNamespace;
 using Cinemachine.Timeline;
 
-public class ReadClips : MonoBehaviour {
+public class IceBolt : MonoBehaviour {
     private string disc_json_file = @"Scripts//CinemachineTimelineCode//FileIO_json//discourse.json";
     private string fab_json_file = @"Scripts//CinemachineTimelineCode//FileIO_json//fabula.json";
 
@@ -15,8 +15,9 @@ public class ReadClips : MonoBehaviour {
     private TimelineAsset fab_timeline;
     private TimelineAsset disc_timeline;
 
-    public CinemachineTrack ftrack;
+    private CinemachineTrack ftrack;
 
+    private GameObject main_camera_object;
     private GameObject fabTimelineChild;
     private GameObject discTimelineChild;
 
@@ -77,8 +78,11 @@ public class ReadClips : MonoBehaviour {
     public void ReadDiscClipList(string clips_as_json)
     {
         Debug.Log("Reading Discourse");
+        main_camera_object = GameObject.Find("Main Camera");
         var C = JSON.Parse(clips_as_json);
         ftrack = disc_timeline.CreateTrack<CinemachineTrack>(null, "film_track");
+        
+
         foreach (JSONNode clip in C)
         {
             Debug.Log(clip.ToString());
@@ -91,6 +95,8 @@ public class ReadClips : MonoBehaviour {
                 new NavVirtualDiscourseClip(clip, disc_timeline, disc_director, ftrack);
             }
         }
+
+        disc_director.SetGenericBinding(ftrack, main_camera_object);
 
     }
 

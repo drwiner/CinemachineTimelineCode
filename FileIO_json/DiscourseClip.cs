@@ -41,12 +41,15 @@ namespace ClipNamespace
         public GameObject host_go;
 
         public CinemachineVirtualCamera cva;
+        
         public CinemachineComposer cc;
         public CinemachineBasicMultiChannelPerlin cbmcp;
 
 
         public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) : base(json, p_timeline, p_director)
         {
+            //main_camera_object = GameObject.Find("Main Camera");
+            
 
             fab_start = json["fabulaStart"].AsFloat;
 
@@ -110,6 +113,8 @@ namespace ClipNamespace
             film_track_clip.start = film_clip_start;
             film_track_clip.duration = film_clip_duration;
             film_track_clip.displayName = Name;
+
+            
         }
 
         public virtual void assignCameraPosition(JSONNode json)
@@ -199,16 +204,18 @@ namespace ClipNamespace
 
         public override void assignCameraPosition(JSONNode json)
         {
-            float orient = json["target_orientation"];
+            float orient = json["target_orientation"].AsFloat;
+            Vector3 dest_minus_start = (ending_location.transform.position - starting_location.transform.position).normalized;
+            orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
 
             Vector3 goal_direction = degToVector3(orient + orientation);
-            Vector3 dest_minus_start = (ending_location.transform.position - starting_location.transform.position).normalized;
+            
             Vector3 agent_starting_position = starting_location.transform.position + dest_minus_start * start_disc_offset;
             Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_disc_offset / 2);
 
-            orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
 
-            
+            host_go.transform.position = agent_middle_position + (goal_direction * json["target_distance"].AsFloat) + new Vector3(0f, HEIGHT, 0f);
+            host_go.transform.rotation.SetLookRotation(agent_starting_position);
 
             if (json["follow_target"] != null)
             {
@@ -218,7 +225,7 @@ namespace ClipNamespace
                 LerpMoveObjectAsset lerp_clip = nav_track_clip.asset as LerpMoveObjectAsset;
                 GameObject camera_destination = new GameObject();
                 camera_destination.name = "camera lerp destination";
-                Vector3 end_camera = ending_location.transform.position + (goal_direction * json["target_distance"]) + new Vector3(0f, HEIGHT, 0f);
+                Vector3 end_camera = ending_location.transform.position + (goal_direction * json["target_distance"].AsFloat) + new Vector3(0f, HEIGHT, 0f);
                 camera_destination.transform.position = end_camera;
                 GameObject camera_origin = new GameObject();
                 camera_origin.name = "camera lerp origin";
@@ -237,10 +244,15 @@ namespace ClipNamespace
         public VirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) 
             : base(json, p_timeline, p_director, ftrack)
         {
-            virtualCamOriginal = GameObject.Find(json["camera_name"]);
+
+            //assignCameraPosition(json);
+
+            virtualCamOriginal = GameObject.Find(json["camera_name"].Value);
             virtualCam = Object.Instantiate(virtualCamOriginal);
             cva = virtualCam.GetComponent<CinemachineVirtualCamera>();
         }
+
+
 
     }
 
