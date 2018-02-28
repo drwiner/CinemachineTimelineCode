@@ -20,12 +20,15 @@ Process Overview:
 
 1. IceBolt.onAwake() --> 
 	* Read Fabula (from input)
-		** For each unit, create new Fabula Clip object using fabula Timeline and PlayableDirector
+
+		* For each unit, create new Fabula Clip object using fabula Timeline and PlayableDirector
 			*** Assign GameObjects to variables in FabulaClip
 			*** Calculate and add Clips to Tracks in FabulaClip: AnimateBind, TransformBind, TeleportBind, etc. 
 	* Read Discourse (from input)
-		\t\t For each unit, create new Discourse Clip object using discourse Timeline. Also use overarching Cinemachine Track (ftrack) for all camera actions
-			*** Add Timeline Trigger --> _when_ in storyworld/fabula timeline to film. Time 
+
+		** For each unit, create new Discourse Clip object using discourse Timeline. Also use overarching Cinemachine Track (ftrack) for all camera actions
+
+			* Add Timeline Trigger --> _when_ in storyworld/fabula timeline to film. Time 
 			*** Add Cinemachine Component and set parameters --> calculate and define the cinemachine clip to add to ftrack
 			*** Calculate camera position and orientation based on shot scale and cinematic constraints defined on input clip
 			\t\t\t CamBind
