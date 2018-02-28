@@ -19,20 +19,20 @@ Process Overview:
 ---
 
 1. IceBolt.onAwake() --> 
-	\t Read Fabula (from input)
-		\t\t For each unit, create new Fabula Clip object using fabula Timeline and PlayableDirector
-			\t\t\t Assign GameObjects to variables in FabulaClip
-			\t\t\t Calculate and add Clips to Tracks in FabulaClip: AnimateBind, TransformBind, TeleportBind, etc. 
-	\t Read Discourse (from input)
+	* Read Fabula (from input)
+		** For each unit, create new Fabula Clip object using fabula Timeline and PlayableDirector
+			*** Assign GameObjects to variables in FabulaClip
+			*** Calculate and add Clips to Tracks in FabulaClip: AnimateBind, TransformBind, TeleportBind, etc. 
+	* Read Discourse (from input)
 		\t\t For each unit, create new Discourse Clip object using discourse Timeline. Also use overarching Cinemachine Track (ftrack) for all camera actions
-			\t\t\t Add Timeline Trigger --> _when_ in storyworld/fabula timeline to film
-			\t\t\t Add Cinemachine Component and set parameters --> calculate and define the cinemachine clip to add to ftrack
-			\t\t\t Calculate camera position and orientation based on shot scale and cinematic constraints defined on input clip
+			*** Add Timeline Trigger --> _when_ in storyworld/fabula timeline to film. Time 
+			*** Add Cinemachine Component and set parameters --> calculate and define the cinemachine clip to add to ftrack
+			*** Calculate camera position and orientation based on shot scale and cinematic constraints defined on input clip
 			\t\t\t CamBind
 		\t\t Find Main Camera and assign to ftrack (cinemachine track)
 2. IceBolt onStart() -->
-	\t Play Fabula Timeline from playabledirector.
-	\t Play Discourse Timeline from playabledirector
+	* Play Fabula Timeline from playabledirector.
+	* Play Discourse Timeline from playabledirector
 
 
 Current Status:
