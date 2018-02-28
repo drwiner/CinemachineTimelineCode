@@ -1,7 +1,7 @@
-IceBolt - Narrative Game Engine Instruction Scheduler
+Project: IceBolt - A Narrative Instruction Scheduler for Unity
 ---
 
-David R. Winer
+Author: David R. Winer
 ---
 
 Testing with Unity2017.3.1f1 Code
