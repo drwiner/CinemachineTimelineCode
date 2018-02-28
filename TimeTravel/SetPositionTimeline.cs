@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using Cinemachine;
 using UnityEngine.Timeline;
 
-public class set_pos_timeline : MonoBehaviour {
+public class SetPositionTimeline : MonoBehaviour {
 
     public GameObject fab_timeline;
     public float fab_time;

@@ -6,12 +6,12 @@ public class timeStorage : MonoBehaviour {
 
     public float fab_time;
     public GameObject setFabObj;
-    private set_fabula_timeline sfl;
+    private SetFabulaTimeline sfl;
     private bool reset = false; 
 
     void Start()
     {
-        sfl = setFabObj.GetComponent<set_fabula_timeline>();
+        sfl = setFabObj.GetComponent<SetFabulaTimeline>();
     }
     void Update()
     {
