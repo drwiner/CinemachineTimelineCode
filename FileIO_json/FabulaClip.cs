@@ -82,16 +82,18 @@ namespace ClipNamespace
             ending_location = GameObject.Find(json["end_pos_name"]);
 
             Vector3 dest_minus_origin = ending_location.transform.position - starting_location.transform.position;
-            float orientation = Mathf.Atan2(dest_minus_origin.x, -dest_minus_origin.z) * Mathf.Rad2Deg - 90f;
+            float orientation = Mathf.Atan2(dest_minus_origin.z, -dest_minus_origin.x) * Mathf.Rad2Deg;
 
-            Transform start_transform = makeCustomizedTransform(starting_location.transform.position, orientation).transform;
+            var tempstart = new Vector3(starting_location.transform.position.x, agent.transform.position.y, starting_location.transform.position.z);
+            Transform start_transform = makeCustomizedTransform(tempstart, orientation).transform;
 
             nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
 
             nav_track_clip.start = start;
             nav_track_clip.duration = duration;
             LerpMoveObjectAsset lerp_clip = nav_track_clip.asset as LerpMoveObjectAsset;
-            Transform end_transform = makeCustomizedTransform(ending_location.transform.position, orientation).transform;
+            var tempend = new Vector3(ending_location.transform.position.x, agent.transform.position.y, ending_location.transform.position.z);
+            Transform end_transform = makeCustomizedTransform(tempend, orientation).transform;
             TransformBind(lerp_clip, agent, start_transform, end_transform);
 
             // control track - animate

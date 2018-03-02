@@ -1,0 +1,28 @@
+[
+    {
+        "end_pos_name": "mid", 
+        "duration": 5.0, 
+        "start": 0, 
+        "gameobject_name": "capsuleAgent", 
+        "start_pos_name": "z_plus", 
+        "method_used": "nav_act", 
+        "step_num": "1", 
+        "name": "move(capsuleAgent, z_plus, mid)", 
+        "type": "navigate", 
+        "step_id": "addc", 
+        "animation_name": "move"
+    }, 
+    {
+        "end_pos_name": "x_plus", 
+        "duration": 5.0, 
+        "start": 5.0, 
+        "gameobject_name": "capsuleAgent", 
+        "start_pos_name": "mid", 
+        "method_used": "nav_act", 
+        "step_num": 2, 
+        "name": "move(capsuleAgent, mid, x_plus)", 
+        "type": "navigate", 
+        "step_id": "2", 
+        "animation_name": "move"
+    }
+]

@@ -6,6 +6,8 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using Cinemachine.Timeline;
 using Cinemachine;
+using Cinematography;
+using System;
 
 namespace ClipNamespace
 {
@@ -17,9 +19,9 @@ namespace ClipNamespace
         private string method_used;
         public float fab_start;
         public float fov = 40f;
+        public FramingType frame_type = FramingType.Waist;
         public float orientation;
         public bool has_fab_switch;
-       
 
         // tracks
         public TrackAsset ctrack;
@@ -45,13 +47,12 @@ namespace ClipNamespace
         public CinemachineComposer cc;
         public CinemachineBasicMultiChannelPerlin cbmcp;
 
-
-        public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) : base(json, p_timeline, p_director)
+        public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack _ftrack) : base(json, p_timeline, p_director)
         {
             //main_camera_object = GameObject.Find("Main Camera");
-            
+            ftrack = _ftrack;
 
-            fab_start = json["fabulaStart"].AsFloat;
+            fab_start = json["fab_start"].AsFloat;
 
             ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
             //ftrack = timeline.CreateTrack<CinemachineTrack>(null, "film_track");
@@ -69,7 +70,7 @@ namespace ClipNamespace
             if (fab_start >= 0f)
             {
                 has_fab_switch = true;
-                GameObject ttravel = Object.Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
+                GameObject ttravel = GameObject.Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
                 ttravel.GetComponent<timeStorage>().fab_time = fab_start;
                 TimelineClip tc = ctrack.CreateDefaultClip();
                 tc.start = start;
@@ -80,30 +81,36 @@ namespace ClipNamespace
             }
 
             agent = GameObject.Find(json["aim_target"]);
-
+            BoxCollider bc = agent.GetComponent<BoxCollider>();
             // create position of target 
             target_go = new GameObject("target_" + Name);
-            target_go.transform.position = agent.transform.position + new Vector3(0f, HEIGHT, 0f);
+            target_go.transform.position = agent.transform.position + new Vector3(0f, .8f, 0f);
+            //target_go.transform.position = agent.transform.position;
             target_go.transform.parent = agent.transform;
+            target_go.AddComponent<BoxCollider>();
+            target_go.GetComponent<BoxCollider>().size = bc.size;
+            target_go.GetComponent<BoxCollider>().center = bc.center;
+
 
             // create host for camera
             host_go = new GameObject("host_" + Name);
             cva = host_go.AddComponent<CinemachineVirtualCamera>();
             cc = cva.AddCinemachineComponent<CinemachineComposer>();
-            cc.m_DeadZoneWidth = 0.5f;
-            cc.m_SoftZoneWidth = 0.8f;
+            cc.m_DeadZoneWidth = 0.25f;
+            cc.m_SoftZoneWidth = 0.5f;
             cva.m_Lens.FieldOfView = fov;
             cva.m_LookAt = target_go.transform;
             cbmcp = cva.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            cbmcp.m_NoiseProfile = Object.Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
+            cbmcp.m_NoiseProfile = CinematographyAttributes.standardNoise;
             cbmcp.m_AmplitudeGain = 0.5f;
             cbmcp.m_FrequencyGain = 1f;
+            //cva.GetComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = UnityEngine.Object.Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
 
             // where to position host_go? delegated to sub-class members
             //assignCameraPosition(json);
-            
 
-                // add camera behavior to film track
+
+            // add camera behavior to film track
             film_track_clip = ftrack.CreateDefaultClip();
             float film_clip_start = start;
             float film_clip_duration = duration;
@@ -148,6 +155,7 @@ namespace ClipNamespace
             float rads = Kinematic.mapToRange(degs * Mathf.Deg2Rad);
             return new Vector3(Mathf.Cos(rads), 0f, Mathf.Sin(rads));
         }
+
     }
 
     /////////////////////// CUSTOM ///////////////////////
@@ -195,7 +203,6 @@ namespace ClipNamespace
 
             //json["target_orientation"]
             
-
             assignCameraPosition(json);
 
 
@@ -207,7 +214,7 @@ namespace ClipNamespace
 
         public override void assignCameraPosition(JSONNode json)
         {
-            float orient = json["target_orientation"].AsFloat;
+            float orient = json["orient"].AsFloat;
             Vector3 dest_minus_start = (ending_location.transform.position - starting_location.transform.position).normalized;
             orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
 
@@ -216,8 +223,22 @@ namespace ClipNamespace
             Vector3 agent_starting_position = starting_location.transform.position + dest_minus_start * start_disc_offset;
             Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_disc_offset / 2);
 
+            if (json["scale"] != null)
+            {
+                var ft = json["scale"].Value;
+                if (Enum.IsDefined(typeof(FramingType), ft))
+                {
+                    // cast var as FramingType
+                    frame_type = (FramingType)Enum.Parse(typeof(FramingType), ft);
+                }
+            }
 
-            host_go.transform.position = agent_middle_position + (goal_direction * json["target_distance"].AsFloat) + new Vector3(0f, HEIGHT, 0f);
+            float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
+
+            Debug.Log("camera Distance: " + camDist.ToString());
+            Debug.Log("goalDirection: " + (orient + orientation).ToString());
+
+            host_go.transform.position = agent_middle_position + (goal_direction * camDist) + new Vector3(0f, HEIGHT, 0f);
             host_go.transform.rotation.SetLookRotation(agent_starting_position);
 
             if (json["follow_target"] != null)
@@ -251,7 +272,7 @@ namespace ClipNamespace
             //assignCameraPosition(json);
 
             virtualCamOriginal = GameObject.Find(json["camera_name"].Value);
-            virtualCam = Object.Instantiate(virtualCamOriginal);
+            virtualCam = GameObject.Instantiate(virtualCamOriginal);
             cva = virtualCam.GetComponent<CinemachineVirtualCamera>();
 
         }
@@ -281,4 +302,6 @@ namespace ClipNamespace
         }
 
     }
+
+    
 }
