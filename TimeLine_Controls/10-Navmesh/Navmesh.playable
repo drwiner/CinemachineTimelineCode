@@ -1,0 +1,358 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 337831424, guid: 844f815391db42d49455cbf1a7bfc434, type: 3}
+  m_Name: Navmesh
+  m_EditorClassIdentifier: 
+  m_NextId: 5
+  m_Tracks:
+  - {fileID: 114530343002037562}
+  m_FixedDuration: 0
+  m_EditorSettings:
+    fps: 60
+  m_DurationMode: 0
+--- !u!114 &114047759819824618
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f07ceeef0646c1aaac0a925e33b892, type: 3}
+  m_Name: SetAgentTargetAsset(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::SetAgentTargetAsset
+  Agent:
+    exposedName: 5570fcf22dabb3a4880cca6d3c198cb2
+    defaultValue: {fileID: 0}
+  Target:
+    exposedName: 0d98cddd437a7e049aab00ddcbf47886
+    defaultValue: {fileID: 0}
+  AgentSpeed: 4
+--- !u!114 &114157870502762598
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f07ceeef0646c1aaac0a925e33b892, type: 3}
+  m_Name: SetAgentTargetAsset(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::SetAgentTargetAsset
+  Agent:
+    exposedName: 39c3eb4c9ee6492499ae52b8709bf836
+    defaultValue: {fileID: 0}
+  Target:
+    exposedName: c7b9cf1d9185ade44973b06845851455
+    defaultValue: {fileID: 0}
+  AgentSpeed: 8
+--- !u!114 &114435105007094786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f07ceeef0646c1aaac0a925e33b892, type: 3}
+  m_Name: SetAgentTargetAsset(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::SetAgentTargetAsset
+  Agent:
+    exposedName: 14e34ddb956a2d6419b58a86ee0a9314
+    defaultValue: {fileID: 0}
+  Target:
+    exposedName: 66c0aa7e445d9a44cacd9b9beadd26e2
+    defaultValue: {fileID: 0}
+  AgentSpeed: 5
+--- !u!114 &114530343002037562
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1778877366, guid: 844f815391db42d49455cbf1a7bfc434, type: 3}
+  m_Name: Playable Track
+  m_EditorClassIdentifier: 
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_AnimClip: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Start: 1
+    m_ClipIn: 0
+    m_Asset: {fileID: 114663044693237028}
+    m_UnderlyingAsset: {fileID: 114663044693237028}
+    m_Duration: 0.5
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 114530343002037562}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: SetAgentTargetAsset
+    m_Version: 1
+  - m_Start: 3
+    m_ClipIn: 0
+    m_Asset: {fileID: 114047759819824618}
+    m_UnderlyingAsset: {fileID: 114663044693237028}
+    m_Duration: 0.5
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 114530343002037562}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: SetAgentTargetAsset
+    m_Version: 1
+  - m_Start: 5.183333333333334
+    m_ClipIn: 0
+    m_Asset: {fileID: 114859480587713816}
+    m_UnderlyingAsset: {fileID: 114663044693237028}
+    m_Duration: 0.5
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 114530343002037562}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: SetAgentTargetAsset
+    m_Version: 1
+  - m_Start: 7.05
+    m_ClipIn: 0
+    m_Asset: {fileID: 114435105007094786}
+    m_UnderlyingAsset: {fileID: 114663044693237028}
+    m_Duration: 0.5
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 114530343002037562}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: SetAgentTargetAsset
+    m_Version: 1
+  - m_Start: 8.11869622649004
+    m_ClipIn: 0
+    m_Asset: {fileID: 114157870502762598}
+    m_UnderlyingAsset: {fileID: 114663044693237028}
+    m_Duration: 2.933333333333333
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 114530343002037562}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: SetAgentTargetAsset
+    m_Version: 1
+--- !u!114 &114663044693237028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f07ceeef0646c1aaac0a925e33b892, type: 3}
+  m_Name: SetAgentTargetAsset
+  m_EditorClassIdentifier: Assembly-CSharp::SetAgentTargetAsset
+  Agent:
+    exposedName: 4f938a89aa51af3498540d71effc9a0b
+    defaultValue: {fileID: 0}
+  Target:
+    exposedName: 0c1fc561ff6d6984b936bc609c7e0648
+    defaultValue: {fileID: 0}
+  AgentSpeed: 4
+--- !u!114 &114859480587713816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f07ceeef0646c1aaac0a925e33b892, type: 3}
+  m_Name: SetAgentTargetAsset(Clone)
+  m_EditorClassIdentifier: Assembly-CSharp::SetAgentTargetAsset
+  Agent:
+    exposedName: 8572159bf7ada464da397d9c21dcff43
+    defaultValue: {fileID: 0}
+  Target:
+    exposedName: 885285b64ba94a84ca5f6d366415c21b
+    defaultValue: {fileID: 0}
+  AgentSpeed: 2.5
