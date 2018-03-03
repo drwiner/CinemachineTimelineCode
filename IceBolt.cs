@@ -22,8 +22,6 @@ namespace IceBoltNamespace
         private TimelineAsset fab_timeline;
         private TimelineAsset disc_timeline;
 
-        
-
         private GameObject main_camera_object;
         private GameObject fabTimelineChild;
         private GameObject discTimelineChild;
@@ -52,12 +50,17 @@ namespace IceBoltNamespace
             disc_timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
             disc_director = discTimelineChild.GetComponent<PlayableDirector>();
 
+            // Load Cinematography Attributes
             ProCamsLensDataTable.Instance.LoadData();
             CinematographyAttributes.lensFovData = ProCamsLensDataTable.Instance.GetFilmFormat("35mm 16:9 Aperture (1.78:1)").GetLensKitData(0)._fovDataset;
-
             CinematographyAttributes.standardNoise = Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
 
-            TrackAttributes.ftrack = disc_timeline.CreateTrack<CinemachineTrack>(null, "film_track");
+            // Load Film Track Manager
+            TrackAttributes.FilmTrackManager = new CinemachineTrackManager(disc_timeline);
+            main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
+            disc_director.SetGenericBinding(TrackAttributes.ftrack, main_camera_object);
+
+            // Load other Track Attributes
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
             TrackAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
             TrackAttributes.fabTextTrack = fab_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
@@ -71,7 +74,6 @@ namespace IceBoltNamespace
 
         void Start()
         {
-
 
             disc_director.Play(disc_timeline);
             fab_director.Play(fab_timeline);
@@ -104,8 +106,6 @@ namespace IceBoltNamespace
             Debug.Log("Reading Discourse");
 
             var C = JSON.Parse(clips_as_json);
-            main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
-            disc_director.SetGenericBinding(TrackAttributes.ftrack, main_camera_object);
 
             foreach (JSONNode clip in C)
             {
@@ -120,28 +120,8 @@ namespace IceBoltNamespace
                 }
             }
 
-            //disc_director.SetGenericBinding(ftrack, main_camera_object);
-
         }
 
-        public void revisedReadDiscClip(string clips_as_json)
-        {
-            var C = JSON.Parse(clips_as_json);
-            foreach (JSONNode clip in C)
-            {
-                // First, run the standard code
-                // Then, run code that's dependant on type
-                if (clip["type"] == "nav_cam")
-                {
-                    // run cam, then run nav
-
-                }
-                else if (clip["type"] == "nav_virtual")
-                {
-                    // run virtual, then run nav for virtual?
-                }
-            }
-        }
 
     }
 }

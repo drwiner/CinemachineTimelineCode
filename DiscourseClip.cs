@@ -18,7 +18,11 @@ namespace ClipNamespace
         public string animation_string;
         private string method_used;
         public float fab_start;
+
+        // default fov is 40?
         public float fov = 40f;
+
+        // default framing is Waist shot
         public FramingType frame_type = FramingType.Waist;
         public float orientation;
         public bool has_fab_switch;
@@ -31,8 +35,6 @@ namespace ClipNamespace
         public ControlPlayableAsset controlAnim;
         public TimelineClip nav_track_clip;
         public TimelineClip film_track_clip;
-        public TimelineClip time_track_clip;
-        public TimelineClip pos_track_clip;
 
 
         public GameObject agent;
@@ -47,84 +49,81 @@ namespace ClipNamespace
 
         public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) : base(json, p_timeline, p_director)
         {
-            //main_camera_object = GameObject.Find("Main Camera");
 
             fab_start = json["fab_start"].AsFloat;
 
-            //ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
-            //ftrack = timeline.CreateTrack<CinemachineTrack>(null, "film_track");
+            film_track_clip = TrackAttributes.FilmTrackManager.CreateClip(start, duration, Name);
 
-            starting_location = GameObject.Find(json["start_pos_name"].Value);
+            // create the time travel on fabula timeline
+            createTimeClip();
 
-            if (json["fov"] != null)
-            {
-                fov = json["fov"].AsFloat;
-            }
+            // create the target that the camera aims at
+            createTarget(json);
 
-            has_fab_switch = false;
+            // create the camera and position
+            createCameraObj(json);
 
-            // all discourse steps have fab switches
-            if (fab_start >= 0f)
-            {
-                has_fab_switch = true;
-                GameObject ttravel = GameObject.Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
-                ttravel.GetComponent<timeStorage>().fab_time = fab_start;
-                var tc = TrackAttributes.TimeTrackManager.CreateClip(start, duration, "Time Travel");
-                var time_travel_clip = tc.asset as ControlPlayableAsset;
-                AnimateBind(time_travel_clip, ttravel);
-            }
+            // create text UI
+            createTextClip(json);
 
+        }
+
+        public void createTextClip(JSONNode json)
+        {
+            TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
+            textSwitcherClip.start = film_track_clip.start;
+            textSwitcherClip.duration = film_track_clip.duration;
+            textSwitcherClip.displayName = Name;
+            var end_time = fab_start + duration;
+            string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
+            TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
+
+        }
+
+        public void createTimeClip()
+        {
+            GameObject ttravel = GameObject.Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
+            ttravel.GetComponent<timeStorage>().fab_time = fab_start;
+            var tc = TrackAttributes.TimeTrackManager.CreateClip(start, duration, "Time Travel");
+            var time_travel_clip = tc.asset as ControlPlayableAsset;
+            AnimateBind(time_travel_clip, ttravel);
+        }
+
+        public void createTarget(JSONNode json)
+        {
             agent = GameObject.Find(json["aim_target"]);
             BoxCollider bc = agent.GetComponent<BoxCollider>();
             // create position of target 
             target_go = new GameObject("target_" + Name);
             target_go.transform.position = agent.transform.position + new Vector3(0f, .8f, 0f);
-            //target_go.transform.position = agent.transform.position;
             target_go.transform.parent = agent.transform;
             target_go.AddComponent<BoxCollider>();
             target_go.GetComponent<BoxCollider>().size = bc.size;
             target_go.GetComponent<BoxCollider>().center = bc.center;
+        }
 
+        public void createCameraObj(JSONNode json)
+        {
+            // set fov
+            fov = (json["fov"] != null) ? json["fov"].AsFloat : fov;
 
             // create host for camera
             host_go = new GameObject("host_" + Name);
+
+            // create Cinemachine component on host
             cva = host_go.AddComponent<CinemachineVirtualCamera>();
             cc = cva.AddCinemachineComponent<CinemachineComposer>();
             cc.m_DeadZoneWidth = 0.25f;
             cc.m_SoftZoneWidth = 0.5f;
             cva.m_Lens.FieldOfView = fov;
             cva.m_LookAt = target_go.transform;
+
+            // create small amount of noise
             cbmcp = cva.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             cbmcp.m_NoiseProfile = CinematographyAttributes.standardNoise;
             cbmcp.m_AmplitudeGain = 0.5f;
             cbmcp.m_FrequencyGain = 1f;
-            //cva.GetComponent<CinemachineBasicMultiChannelPerlin>().m_NoiseProfile = UnityEngine.Object.Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
 
-            // where to position host_go? delegated to sub-class members
-            //assignCameraPosition(json);
-
-
-            // add camera behavior to film track
-            film_track_clip = TrackAttributes.ftrack.CreateDefaultClip();
-            float film_clip_start = start;
-            float film_clip_duration = duration;
-            if (has_fab_switch)
-            {
-                film_clip_start = start + (float)0.06;
-                film_clip_duration = duration; // could consider pruning by 0.06;
-            }
-
-            film_track_clip.start = film_clip_start;
-            film_track_clip.duration = film_clip_duration;
-            film_track_clip.displayName = Name;
-
-            TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
-            textSwitcherClip.start = film_clip_start;
-            textSwitcherClip.duration = film_clip_duration;
-            textSwitcherClip.displayName = Name;
-            var end_time = fab_start + duration;
-            string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
-            TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
         }
 
         public virtual void assignCameraPosition(JSONNode json)
@@ -169,7 +168,7 @@ namespace ClipNamespace
         public CustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
             : base(json, p_timeline, p_director)
         {
-
+            starting_location = GameObject.Find(json["start_pos_name"].Value);
 
             // specialize and bind
             //var cinemachineShot = film_track_clip.asset as CinemachineShot;
@@ -194,6 +193,7 @@ namespace ClipNamespace
         public NavCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
             : base(json, p_timeline, p_director)
         {
+ 
             ending_location = GameObject.Find(json["end_pos_name"].Value);
 
             // these are used as a distance thing in custom 
@@ -214,6 +214,7 @@ namespace ClipNamespace
 
         public override void assignCameraPosition(JSONNode json)
         {
+
             float orient = json["orient"].AsFloat;
             Vector3 dest_minus_start = (ending_location.transform.position - starting_location.transform.position).normalized;
             orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
