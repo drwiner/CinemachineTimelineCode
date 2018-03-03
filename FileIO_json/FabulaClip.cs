@@ -43,7 +43,11 @@ namespace ClipNamespace
             // need to know if action is generic or specialized; for now, all generic
             SetAgentToGenericAction();
 
-           
+            TimelineClip textSwitcherClip = CinematographyAttributes.fabTextTrack.CreateClip<TextSwitcherClip>();
+            textSwitcherClip.start = start;
+            textSwitcherClip.duration = duration;
+            textSwitcherClip.displayName = Name;
+            TextBind(textSwitcherClip.asset as TextSwitcherClip, "action: " + json["name"].Value + ", start: " + start.ToString() + ", duration: " + duration.ToString(), 16, Color.white);
         }
 
         public void SetAgentToGenericAction()
@@ -107,11 +111,6 @@ namespace ClipNamespace
             controlAnim = control_track_clip.asset as ControlPlayableAsset;
             AnimateBind(controlAnim, animTimelineObject);
 
-            TimelineClip textSwitcherClip = CinematographyAttributes.fabTextTrack.CreateClip<TextSwitcherClip>();
-            textSwitcherClip.start = start;
-            textSwitcherClip.duration = duration;
-            textSwitcherClip.displayName = Name;
-            TextBind(textSwitcherClip.asset as TextSwitcherClip, "action: " + json["name"].Value + ", start: " + start.ToString() + ", duration: " + duration.ToString(), 16, Color.white);
         }
 
        
