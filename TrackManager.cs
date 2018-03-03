@@ -12,7 +12,7 @@ namespace ClipNamespace
         // A manager for a track type that only adds new tracks when there is a conflict
         //public List<TrackAsset> Tracks;
         public TrackAsset currentTrack;
-        public List<TimelineClip> TimelineClips;
+        public List<TimelineClip> TimelineClips = new List<TimelineClip>();
         private int trackNum = 0;
 
         private TimelineAsset timeline;
