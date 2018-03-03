@@ -3,6 +3,7 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Cinematography
 {
@@ -12,6 +13,11 @@ namespace Cinematography
 
         public static List<ProCamsLensDataTable.FOVData> lensFovData;
         public static NoiseSettings standardNoise;
+        public static TextSwitcherTrack discTextTrack;
+        public static TextSwitcherTrack fabTextTrack;
+        public static Text discText;
+        public static Text fabText;
+
 
         public static Dictionary<string, ushort> lenses = new Dictionary<string, ushort>()
         {

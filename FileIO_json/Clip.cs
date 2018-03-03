@@ -48,6 +48,13 @@ namespace ClipNamespace
             director.SetReferenceValue(tpObj.EndTransform.exposedName, end_pos);
         }
 
+        public void TextBind(TextSwitcherClip tsc, string message, int fontSize, Color c)
+        {
+            tsc.template.text = message;
+            tsc.template.fontSize = fontSize;
+            tsc.template.color = c;
+        }
+
         public void TransformBind(LerpMoveObjectAsset tpObj, GameObject obj_to_move, Transform start_pos, Transform end_pos)
         {
             tpObj.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();

@@ -37,6 +37,7 @@ namespace ClipNamespace
         public TimelineClip time_track_clip;
         public TimelineClip pos_track_clip;
 
+
         public GameObject agent;
         public GameObject starting_location;
         public GameObject target_go;
@@ -50,6 +51,7 @@ namespace ClipNamespace
         public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack _ftrack) : base(json, p_timeline, p_director)
         {
             //main_camera_object = GameObject.Find("Main Camera");
+
             ftrack = _ftrack;
 
             fab_start = json["fab_start"].AsFloat;
@@ -124,7 +126,13 @@ namespace ClipNamespace
             film_track_clip.duration = film_clip_duration;
             film_track_clip.displayName = Name;
 
-            
+            TimelineClip textSwitcherClip = CinematographyAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
+            textSwitcherClip.start = film_clip_start;
+            textSwitcherClip.duration = film_clip_duration;
+            textSwitcherClip.displayName = Name;
+            var end_time = fab_start + duration;
+            string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
+            TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
         }
 
         public virtual void assignCameraPosition(JSONNode json)

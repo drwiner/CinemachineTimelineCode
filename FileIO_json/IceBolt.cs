@@ -8,6 +8,7 @@ using Cinemachine.Timeline;
 using System.Collections.Generic;
 using Cinematography;
 using Cinemachine;
+using UnityEngine.UI;
 
 namespace IceBoltNamespace
 {
@@ -22,6 +23,7 @@ namespace IceBoltNamespace
         private TimelineAsset disc_timeline;
 
         private CinemachineTrack ftrack;
+        
 
         private GameObject main_camera_object;
         private GameObject fabTimelineChild;
@@ -55,6 +57,12 @@ namespace IceBoltNamespace
             CinematographyAttributes.lensFovData = ProCamsLensDataTable.Instance.GetFilmFormat("35mm 16:9 Aperture (1.78:1)").GetLensKitData(0)._fovDataset;
 
             CinematographyAttributes.standardNoise = Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
+
+
+            CinematographyAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
+            CinematographyAttributes.fabTextTrack = fab_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
+            disc_director.SetGenericBinding(CinematographyAttributes.discTextTrack, GameObject.Find("DiscourseText").GetComponent<Text>());
+            fab_director.SetGenericBinding(CinematographyAttributes.fabTextTrack, GameObject.Find("FabulaText").GetComponent<Text>());
 
             // read clips
             ReadFabClipList(fab_clips_as_json);
