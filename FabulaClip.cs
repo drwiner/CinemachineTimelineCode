@@ -43,7 +43,7 @@ namespace ClipNamespace
             // need to know if action is generic or specialized; for now, all generic
             SetAgentToGenericAction();
 
-            TimelineClip textSwitcherClip = CinematographyAttributes.fabTextTrack.CreateClip<TextSwitcherClip>();
+            TimelineClip textSwitcherClip = TrackAttributes.fabTextTrack.CreateClip<TextSwitcherClip>();
             textSwitcherClip.start = start;
             textSwitcherClip.duration = duration;
             textSwitcherClip.displayName = Name;
@@ -105,8 +105,8 @@ namespace ClipNamespace
 
             // control track - animate
             control_track_clip = ctrack.CreateDefaultClip();
-            control_track_clip.start = start + (float)0.12;
-            control_track_clip.duration = duration - (float)0.12;
+            control_track_clip.start = start + 0.06f;
+            control_track_clip.duration = duration - 0.06f;
             control_track_clip.displayName = Name;
             controlAnim = control_track_clip.asset as ControlPlayableAsset;
             AnimateBind(controlAnim, animTimelineObject);

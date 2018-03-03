@@ -22,7 +22,6 @@ namespace IceBoltNamespace
         private TimelineAsset fab_timeline;
         private TimelineAsset disc_timeline;
 
-        private CinemachineTrack ftrack;
         
 
         private GameObject main_camera_object;
@@ -58,11 +57,12 @@ namespace IceBoltNamespace
 
             CinematographyAttributes.standardNoise = Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
 
-
-            CinematographyAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
-            CinematographyAttributes.fabTextTrack = fab_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
-            disc_director.SetGenericBinding(CinematographyAttributes.discTextTrack, GameObject.Find("DiscourseText").GetComponent<Text>());
-            fab_director.SetGenericBinding(CinematographyAttributes.fabTextTrack, GameObject.Find("FabulaText").GetComponent<Text>());
+            TrackAttributes.ftrack = disc_timeline.CreateTrack<CinemachineTrack>(null, "film_track");
+            TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
+            TrackAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
+            TrackAttributes.fabTextTrack = fab_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
+            disc_director.SetGenericBinding(TrackAttributes.discTextTrack, GameObject.Find("DiscourseText").GetComponent<Text>());
+            fab_director.SetGenericBinding(TrackAttributes.fabTextTrack, GameObject.Find("FabulaText").GetComponent<Text>());
 
             // read clips
             ReadFabClipList(fab_clips_as_json);
@@ -104,20 +104,19 @@ namespace IceBoltNamespace
             Debug.Log("Reading Discourse");
 
             var C = JSON.Parse(clips_as_json);
-            ftrack = disc_timeline.CreateTrack<CinemachineTrack>(null, "film_track");
             main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
-            disc_director.SetGenericBinding(ftrack, main_camera_object);
+            disc_director.SetGenericBinding(TrackAttributes.ftrack, main_camera_object);
 
             foreach (JSONNode clip in C)
             {
                 Debug.Log(clip.ToString());
                 if (clip["type"] == "nav_cam")
                 {
-                    new NavCustomDiscourseClip(clip, disc_timeline, disc_director, ftrack);
+                    new NavCustomDiscourseClip(clip, disc_timeline, disc_director);
                 }
                 else if (clip["type"] == "nav_virtual")
                 {
-                    new NavVirtualDiscourseClip(clip, disc_timeline, disc_director, ftrack);
+                    new NavVirtualDiscourseClip(clip, disc_timeline, disc_director);
                 }
             }
 

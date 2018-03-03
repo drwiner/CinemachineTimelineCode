@@ -24,14 +24,11 @@ namespace ClipNamespace
         public bool has_fab_switch;
 
         // tracks
-        public TrackAsset ctrack;
-        public CinemachineTrack ftrack;
         public PlayableTrack ptrack;
         public TrackAsset pos_track;
 
         // timeline clips
         public ControlPlayableAsset controlAnim;
-        public TimelineClip control_track_clip;
         public TimelineClip nav_track_clip;
         public TimelineClip film_track_clip;
         public TimelineClip time_track_clip;
@@ -48,15 +45,13 @@ namespace ClipNamespace
         public CinemachineComposer cc;
         public CinemachineBasicMultiChannelPerlin cbmcp;
 
-        public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack _ftrack) : base(json, p_timeline, p_director)
+        public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) : base(json, p_timeline, p_director)
         {
             //main_camera_object = GameObject.Find("Main Camera");
 
-            ftrack = _ftrack;
-
             fab_start = json["fab_start"].AsFloat;
 
-            ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
+            //ctrack = timeline.CreateTrack<ControlTrack>(null, "control_track");
             //ftrack = timeline.CreateTrack<CinemachineTrack>(null, "film_track");
 
             starting_location = GameObject.Find(json["start_pos_name"].Value);
@@ -74,10 +69,7 @@ namespace ClipNamespace
                 has_fab_switch = true;
                 GameObject ttravel = GameObject.Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
                 ttravel.GetComponent<timeStorage>().fab_time = fab_start;
-                TimelineClip tc = ctrack.CreateDefaultClip();
-                tc.start = start;
-                tc.duration = duration;
-                tc.displayName = "Time Travel";
+                var tc = TrackAttributes.TimeTrackManager.CreateClip(start, duration, "Time Travel");
                 var time_travel_clip = tc.asset as ControlPlayableAsset;
                 AnimateBind(time_travel_clip, ttravel);
             }
@@ -113,7 +105,7 @@ namespace ClipNamespace
 
 
             // add camera behavior to film track
-            film_track_clip = ftrack.CreateDefaultClip();
+            film_track_clip = TrackAttributes.ftrack.CreateDefaultClip();
             float film_clip_start = start;
             float film_clip_duration = duration;
             if (has_fab_switch)
@@ -126,7 +118,7 @@ namespace ClipNamespace
             film_track_clip.duration = film_clip_duration;
             film_track_clip.displayName = Name;
 
-            TimelineClip textSwitcherClip = CinematographyAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
+            TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
             textSwitcherClip.start = film_clip_start;
             textSwitcherClip.duration = film_clip_duration;
             textSwitcherClip.displayName = Name;
@@ -174,8 +166,8 @@ namespace ClipNamespace
         public float start_disc_offset;
         public float end_disc_offset;
 
-        public CustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) 
-            : base(json, p_timeline, p_director, ftrack)
+        public CustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
+            : base(json, p_timeline, p_director)
         {
 
 
@@ -199,8 +191,8 @@ namespace ClipNamespace
 
         public float orient;
  
-        public NavCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) 
-            : base(json, p_timeline, p_director, ftrack)
+        public NavCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
+            : base(json, p_timeline, p_director)
         {
             ending_location = GameObject.Find(json["end_pos_name"].Value);
 
@@ -273,8 +265,8 @@ namespace ClipNamespace
         public GameObject virtualCamOriginal;
         public GameObject virtualCam;
 
-        public VirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) 
-            : base(json, p_timeline, p_director, ftrack)
+        public VirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
+            : base(json, p_timeline, p_director)
         {
 
             //assignCameraPosition(json);
@@ -291,8 +283,8 @@ namespace ClipNamespace
 
     public class NavVirtualDiscourseClip : VirtualDiscourseClip
     {
-        public NavVirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) 
-            : base(json, p_timeline, p_director, ftrack)
+        public NavVirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
+            : base(json, p_timeline, p_director)
         {
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
             CamBind(cinemachineShot, cva);
@@ -302,8 +294,8 @@ namespace ClipNamespace
 
     public class StationaryVirtualDiscourseClip : VirtualDiscourseClip
     {
-        public StationaryVirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director, CinemachineTrack ftrack) 
-            : base(json, p_timeline, p_director, ftrack)
+        public StationaryVirtualDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
+            : base(json, p_timeline, p_director)
         {
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
             CamBind(cinemachineShot, cva);

@@ -1,4 +1,4 @@
-﻿// Work originally by Brandon Thorne (brthorne@ncsu.edu)
+﻿
 
 using Cinemachine;
 using System.Collections.Generic;
@@ -8,16 +8,11 @@ using UnityEngine.UI;
 namespace Cinematography
 {
 
-    public class CinematographyAttributes : MonoBehaviour
+    public class CinematographyAttributes
     {
 
         public static List<ProCamsLensDataTable.FOVData> lensFovData;
         public static NoiseSettings standardNoise;
-        public static TextSwitcherTrack discTextTrack;
-        public static TextSwitcherTrack fabTextTrack;
-        public static Text discText;
-        public static Text fabText;
-
 
         public static Dictionary<string, ushort> lenses = new Dictionary<string, ushort>()
         {
@@ -94,6 +89,7 @@ namespace Cinematography
         }
     }
 
+    // Work originally by Brandon Thorne (brthorne@ncsu.edu)
     public class FramingParameters
     {
         public static Dictionary<FramingType, FramingParameters> FramingTable = new Dictionary<FramingType, FramingParameters>()
