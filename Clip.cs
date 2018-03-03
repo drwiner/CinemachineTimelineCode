@@ -94,5 +94,19 @@ namespace ClipNamespace
             new_clip.displayName = Name;
         }
 
+        public static float mapToRange(float radians)
+        {
+            float targetRadians = radians;
+            while (targetRadians <= -Mathf.PI)
+            {
+                targetRadians += Mathf.PI * 2;
+            }
+            while (targetRadians >= Mathf.PI)
+            {
+                targetRadians -= Mathf.PI * 2;
+            }
+            return targetRadians;
+        }
+
     }
 }

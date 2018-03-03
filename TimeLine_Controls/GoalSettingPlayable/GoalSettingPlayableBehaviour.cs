@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using SteeringNamespace;
+using GoalNamespace;
 
 [Serializable]
 public class GoalSettingPlayableBehaviour : PlayableBehaviour

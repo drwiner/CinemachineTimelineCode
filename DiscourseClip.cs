@@ -167,7 +167,7 @@ namespace ClipNamespace
 
         public static Vector3 degToVector3(float degs)
         {
-            float rads = Kinematic.mapToRange(degs * Mathf.Deg2Rad);
+            float rads = mapToRange(degs * Mathf.Deg2Rad);
             return new Vector3(Mathf.Cos(rads), 0f, Mathf.Sin(rads));
         }
 
