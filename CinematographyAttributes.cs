@@ -41,7 +41,6 @@ namespace Cinematography
             return lensIndex;
         }
 
-
         public static float CalcCameraDistance(GameObject framingTarget, FramingType ft)
         {
             // pick out the framing parameters from the table
@@ -65,6 +64,7 @@ namespace Cinematography
 
     }
 
+    // Work originally by Brandon Thorne (brthorne@ncsu.edu)
     public enum FramingType
     {
         None,
@@ -78,7 +78,7 @@ namespace Cinematography
         Angle
     }
 
-    public class Framing
+    public class FramingParameter
     {
         public FramingType FramingType { get; set; }
         public string FramingTarget { get; set; }
@@ -89,7 +89,7 @@ namespace Cinematography
         }
     }
 
-    // Work originally by Brandon Thorne (brthorne@ncsu.edu)
+    
     public class FramingParameters
     {
         public static Dictionary<FramingType, FramingParameters> FramingTable = new Dictionary<FramingType, FramingParameters>()

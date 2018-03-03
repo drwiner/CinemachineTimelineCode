@@ -14,38 +14,36 @@ namespace ClipNamespace
 
     public class DiscourseClip : Clip
     {
-        public float HEIGHT = 1.5f;
-        public string animation_string;
-        private string method_used;
-        public float fab_start;
-
-        // default fov is 40?
-        public float fov = 40f;
-
-        // default framing is Waist shot
-        public FramingType frame_type = FramingType.Waist;
-        public float orientation;
-        public bool has_fab_switch;
-
-        // tracks
-        public PlayableTrack ptrack;
-        public TrackAsset pos_track;
 
         // timeline clips
         public ControlPlayableAsset controlAnim;
         public TimelineClip nav_track_clip;
         public TimelineClip film_track_clip;
 
-
+        // action parameters
         public GameObject agent;
         public GameObject starting_location;
+        public float orientation;
+        public string animation_string;
+        private string method_used;
+        public float fab_start;
+        // need to set this based on camera's target
+        public float HEIGHT = 1.17f;
+
+        // target gameobject is what the camera aims at
         public GameObject target_go;
+
+        // host gameobject is what the camera sits on
         public GameObject host_go;
 
+        // camera parameters
         public CinemachineVirtualCamera cva;
-        
         public CinemachineComposer cc;
         public CinemachineBasicMultiChannelPerlin cbmcp;
+        public CinemachineCameraBody cbod;
+        private FramingParameters framing_data;
+        public FramingType frame_type = FramingType.Waist;
+     
 
         public DiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) : base(json, p_timeline, p_director)
         {
@@ -68,12 +66,26 @@ namespace ClipNamespace
 
         }
 
-        public void createTextClip(JSONNode json)
+        public void createFrameType(JSONNode json)
+        {
+            var ft = json["scale"].Value;
+            if (Enum.IsDefined(typeof(FramingType), ft))
+            {
+                // cast var as FramingType
+                frame_type = (FramingType)Enum.Parse(typeof(FramingType), ft);
+            }
+
+            framing_data = FramingParameters.FramingTable[frame_type];
+        }
+
+        /// <summary>
+        /// Text Display Timeline Clip
+        /// </summary>
+        /// <param name="json"></param>
+        public virtual void createTextClip(JSONNode json)
         {
             TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
-            textSwitcherClip.start = film_track_clip.start;
-            textSwitcherClip.duration = film_track_clip.duration;
-            textSwitcherClip.displayName = Name;
+            assignClipAttributes(film_track_clip, textSwitcherClip, Name);
             var end_time = fab_start + duration;
             string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
             TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
@@ -104,9 +116,7 @@ namespace ClipNamespace
 
         public void createCameraObj(JSONNode json)
         {
-            // set fov
-            fov = (json["fov"] != null) ? json["fov"].AsFloat : fov;
-
+            createFrameType(json);
             // create host for camera
             host_go = new GameObject("host_" + Name);
 
@@ -115,9 +125,15 @@ namespace ClipNamespace
             cc = cva.AddCinemachineComponent<CinemachineComposer>();
             cc.m_DeadZoneWidth = 0.25f;
             cc.m_SoftZoneWidth = 0.5f;
-            cva.m_Lens.FieldOfView = fov;
+            //cva.m_Lens.FieldOfView = CinematographyAttributes.calcFov(frame_type);
             cva.m_LookAt = target_go.transform;
 
+            cbod = host_go.AddComponent<CinemachineCameraBody>();
+            // FStop
+            cbod.IndexOfFStop = CinematographyAttributes.fStops[framing_data.DefaultFStop];
+            // Lens
+            cbod.IndexOfLens = CinematographyAttributes.lenses[framing_data.DefaultFocalLength];
+            
             // create small amount of noise
             cbmcp = cva.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
             cbmcp.m_NoiseProfile = CinematographyAttributes.standardNoise;
@@ -169,17 +185,8 @@ namespace ClipNamespace
             : base(json, p_timeline, p_director)
         {
             starting_location = GameObject.Find(json["start_pos_name"].Value);
-
-            // specialize and bind
-            //var cinemachineShot = film_track_clip.asset as CinemachineShot;
-            //CamBind(cinemachineShot, cva);
-
+      
         }
-
-        //public override void assignCameraPosition(JSONNode json)
-        //{
-
-        //}
     }
 
     public class NavCustomDiscourseClip : CustomDiscourseClip
@@ -199,17 +206,12 @@ namespace ClipNamespace
             // these are used as a distance thing in custom 
             start_disc_offset = json["start_dist_offset"].AsFloat;
             end_disc_offset = json["end_dist_offset"].AsFloat;
-
-
-            //json["target_orientation"]
             
             assignCameraPosition(json);
-
-
+       
             // specialize and bind
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
             CamBind(cinemachineShot, cva);
-
         }
 
         public override void assignCameraPosition(JSONNode json)
@@ -239,6 +241,8 @@ namespace ClipNamespace
             Debug.Log("camera Distance: " + camDist.ToString());
             Debug.Log("goalDirection: " + (orient + orientation).ToString());
 
+            cbod.FocusDistance = camDist; 
+
             host_go.transform.position = agent_middle_position + (goal_direction * camDist) + new Vector3(0f, HEIGHT, 0f);
             host_go.transform.rotation.SetLookRotation(agent_starting_position);
 
@@ -257,6 +261,16 @@ namespace ClipNamespace
                 camera_origin.transform.position = host_go.transform.position;
                 TransformBind(lerp_clip, host_go, camera_origin.transform, camera_destination.transform);
             }
+        }
+
+        public override void createTextClip(JSONNode json)
+        {
+            TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
+            assignClipAttributes(film_track_clip, textSwitcherClip, Name);
+            var end_time = fab_start + duration;
+            string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
+            TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
+
         }
     }
 

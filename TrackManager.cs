@@ -89,16 +89,17 @@ namespace ClipNamespace
         public TimelineClip CreateClip(float start, float duration, string displayName)
         {
             TimelineClip tc;
+            tc = currentTrack.CreateDefaultClip();
 
-            if (TrackManager.FreeInterval(start, start + duration, TimelineClips))
-            {
-                tc = currentTrack.CreateDefaultClip();
-            }
-            else
-            {
-                Debug.Log("Overlap detected on a single track manager.");
-                throw new System.Exception();
-            }
+            //if (TrackManager.FreeInterval(start, start + duration, TimelineClips))
+            //{
+                
+            //}
+            //else
+            //{
+            //    Debug.Log("Overlap detected on a single track manager.");
+            //    throw new System.Exception();
+            //}
 
             tc.start = start + 0.06f;
             tc.duration = duration;

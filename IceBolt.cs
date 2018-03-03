@@ -58,7 +58,7 @@ namespace IceBoltNamespace
             // Load Film Track Manager
             TrackAttributes.FilmTrackManager = new CinemachineTrackManager(disc_timeline);
             main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
-            disc_director.SetGenericBinding(TrackAttributes.ftrack, main_camera_object);
+            disc_director.SetGenericBinding(TrackAttributes.FilmTrackManager.currentTrack, main_camera_object);
 
             // Load other Track Attributes
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");

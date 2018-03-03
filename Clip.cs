@@ -87,5 +87,12 @@ namespace ClipNamespace
             return t;
         }
 
+        public static void assignClipAttributes(TimelineClip origin, TimelineClip new_clip, string Name)
+        {
+            new_clip.start = origin.start;
+            new_clip.duration = origin.duration;
+            new_clip.displayName = Name;
+        }
+
     }
 }
