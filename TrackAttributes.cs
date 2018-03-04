@@ -12,5 +12,5 @@ public class TrackAttributes {
     public static Text fabText;
     public static TrackManager TimeTrackManager;
     public static CinemachineTrackManager FilmTrackManager;
-    public static CinemachineTrack ftrack;
+    public static TrackManager NavTrackManager;
 }
