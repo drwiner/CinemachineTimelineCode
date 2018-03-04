@@ -13,6 +13,6 @@ public class TrackAttributes {
     public static Text fabText;
     public static TrackManager TimeTrackManager;
     public static CinemachineTrackManager FilmTrackManager;
-    public static TrackManager NavTrackManager;
+    public static PlayableTrackManager LerpTrackManager;
     public static TileGraph TG;
 }

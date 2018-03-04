@@ -23,4 +23,17 @@
         "type": "steering", 
         "step_id": "2", 
     }
+
+	{
+        "end_pos_name": "z_plus", 
+        "duration": 5.0, 
+        "start": 10.0, 
+        "gameobject_name": "Orb", 
+        "start_pos_name": "x_plus", 
+        "method_used": "nav_act", 
+        "step_num": 3, 
+        "name": "steer(orb, x_plus, z_plus)", 
+        "type": "steering", 
+        "step_id": "3", 
+    }
 ]

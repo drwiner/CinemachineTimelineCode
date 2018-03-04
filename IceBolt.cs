@@ -59,6 +59,7 @@ namespace IceBoltNamespace
 
             // Load other Track Attributes
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
+            TrackAttributes.LerpTrackManager = new PlayableTrackManager(fab_timeline, "Lerp Track");
             TrackAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
             TrackAttributes.fabTextTrack = fab_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
             disc_director.SetGenericBinding(TrackAttributes.discTextTrack, GameObject.Find("DiscourseText").GetComponent<Text>());
@@ -109,14 +110,20 @@ namespace IceBoltNamespace
 
             foreach (JSONNode clip in C)
             {
+                var clip_type = clip["type"];
                 Debug.Log(clip.ToString());
-                if (clip["type"] == "nav_cam")
+
+                if (clip_type == "nav_cam")
                 {
                     new NavCustomDiscourseClip(clip, disc_timeline, disc_director);
                 }
-                else if (clip["type"] == "nav_virtual")
+                else if (clip_type == "nav_virtual")
                 {
                     new NavVirtualDiscourseClip(clip, disc_timeline, disc_director);
+                }
+                else if (clip_type = "simple_cam")
+                {
+                    new SimpleCustomDiscourseClip(clip, disc_timeline, disc_director);
                 }
                 
             }

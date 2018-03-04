@@ -2,23 +2,56 @@
 	{
 		"name": "show-steer1", 
 		
-		"start_pos_name": "mid", 
-        "end_pos_name": "x_plus", 
+		"start_pos_name": "mid",
+		"end_pos_name": "x_plus",
+		"start": 0,
+		"duration": 3.5,
+		"type": "nav_cam",
+		"start_dist_offset": 0,
+		"end_dist_offset": 5,
+		"aim_target": "Orb",
+		"orient": "90", 
+		"scale": "Long",
+		"fab_step_name": "steer(orb, mid, x_plus)",
+		"fab_start": 0
+
+    },
+	{
+		"name": "show-steer1-again", 
 		
-        "start": 0,
-		"duration": 20, 
+		"start_pos_name": "mid",
+		"end_pos_name": "x_plus",
+		"start": 3.5,
+		"duration": 3.5,
+		"type": "simple_cam",
+		"aim_target": "mid",
+		"orient": "280", 
+		"scale": "Long",
+		"fab_step_name": "steer(orb, mid, x_plus)",
+		"fab_start": 2
+
+    },
+	{
+		"name": "show-steer2", 
+
+		"start_pos_name": "x_plus",
+		"end_pos_name": "z_plus",
+		"start": 7,
+		"duration": 4, 
 		
 		"type": "nav_cam", 
 
 		"start_dist_offset": 0,
-		"end_dist_offset": 7,
+		"end_dist_offset": 5,
 
-		"aim_target": "Orb", 
-        "orient": "90", 
-		"scale": "ExtremeWide",
+		"aim_target": "Orb",
+		"orient": "0", 
+		"scale": "Waist",
         
-		"fab_step_name": "steer(orb, mid, x_plus)",
-		"fab_start": 0
+		"fab_step_name": "steer(orb, x_plus, z_plus)",
+		"fab_start": 6
 
     }
+
+	
 ]

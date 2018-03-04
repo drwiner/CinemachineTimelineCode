@@ -189,34 +189,6 @@ namespace ClipNamespace
       
         }
     }
-    //public class SteerCustomDiscourseClip : CustomDiscourseClip
-    //{
-    //    public GameObject ending_location;
-    //    private float orient;
-    //    private Node startNode, goalNode;
-    //    private TileGraph TG;
-    //    private Stack<Node> Path;
-
-    //    public SteerCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) : base(json, p_timeline, p_director)
-    //    {
-    //        ending_location = GameObject.Find(json["end_pos_name"].Value);
-
-    //        TG = GameObject.FindGameObjectWithTag("LocationHost").GetComponent<TileGraph>();
-    //        startNode = QuantizeLocalize.Quantize(starting_location.transform.position, TG);
-    //        goalNode = QuantizeLocalize.Quantize(ending_location.transform.position, TG);
-
-    //        Path = PathFind.Dijkstra(TG, startNode, goalNode);
-    //        // create Lerp for each edge in path
-
-    //        assignCameraPosition(json);
-
-    //        // specialize and bind
-    //        var cinemachineShot = film_track_clip.asset as CinemachineShot;
-    //        CamBind(cinemachineShot, cva);
-
-    //    }
-    //}
-
 
     public class NavCustomDiscourseClip : CustomDiscourseClip
     {
@@ -303,6 +275,52 @@ namespace ClipNamespace
             TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
 
         }
+    }
+
+    public class SimpleCustomDiscourseClip : CustomDiscourseClip
+    {
+        public float orient;
+
+        public SimpleCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
+            : base(json, p_timeline, p_director)
+        {
+
+
+            assignCameraPosition(json);
+
+            // specialize and bind
+            var cinemachineShot = film_track_clip.asset as CinemachineShot;
+            CamBind(cinemachineShot, cva);
+        }
+
+        public override void assignCameraPosition(JSONNode json)
+        {
+
+            float orient = json["orient"].AsFloat;
+
+
+            if (json["scale"] != null)
+            {
+                var ft = json["scale"].Value;
+                if (Enum.IsDefined(typeof(FramingType), ft))
+                {
+                    // cast var as FramingType
+                    frame_type = (FramingType)Enum.Parse(typeof(FramingType), ft);
+                }
+            }
+
+            float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
+
+            Debug.Log("camera Distance: " + camDist.ToString());
+            Debug.Log("goalDirection: " + (orient).ToString());
+
+            cbod.FocusDistance = camDist;
+
+            host_go.transform.position = target_go.transform.position + degToVector3(orient) * camDist;
+            host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
+
+        }
+
     }
 
     /////////////////////// VIRTUAL ///////////////////////

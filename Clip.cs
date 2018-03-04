@@ -139,20 +139,23 @@ namespace ClipNamespace
             director.SetReferenceValue(cpa.sourceGameObject.exposedName, ato);
         }
 
-        public void SimpleLerpClip(PlayableTrack lerpTrack, GameObject agent, Transform startPos, Transform goalPos)
+
+        public void SimpleLerpClip(GameObject agent, Transform startPos, Transform goalPos)
         {
             Vector3 dest_minus_origin = goalPos.position - startPos.position;
             float orientation = Mathf.Atan2(dest_minus_origin.z, -dest_minus_origin.x) * Mathf.Rad2Deg;
 
-            var lerpClip = lerpTrack.CreateClip<LerpMoveObjectAsset>();
-
+            var lerpClip = TrackAttributes.LerpTrackManager.CreateClip(start, duration, display);
             lerpClip.start = start;
             lerpClip.duration = duration;
             LerpMoveObjectAsset lerp_clip = lerpClip.asset as LerpMoveObjectAsset;
-            goalPos.rotation = Quaternion.Euler(0f, orientation, 0f);
-            TransformBind(lerp_clip, agent, startPos, goalPos);
+            //goalPos.rotation = Quaternion.Euler(0f, orientation, 0f);
+            TransformBind(lerp_clip, agent, 
+                Clip.makeCustomizedTransform(startPos.position, orientation).transform,
+                Clip.makeCustomizedTransform(goalPos.position, orientation).transform);
 
         }
+
     }
 
 }

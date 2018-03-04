@@ -107,7 +107,12 @@ namespace GraphNamespace
         {
             float zdist = Mathf.Abs(a.z - b.z);
             float xdist = Mathf.Abs(a.x - b.x);
-            if (zdist < adjacent_distance && xdist < adjacent_distance)
+            if (zdist < adjacent_distance && xdist < adjacent_distance/2)
+            {
+                return true;
+            }
+
+            if (zdist < adjacent_distance/2 && xdist < adjacent_distance)
             {
                 return true;
             }

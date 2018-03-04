@@ -85,9 +85,6 @@ namespace ClipNamespace
 
         public NavigateFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) : base(json, p_timeline, p_director)
         {
-
-            ntrack = timeline.CreateTrack<PlayableTrack>(null, "nav_track");
-
             ending_location = GameObject.Find(json["end_pos_name"]);
 
             Vector3 dest_minus_origin = ending_location.transform.position - starting_location.transform.position;
@@ -96,7 +93,7 @@ namespace ClipNamespace
             var tempstart = new Vector3(starting_location.transform.position.x, agent.transform.position.y, starting_location.transform.position.z);
             Transform start_transform = makeCustomizedTransform(tempstart, orientation).transform;
 
-            nav_track_clip = ntrack.CreateClip<LerpMoveObjectAsset>();
+            var nav_track_clip = TrackAttributes.LerpTrackManager.CreateClip(start, duration, Name);
 
             nav_track_clip.start = start;
             nav_track_clip.duration = duration;
@@ -140,14 +137,13 @@ namespace ClipNamespace
             Path = PathFind.Dijkstra(TrackAttributes.TG, startNode, goalNode);
 
             // create Lerp for each edge in path
-            ntrack = timeline.CreateTrack<PlayableTrack>(null, "steer_track");
             var eachSeg = duration / Path.Count;
             int n = 0;
             var lastNode = startNode;
             foreach (Node p in Path)
             {
                 ClipInfo CI = new ClipInfo(p_director, start + n*eachSeg, eachSeg, Name);
-                CI.SimpleLerpClip(ntrack, agent, lastNode.transform, p.transform);
+                CI.SimpleLerpClip(agent, lastNode.transform, p.transform);
                 lastNode = p;
                 n++;
             }
