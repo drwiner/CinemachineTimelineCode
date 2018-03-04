@@ -79,7 +79,7 @@ namespace ClipNamespace
             director.SetReferenceValue(cpa.sourceGameObject.exposedName, ato);
         }
 
-        public GameObject makeCustomizedTransform(Vector3 pos, float orientation)
+        public static GameObject makeCustomizedTransform(Vector3 pos, float orientation)
         {
             GameObject t = new GameObject();
             t.transform.position = pos;
@@ -109,4 +109,50 @@ namespace ClipNamespace
         }
 
     }
+
+    public class ClipInfo
+    {
+        public float start;
+        public float duration;
+        public string display;
+        public PlayableDirector director;
+        public ClipInfo(PlayableDirector _director, float strt, float dur, string dis)
+        {
+            director = _director;
+            start = strt;
+            duration = dur;
+            display = dis;
+        }
+
+        public void TransformBind(LerpMoveObjectAsset tpObj, GameObject obj_to_move, Transform start_pos, Transform end_pos)
+        {
+            tpObj.ObjectToMove.exposedName = UnityEditor.GUID.Generate().ToString();
+            tpObj.LerpMoveTo.exposedName = UnityEditor.GUID.Generate().ToString();
+            tpObj.LerpMoveFrom.exposedName = UnityEditor.GUID.Generate().ToString();
+            director.SetReferenceValue(tpObj.ObjectToMove.exposedName, obj_to_move);
+            director.SetReferenceValue(tpObj.LerpMoveTo.exposedName, end_pos);
+            director.SetReferenceValue(tpObj.LerpMoveFrom.exposedName, start_pos);
+        }
+        public void AnimateBind(ControlPlayableAsset cpa, GameObject ato)
+        {
+            cpa.sourceGameObject.exposedName = UnityEditor.GUID.Generate().ToString();
+            director.SetReferenceValue(cpa.sourceGameObject.exposedName, ato);
+        }
+
+        public void SimpleLerpClip(PlayableTrack lerpTrack, GameObject agent, Transform startPos, Transform goalPos)
+        {
+            Vector3 dest_minus_origin = goalPos.position - startPos.position;
+            float orientation = Mathf.Atan2(dest_minus_origin.z, -dest_minus_origin.x) * Mathf.Rad2Deg;
+
+            var lerpClip = lerpTrack.CreateClip<LerpMoveObjectAsset>();
+
+            lerpClip.start = start;
+            lerpClip.duration = duration;
+            LerpMoveObjectAsset lerp_clip = lerpClip.asset as LerpMoveObjectAsset;
+            goalPos.rotation = Quaternion.Euler(0f, orientation, 0f);
+            TransformBind(lerp_clip, agent, startPos, goalPos);
+
+        }
+    }
+
 }

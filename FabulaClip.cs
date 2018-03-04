@@ -5,13 +5,14 @@ using SimpleJSON;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using Cinematography;
+using GoalNamespace;
+using GraphNamespace;
 
 namespace ClipNamespace
 {
     public class FabulaClip : Clip
     {
         public string animation_string;
-        private string method_used;
 
         // findable game objects in scene
         public GameObject agent;
@@ -35,13 +36,14 @@ namespace ClipNamespace
             agent = GameObject.Find(json["gameobject_name"]);
 
             animation_string = json["animation_name"];
-
-            method_used = json["method_used"];
             step_id = json["step_id"];
             step_num = json["step_num"];
 
             // need to know if action is generic or specialized; for now, all generic
-            SetAgentToGenericAction();
+            if (animation_string != null)
+            {
+                SetAgentToGenericAction();
+            }
 
             TimelineClip textSwitcherClip = TrackAttributes.fabTextTrack.CreateClip<TextSwitcherClip>();
             textSwitcherClip.start = start;
@@ -112,8 +114,55 @@ namespace ClipNamespace
             AnimateBind(controlAnim, animTimelineObject);
 
         }
+        
 
-       
+    }
+
+    public class SteerFabulaClip : FabulaClip
+    {
+        public GameObject ending_location;
+        private Node startNode, goalNode;
+        private TileGraph TG;
+        private Stack<Node> Path;
+        private PlayableTrack ntrack;
+
+
+        public SteerFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
+            : base(json, p_timeline, p_director)
+        {
+            ending_location = GameObject.Find(json["end_pos_name"].Value);
+
+            // Quantize to find start and finish nodes
+            startNode = QuantizeLocalize.Quantize(starting_location.transform.position, TrackAttributes.TG);
+            goalNode = QuantizeLocalize.Quantize(ending_location.transform.position, TrackAttributes.TG);
+
+            // Calculate path
+            Path = PathFind.Dijkstra(TrackAttributes.TG, startNode, goalNode);
+
+            // create Lerp for each edge in path
+            ntrack = timeline.CreateTrack<PlayableTrack>(null, "steer_track");
+            var eachSeg = duration / Path.Count;
+            int n = 0;
+            var lastNode = startNode;
+            foreach (Node p in Path)
+            {
+                ClipInfo CI = new ClipInfo(p_director, start + n*eachSeg, eachSeg, Name);
+                CI.SimpleLerpClip(ntrack, agent, lastNode.transform, p.transform);
+                lastNode = p;
+                n++;
+            }
+
+            // run animation across whole thing if not null
+            if (json["animation_name"] != null)
+            {
+                control_track_clip = ctrack.CreateDefaultClip();
+                control_track_clip.start = start + 0.06f;
+                control_track_clip.duration = duration - 0.06f;
+                control_track_clip.displayName = Name;
+                controlAnim = control_track_clip.asset as ControlPlayableAsset;
+                AnimateBind(controlAnim, animTimelineObject);
+            }
+        }
     }
 
     public class StationaryFabulaClip : FabulaClip

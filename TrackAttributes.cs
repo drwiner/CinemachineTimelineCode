@@ -1,5 +1,6 @@
 ﻿using Cinemachine.Timeline;
 using ClipNamespace;
+using GraphNamespace;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,4 +14,5 @@ public class TrackAttributes {
     public static TrackManager TimeTrackManager;
     public static CinemachineTrackManager FilmTrackManager;
     public static TrackManager NavTrackManager;
+    public static TileGraph TG;
 }

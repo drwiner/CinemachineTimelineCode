@@ -1,0 +1,24 @@
+[
+	{
+		"name": "show-steer1", 
+		
+		"start_pos_name": "mid", 
+        "end_pos_name": "x_plus", 
+		
+        "start": 0,
+		"duration": 20, 
+		
+		"type": "nav_cam", 
+
+		"start_dist_offset": 0,
+		"end_dist_offset": 7,
+
+		"aim_target": "Orb", 
+        "orient": "90", 
+		"scale": "ExtremeWide",
+        
+		"fab_step_name": "steer(orb, mid, x_plus)",
+		"fab_start": 0
+
+    }
+]

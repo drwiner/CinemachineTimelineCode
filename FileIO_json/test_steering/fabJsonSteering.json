@@ -1,0 +1,26 @@
+[
+    {
+        "end_pos_name": "mid", 
+        "duration": 5.0, 
+        "start": 0, 
+        "gameobject_name": "Orb", 
+        "start_pos_name": "z_plus", 
+        "method_used": "nav_act", 
+        "step_num": "1", 
+        "name": "steer(orb, z_plus, mid)", 
+        "type": "steering", 
+        "step_id": "addc", 
+    }, 
+    {
+        "end_pos_name": "x_plus", 
+        "duration": 5.0, 
+        "start": 5.0, 
+        "gameobject_name": "Orb", 
+        "start_pos_name": "mid", 
+        "method_used": "nav_act", 
+        "step_num": 2, 
+        "name": "steer(orb, mid, x_plus)", 
+        "type": "steering", 
+        "step_id": "2", 
+    }
+]

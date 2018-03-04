@@ -1,0 +1,75 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using GoalNamespace;
+
+namespace SteeringNamespace
+{
+
+
+    public class DynoArrive_PathFollow : MonoBehaviour
+    {
+
+        //private PathGoal goalObject;
+        private Vector3 goal;
+        private SteeringParams sp;
+        private DynoSteering ds;
+        private Kinematic charRigidBody;
+        public float goalRadius = 0.5f;
+        public float slowRadius = 2.5f;
+        public float time_to_target = 0.25f;
+        private Vector3 direction;
+        private float distance;
+        private float targetSpeed;
+        private Vector3 targetVelocity;
+
+        // Use this for initialization
+        void Start()
+        {
+            //goalObject = GetComponent<PathGoal>();
+            sp = GetComponent<SteeringParams>();
+            charRigidBody = GetComponent<Kinematic>();
+        }
+
+        // Update is called once per frame
+        public DynoSteering getSteering(Vector3 goal)
+        {
+
+            ds = new DynoSteering();
+            //goal = goalObject.getGoal();
+
+            direction = goal - transform.position;
+            distance = direction.magnitude;
+
+            if (distance < goalRadius)
+            {
+                return ds;
+            }
+
+            if (distance > slowRadius)
+            {
+                targetSpeed = sp.MAXSPEED;
+            }
+            else
+            {
+                targetSpeed = sp.MAXSPEED * distance / slowRadius;
+            }
+
+            targetVelocity = direction;
+            targetVelocity.Normalize();
+            targetVelocity = targetVelocity * targetSpeed;
+
+            ds.force = targetVelocity - charRigidBody.getVelocity();
+            ds.force = ds.force / time_to_target;
+
+            if (ds.force.magnitude > sp.MAXACCEL)
+            {
+                ds.force.Normalize();
+                ds.force = ds.force * sp.MAXACCEL;
+            }
+            ds.torque = 0f;
+
+            return ds;
+        }
+    }
+}

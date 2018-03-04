@@ -14,6 +14,7 @@ namespace ClipNamespace
 
     public class DiscourseClip : Clip
     {
+        private Vector3 height_offset = Vector3.zero;
 
         // timeline clips
         public ControlPlayableAsset controlAnim;
@@ -25,7 +26,7 @@ namespace ClipNamespace
         public GameObject starting_location;
         public float orientation;
         public string animation_string;
-        private string method_used;
+        //private string method_used;
         public float fab_start;
         // need to set this based on camera's target
         public float HEIGHT = 1.17f;
@@ -107,11 +108,11 @@ namespace ClipNamespace
             BoxCollider bc = agent.GetComponent<BoxCollider>();
             // create position of target 
             target_go = new GameObject("target_" + Name);
-            target_go.transform.position = agent.transform.position + new Vector3(0f, .8f, 0f);
+            target_go.transform.position = agent.transform.position + height_offset;
             target_go.transform.parent = agent.transform;
             target_go.AddComponent<BoxCollider>();
             target_go.GetComponent<BoxCollider>().size = bc.size;
-            target_go.GetComponent<BoxCollider>().center = bc.center;
+            //target_go.GetComponent<BoxCollider>().center = bc.center;
         }
 
         public void createCameraObj(JSONNode json)
@@ -188,6 +189,34 @@ namespace ClipNamespace
       
         }
     }
+    //public class SteerCustomDiscourseClip : CustomDiscourseClip
+    //{
+    //    public GameObject ending_location;
+    //    private float orient;
+    //    private Node startNode, goalNode;
+    //    private TileGraph TG;
+    //    private Stack<Node> Path;
+
+    //    public SteerCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) : base(json, p_timeline, p_director)
+    //    {
+    //        ending_location = GameObject.Find(json["end_pos_name"].Value);
+
+    //        TG = GameObject.FindGameObjectWithTag("LocationHost").GetComponent<TileGraph>();
+    //        startNode = QuantizeLocalize.Quantize(starting_location.transform.position, TG);
+    //        goalNode = QuantizeLocalize.Quantize(ending_location.transform.position, TG);
+
+    //        Path = PathFind.Dijkstra(TG, startNode, goalNode);
+    //        // create Lerp for each edge in path
+
+    //        assignCameraPosition(json);
+
+    //        // specialize and bind
+    //        var cinemachineShot = film_track_clip.asset as CinemachineShot;
+    //        CamBind(cinemachineShot, cva);
+
+    //    }
+    //}
+
 
     public class NavCustomDiscourseClip : CustomDiscourseClip
     {
@@ -241,9 +270,11 @@ namespace ClipNamespace
             Debug.Log("camera Distance: " + camDist.ToString());
             Debug.Log("goalDirection: " + (orient + orientation).ToString());
 
-            cbod.FocusDistance = camDist; 
+            cbod.FocusDistance = camDist;
 
-            host_go.transform.position = agent_middle_position + (goal_direction * camDist) + new Vector3(0f, HEIGHT, 0f);
+            // position of camera's height depends on angle
+            host_go.transform.position = agent_middle_position + (goal_direction * camDist);
+                //+ new Vector3(0f, target_go.transform.position.y, 0f);
             host_go.transform.rotation.SetLookRotation(agent_starting_position);
 
             if (json["follow_target"] != null)

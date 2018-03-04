@@ -9,14 +9,14 @@ using System.Collections.Generic;
 using Cinematography;
 using Cinemachine;
 using UnityEngine.UI;
+using GraphNamespace;
 
 namespace IceBoltNamespace
 {
     public class IceBolt : MonoBehaviour
     {
-        public string disc_json_file = @"Scripts//CinemachineTimelineCode//FileIO_json//discourse.json";
-        public string fab_json_file = @"Scripts//CinemachineTimelineCode//FileIO_json//fabula.json";
-
+        public TextAsset fab_clips_as_json;
+        public TextAsset disc_clips_as_json;
         private PlayableDirector fab_director;
         private PlayableDirector disc_director;
         private TimelineAsset fab_timeline;
@@ -26,6 +26,7 @@ namespace IceBoltNamespace
         private GameObject fabTimelineChild;
         private GameObject discTimelineChild;
 
+        private TileGraph TG;
 
         // Use this for initialization
         void Awake()
@@ -36,16 +37,8 @@ namespace IceBoltNamespace
             fabTimelineChild = GameObject.FindGameObjectWithTag("FabulaTimeline");
             discTimelineChild = GameObject.FindGameObjectWithTag("DiscourseTimeline");
 
-            // prep fabula
-            string fab_file_path = Path.Combine(Application.dataPath, fab_json_file);
-            string fab_clips_as_json = File.ReadAllText(fab_file_path);
-
             fab_timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
             fab_director = fabTimelineChild.GetComponent<PlayableDirector>();
-
-            // prep discourse
-            string disc_file_path = Path.Combine(Application.dataPath, disc_json_file);
-            string disc_clips_as_json = File.ReadAllText(disc_file_path);
 
             disc_timeline = (TimelineAsset)ScriptableObject.CreateInstance("TimelineAsset");
             disc_director = discTimelineChild.GetComponent<PlayableDirector>();
@@ -60,6 +53,10 @@ namespace IceBoltNamespace
             main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
             disc_director.SetGenericBinding(TrackAttributes.FilmTrackManager.currentTrack, main_camera_object);
 
+            // Load Location Graph for pathfinding
+            TrackAttributes.TG = GameObject.FindGameObjectWithTag("LocationHost").GetComponent<TileGraph>();
+            TrackAttributes.TG.InitGraph();
+
             // Load other Track Attributes
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
             TrackAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
@@ -68,8 +65,8 @@ namespace IceBoltNamespace
             fab_director.SetGenericBinding(TrackAttributes.fabTextTrack, GameObject.Find("FabulaText").GetComponent<Text>());
 
             // read clips
-            ReadFabClipList(fab_clips_as_json);
-            ReadDiscClipList(disc_clips_as_json);
+            ReadFabClipList(fab_clips_as_json.text);
+            ReadDiscClipList(disc_clips_as_json.text);
         }
 
         void Start()
@@ -96,7 +93,10 @@ namespace IceBoltNamespace
                 }
                 else if (clip["type"] == "stationary")
                     new StationaryFabulaClip(clip, fab_timeline, fab_director);
-
+                else if (clip["type"] == "steering")
+                {
+                    new SteerFabulaClip(clip, fab_timeline, fab_director);
+                }
             }
 
         }
@@ -118,6 +118,7 @@ namespace IceBoltNamespace
                 {
                     new NavVirtualDiscourseClip(clip, disc_timeline, disc_director);
                 }
+                
             }
 
         }
