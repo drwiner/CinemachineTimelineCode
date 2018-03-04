@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 using Cinemachine.Timeline;
 using Cinemachine;
 using XMLNamespace;
+using SteeringNamespace;
 
 public class DiscourseReader : MonoBehaviour
 {
