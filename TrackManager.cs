@@ -153,16 +153,6 @@ namespace ClipNamespace
             TimelineClip tc;
             tc = currentTrack.CreateDefaultClip();
 
-            //if (TrackManager.FreeInterval(start, start + duration, TimelineClips))
-            //{
-                
-            //}
-            //else
-            //{
-            //    Debug.Log("Overlap detected on a single track manager.");
-            //    throw new System.Exception();
-            //}
-
             tc.start = start + 0.06f;
             tc.duration = duration;
             tc.displayName = displayName;
@@ -172,4 +162,5 @@ namespace ClipNamespace
             return tc;
         }
     }
+
 }

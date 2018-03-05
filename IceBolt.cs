@@ -15,6 +15,7 @@ namespace IceBoltNamespace
 {
     public class IceBolt : MonoBehaviour
     {
+        
         public TextAsset fab_clips_as_json;
         public TextAsset disc_clips_as_json;
         private PlayableDirector fab_director;
@@ -26,6 +27,7 @@ namespace IceBoltNamespace
         private GameObject fabTimelineChild;
         private GameObject discTimelineChild;
 
+        public bool useGraph = true;
         private TileGraph TG;
 
         // Use this for initialization
@@ -53,10 +55,12 @@ namespace IceBoltNamespace
             main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
             disc_director.SetGenericBinding(TrackAttributes.FilmTrackManager.currentTrack, main_camera_object);
 
-            // Load Location Graph for pathfinding
-            TrackAttributes.TG = GameObject.FindGameObjectWithTag("LocationHost").GetComponent<TileGraph>();
-            TrackAttributes.TG.InitGraph();
-
+            // Load Location Graph for pathfinding - only used by Steer typed fabula clips
+            if (useGraph)
+            {
+                TrackAttributes.TG = GameObject.FindGameObjectWithTag("LocationHost").GetComponent<TileGraph>();
+                TrackAttributes.TG.InitGraph();
+            }
             // Load other Track Attributes
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
             TrackAttributes.LerpTrackManager = new PlayableTrackManager(fab_timeline, "Lerp Track");

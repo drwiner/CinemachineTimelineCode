@@ -236,8 +236,10 @@ namespace ClipNamespace
 
             cbod.FocusDistance = camDist;
 
+            var camHeight = .75f * agent.GetComponent<BoxCollider>().size.y - agent_middle_position.y;
+
             // position of camera's height depends on angle
-            host_go.transform.position = agent_middle_position + (goal_direction * camDist);
+            host_go.transform.position = agent_middle_position + (goal_direction * camDist) + new Vector3(0f, camHeight, 0f); ;
                 //+ new Vector3(0f, target_go.transform.position.y, 0f);
             host_go.transform.rotation.SetLookRotation(agent_starting_position);
 

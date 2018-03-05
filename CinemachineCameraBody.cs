@@ -101,7 +101,7 @@ public class CinemachineCameraBody : MonoBehaviour {
 	public	bool					ClickToFocus {get{return _clickToFocus;}set{_clickToFocus = value;}}
 	
 	[SerializeField]
-	private bool					_showGizmos = true;
+	private bool					_showGizmos = false;
 	public	bool					ShowGizmos {get{return _showGizmos;} set{_showGizmos = value;}}
 	
 	public	bool					ShowBody = false;
