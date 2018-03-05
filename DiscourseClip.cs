@@ -181,6 +181,7 @@ namespace ClipNamespace
         
         public float start_disc_offset;
         public float end_disc_offset;
+        
 
         public CustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
             : base(json, p_timeline, p_director)
@@ -280,6 +281,7 @@ namespace ClipNamespace
     public class SimpleCustomDiscourseClip : CustomDiscourseClip
     {
         public float orient;
+        private float agentOrient = 0f;
 
         public SimpleCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
             : base(json, p_timeline, p_director)
@@ -296,8 +298,9 @@ namespace ClipNamespace
         public override void assignCameraPosition(JSONNode json)
         {
 
-            float orient = json["orient"].AsFloat;
-
+            orient = json["orient"].AsFloat;
+            if (json["agentOrient"] != null)
+                agentOrient = json["agentOrient"].AsFloat;
 
             if (json["scale"] != null)
             {
@@ -316,7 +319,7 @@ namespace ClipNamespace
 
             cbod.FocusDistance = camDist;
 
-            host_go.transform.position = target_go.transform.position + degToVector3(orient) * camDist;
+            host_go.transform.position = target_go.transform.position + degToVector3(orient+ agentOrient) * camDist;
             host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
 
         }
