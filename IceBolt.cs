@@ -121,9 +121,13 @@ namespace IceBoltNamespace
                 {
                     new NavVirtualDiscourseClip(clip, disc_timeline, disc_director);
                 }
-                else if (clip_type = "simple_cam")
+                else if (clip_type == "simple_cam")
                 {
                     new SimpleCustomDiscourseClip(clip, disc_timeline, disc_director);
+                }
+                else if(clip_type == "two_shot")
+                {
+                    new TwoShotCustomDiscourseClip(clip, disc_timeline, disc_director);
                 }
                 
             }

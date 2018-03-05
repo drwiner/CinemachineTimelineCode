@@ -228,15 +228,6 @@ namespace ClipNamespace
             Vector3 agent_starting_position = starting_location.transform.position + dest_minus_start * start_disc_offset;
             Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_disc_offset / 2);
 
-            if (json["scale"] != null)
-            {
-                var ft = json["scale"].Value;
-                if (Enum.IsDefined(typeof(FramingType), ft))
-                {
-                    // cast var as FramingType
-                    frame_type = (FramingType)Enum.Parse(typeof(FramingType), ft);
-                }
-            }
 
             float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
 
@@ -302,16 +293,6 @@ namespace ClipNamespace
             if (json["agentOrient"] != null)
                 agentOrient = json["agentOrient"].AsFloat;
 
-            if (json["scale"] != null)
-            {
-                var ft = json["scale"].Value;
-                if (Enum.IsDefined(typeof(FramingType), ft))
-                {
-                    // cast var as FramingType
-                    frame_type = (FramingType)Enum.Parse(typeof(FramingType), ft);
-                }
-            }
-
             float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
 
             Debug.Log("camera Distance: " + camDist.ToString());
@@ -320,6 +301,59 @@ namespace ClipNamespace
             cbod.FocusDistance = camDist;
 
             host_go.transform.position = target_go.transform.position + degToVector3(orient+ agentOrient) * camDist;
+            host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
+
+        }
+
+    }
+
+    public class TwoShotCustomDiscourseClip : CustomDiscourseClip
+    {
+        public float orient;
+        private float agentOrient = 0f;
+        private GameObject OtherTarget;
+
+        public TwoShotCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
+            : base(json, p_timeline, p_director)
+        {
+
+            OtherTarget = GameObject.Find(json["SecondTarget"].Value);
+            assignCameraPosition(json);
+
+            // specialize and bind
+            var cinemachineShot = film_track_clip.asset as CinemachineShot;
+            CamBind(cinemachineShot, cva);
+        }
+
+        public override void assignCameraPosition(JSONNode json)
+        {
+
+            orient = json["orient"].AsFloat;
+            if (json["agentOrient"] != null)
+                agentOrient = json["agentOrient"].AsFloat;
+
+            var ctg = target_go.AddComponent<CinemachineTargetGroup>();
+            var ctgt = new CinemachineTargetGroup.Target();
+            ctgt.target = starting_location.transform;
+            ctgt.weight = 1f;
+            var ctgt2 = new CinemachineTargetGroup.Target();
+            ctgt2.target = OtherTarget.transform;
+            ctgt2.weight = 1f;
+            ctg.m_Targets = new CinemachineTargetGroup.Target[] { ctgt, ctgt2 };
+
+            // this line worked:
+            //var directionTowardsSecondTarget = OtherTarget.transform.position - target_go.transform.position;
+            //target_go.transform.position = target_go.transform.position + new Vector3(directionTowardsSecondTarget.x, 0f, directionTowardsSecondTarget.z)  / 2;
+
+            float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
+            //cva.m_LookAt = ctg.transform;
+
+            Debug.Log("camera Distance: " + camDist.ToString());
+            Debug.Log("goalDirection: " + (orient).ToString());
+
+            cbod.FocusDistance = camDist;
+
+            host_go.transform.position = target_go.transform.position + degToVector3(orient + agentOrient) * camDist;
             host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
 
         }
