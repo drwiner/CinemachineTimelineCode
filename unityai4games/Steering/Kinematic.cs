@@ -9,7 +9,7 @@ namespace SteeringNamespace
     {
 
         private SteeringParams sp;
-        private Vector3 position;
+        public Vector3 position;
         private float rotation;
         private float orientation;
         private Vector3 velc;

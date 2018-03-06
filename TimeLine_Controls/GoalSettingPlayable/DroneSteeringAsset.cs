@@ -6,7 +6,7 @@ using UnityEngine.Timeline;
 
 
 
-public class SteeringAsset : PlayableAsset
+public class DroneSteeringAsset : PlayableAsset
 {
 
     public ExposedReference<GameObject> Boid;
@@ -16,7 +16,7 @@ public class SteeringAsset : PlayableAsset
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
-        var playable = ScriptPlayable<SteeringPlayable>.Create(graph);
+        var playable = ScriptPlayable<DroneSteeringPlayable>.Create(graph);
         var dronePlayable = playable.GetBehaviour();
 
         //var objectToMove = ObjectToMove.Resolve(playable.GetGraph().GetResolver());

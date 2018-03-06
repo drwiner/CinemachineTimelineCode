@@ -14,5 +14,6 @@ public class TrackAttributes {
     public static TrackManager TimeTrackManager;
     public static CinemachineTrackManager FilmTrackManager;
     public static PlayableTrackManager LerpTrackManager;
+    public static SteerTrackManager steerTrackManager;
     public static TileGraph TG;
 }

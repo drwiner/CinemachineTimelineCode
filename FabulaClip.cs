@@ -7,6 +7,7 @@ using UnityEngine.Playables;
 using Cinematography;
 using GoalNamespace;
 using GraphNamespace;
+using SteeringNamespace;
 
 namespace ClipNamespace
 {
@@ -91,7 +92,7 @@ namespace ClipNamespace
             float orientation = Mathf.Atan2(dest_minus_origin.z, -dest_minus_origin.x) * Mathf.Rad2Deg;
 
             var tempstart = new Vector3(starting_location.transform.position.x, agent.transform.position.y, starting_location.transform.position.z);
-            Transform start_transform = makeCustomizedTransform(tempstart, orientation).transform;
+            Transform start_transform = MakeCustomizedTransform(tempstart, orientation).transform;
 
             var nav_track_clip = TrackAttributes.LerpTrackManager.CreateClip(start, duration, Name);
 
@@ -99,7 +100,7 @@ namespace ClipNamespace
             nav_track_clip.duration = duration;
             LerpMoveObjectAsset lerp_clip = nav_track_clip.asset as LerpMoveObjectAsset;
             var tempend = new Vector3(ending_location.transform.position.x, agent.transform.position.y, ending_location.transform.position.z);
-            Transform end_transform = makeCustomizedTransform(tempend, orientation).transform;
+            Transform end_transform = MakeCustomizedTransform(tempend, orientation).transform;
             TransformBind(lerp_clip, agent, start_transform, end_transform);
 
             // control track - animate
@@ -158,6 +159,93 @@ namespace ClipNamespace
                 controlAnim = control_track_clip.asset as ControlPlayableAsset;
                 AnimateBind(controlAnim, animTimelineObject);
             }
+        }
+    }
+
+    public class AISteerFabulaClip : FabulaClip
+    {
+        public GameObject ending_location;
+        private Vector3 startNode, goalNode;
+
+        public AISteerFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
+            : base(json, p_timeline, p_director)
+        {
+            ending_location = GameObject.Find(json["end_pos_name"].Value);
+
+            ClipInfo CI = new ClipInfo(p_director, start, duration, Name);
+            CI.SteerClip(agent, starting_location.transform.position, ending_location.transform.position, false, true);
+
+            // number of segs should based on total path / slow radius
+            int numSegs = 3;
+            var lastPosition = starting_location.transform.position;
+            var distance = ending_location.transform.position - lastPosition;
+            var slowRadius = agent.GetComponent<DynoBehavior_TimelineControl>().slowRadius;
+            numSegs = (int)Mathf.Ceil(distance.magnitude / slowRadius);
+            var eachSeg = duration / numSegs;
+
+            var directionSeg = distance / numSegs;
+            for (int n = 0; n < numSegs; n++)
+            {
+
+                var p = lastPosition + directionSeg;
+
+                if (n == 0)
+                {
+                    lastPosition = p;
+                    continue;
+                }
+                CI = new ClipInfo(p_director, start + n * eachSeg, eachSeg, Name + n.ToString());
+                CI.SteerClip(agent, p, ending_location.transform.position, true, true);
+                lastPosition = p;
+            }
+        }
+    }
+
+    public class DroneSteerFabulaClip : FabulaClip
+    {
+        public GameObject ending_location;
+        private Vector3 startNode, goalNode;
+
+        public DroneSteerFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
+            : base(json, p_timeline, p_director)
+        {
+            ending_location = GameObject.Find(json["end_pos_name"].Value);
+
+            // create Steer for each edge in path
+            int numSegs = 4;
+            var eachSeg = duration / numSegs;
+            var lastPosition = starting_location.transform.position;
+            var directionSeg = (ending_location.transform.position - lastPosition) / numSegs;
+
+
+            // test 
+            ClipInfo CI = new ClipInfo(p_director, start, duration, Name);
+            CI.SteerClip(agent, starting_location.transform.position, ending_location.transform.position, true, true);
+            // for each segment
+            //for (int n = 0;  n < numSegs; n++)
+            //{
+            //    ClipInfo CI = new ClipInfo(p_director, start + n * eachSeg, eachSeg, Name);
+            //    var p = lastPosition + directionSeg;
+            //    // for test:
+            //    //GameObject intermed = new GameObject();
+            //    //intermed.name = n.ToString();
+            //    //intermed.transform.position = p;
+            //    if (n == 0)
+            //    {
+            //        CI.SteerClip(agent, lastPosition, p, true, false);
+            //    }
+            //    else if (n == numSegs - 1)
+            //    {
+            //        CI.SteerClip(agent, lastPosition, ending_location.transform.position, false, true);
+            //    }
+            //    else
+            //    {
+            //        CI.SteerClip(agent, lastPosition, p, false, false);
+            //    }
+            //    lastPosition = p;
+            //}
+
+
         }
     }
 

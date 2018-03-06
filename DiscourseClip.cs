@@ -54,20 +54,20 @@ namespace ClipNamespace
             film_track_clip = TrackAttributes.FilmTrackManager.CreateClip(start, duration, Name);
 
             // create the time travel on fabula timeline
-            createTimeClip();
+            CreateTimeClip();
 
             // create the target that the camera aims at
-            createTarget(json);
+            CreateTarget(json);
 
             // create the camera and position
-            createCameraObj(json);
+            CreateCameraObj(json);
 
             // create text UI
-            createTextClip(json);
+            CreateTextClip(json);
 
         }
 
-        public void createFrameType(JSONNode json)
+        public void CreateFrameType(JSONNode json)
         {
             var ft = json["scale"].Value;
             if (Enum.IsDefined(typeof(FramingType), ft))
@@ -83,17 +83,17 @@ namespace ClipNamespace
         /// Text Display Timeline Clip
         /// </summary>
         /// <param name="json"></param>
-        public virtual void createTextClip(JSONNode json)
+        public virtual void CreateTextClip(JSONNode json)
         {
             TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
-            assignClipAttributes(film_track_clip, textSwitcherClip, Name);
+            AssignClipAttributes(film_track_clip, textSwitcherClip, Name);
             var end_time = fab_start + duration;
             string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
             TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
 
         }
 
-        public void createTimeClip()
+        public void CreateTimeClip()
         {
             GameObject ttravel = GameObject.Instantiate(Resources.Load("time_travel", typeof(GameObject))) as GameObject;
             ttravel.GetComponent<timeStorage>().fab_time = fab_start;
@@ -102,7 +102,7 @@ namespace ClipNamespace
             AnimateBind(time_travel_clip, ttravel);
         }
 
-        public void createTarget(JSONNode json)
+        public void CreateTarget(JSONNode json)
         {
             agent = GameObject.Find(json["aim_target"]);
             BoxCollider bc = agent.GetComponent<BoxCollider>();
@@ -115,9 +115,9 @@ namespace ClipNamespace
             //target_go.GetComponent<BoxCollider>().center = bc.center;
         }
 
-        public void createCameraObj(JSONNode json)
+        public void CreateCameraObj(JSONNode json)
         {
-            createFrameType(json);
+            CreateFrameType(json);
             // create host for camera
             host_go = new GameObject("host_" + Name);
 
@@ -143,7 +143,7 @@ namespace ClipNamespace
 
         }
 
-        public virtual void assignCameraPosition(JSONNode json)
+        public virtual void AssignCameraPosition(JSONNode json)
         {
             Debug.Log("Assign camera position -- method not implemented.");
             throw new System.Exception();
@@ -166,9 +166,9 @@ namespace ClipNamespace
 
         }
 
-        public static Vector3 degToVector3(float degs)
+        public static Vector3 DegToVector3(float degs)
         {
-            float rads = mapToRange(degs * Mathf.Deg2Rad);
+            float rads = MapToRange(degs * Mathf.Deg2Rad);
             return new Vector3(Mathf.Cos(rads), 0f, Mathf.Sin(rads));
         }
 
@@ -213,21 +213,21 @@ namespace ClipNamespace
             start_disc_offset = json["start_dist_offset"].AsFloat;
             end_disc_offset = json["end_dist_offset"].AsFloat;
             
-            assignCameraPosition(json);
+            AssignCameraPosition(json);
        
             // specialize and bind
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
             CamBind(cinemachineShot, cva);
         }
 
-        public override void assignCameraPosition(JSONNode json)
+        public override void AssignCameraPosition(JSONNode json)
         {
 
             float orient = json["orient"].AsFloat;
             Vector3 dest_minus_start = (ending_location.transform.position - starting_location.transform.position).normalized;
             orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
 
-            var goal_direction = degToVector3(orient + orientation);
+            var goal_direction = DegToVector3(orient + orientation);
             agentStartPosition = starting_location.transform.position + dest_minus_start * start_disc_offset;
             agentEndPosition = starting_location.transform.position + dest_minus_start * end_disc_offset;
             agentMidPosition = agentStartPosition + (agentEndPosition - agentStartPosition)/2;
@@ -268,10 +268,10 @@ namespace ClipNamespace
             }
         }
 
-        public override void createTextClip(JSONNode json)
+        public override void CreateTextClip(JSONNode json)
         {
             TimelineClip textSwitcherClip = TrackAttributes.discTextTrack.CreateClip<TextSwitcherClip>();
-            assignClipAttributes(film_track_clip, textSwitcherClip, Name);
+            AssignClipAttributes(film_track_clip, textSwitcherClip, Name);
             var end_time = fab_start + duration;
             string message = "scale: " + json["scale"].Value + ", orient: " + json["orient"].AsFloat.ToString() + ", fabTimeSlice: [" + fab_start.ToString() + ": " + end_time.ToString() + "]";
             TextBind(textSwitcherClip.asset as TextSwitcherClip, message, 16, Color.white);
@@ -289,14 +289,14 @@ namespace ClipNamespace
         {
 
 
-            assignCameraPosition(json);
+            AssignCameraPosition(json);
 
             // specialize and bind
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
             CamBind(cinemachineShot, cva);
         }
 
-        public override void assignCameraPosition(JSONNode json)
+        public override void AssignCameraPosition(JSONNode json)
         {
 
             orient = json["orient"].AsFloat;
@@ -310,7 +310,7 @@ namespace ClipNamespace
 
             cbod.FocusDistance = camDist;
 
-            host_go.transform.position = target_go.transform.position + degToVector3(orient+ agentOrient) * camDist;
+            host_go.transform.position = target_go.transform.position + DegToVector3(orient+ agentOrient) * camDist;
             host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
 
         }
@@ -328,14 +328,14 @@ namespace ClipNamespace
         {
 
             OtherTarget = GameObject.Find(json["SecondTarget"].Value);
-            assignCameraPosition(json);
+            AssignCameraPosition(json);
 
             // specialize and bind
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
             CamBind(cinemachineShot, cva);
         }
 
-        public override void assignCameraPosition(JSONNode json)
+        public override void AssignCameraPosition(JSONNode json)
         {
 
             orient = json["orient"].AsFloat;
@@ -363,7 +363,7 @@ namespace ClipNamespace
 
             cbod.FocusDistance = camDist;
 
-            host_go.transform.position = target_go.transform.position + degToVector3(orient + agentOrient) * camDist;
+            host_go.transform.position = target_go.transform.position + DegToVector3(orient + agentOrient) * camDist;
             host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
 
         }

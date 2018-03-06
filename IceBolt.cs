@@ -64,6 +64,7 @@ namespace IceBoltNamespace
             // Load other Track Attributes
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
             TrackAttributes.LerpTrackManager = new PlayableTrackManager(fab_timeline, "Lerp Track");
+            TrackAttributes.steerTrackManager = new SteerTrackManager(fab_timeline, "Steer Track");
             TrackAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
             TrackAttributes.fabTextTrack = fab_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");
             disc_director.SetGenericBinding(TrackAttributes.discTextTrack, GameObject.Find("DiscourseText").GetComponent<Text>());
@@ -101,6 +102,19 @@ namespace IceBoltNamespace
                 else if (clip["type"] == "steering")
                 {
                     new SteerFabulaClip(clip, fab_timeline, fab_director);
+                }
+                else if (clip["type"] == "droneSteer")
+                {
+                    new DroneSteerFabulaClip(clip, fab_timeline, fab_director);
+                }
+                else if (clip["type"] == "AISteer")
+                {
+                    new AISteerFabulaClip(clip, fab_timeline, fab_director);
+                }
+                else
+                {
+                    Debug.Log("Discourse clip type not detected");
+                    throw new System.Exception();
                 }
             }
 

@@ -9,5 +9,16 @@ namespace SteeringNamespace
     {
         public Vector3 force = new Vector3(0f, 0f, 0f);
         public float torque = 0f;
+
+        public DynoSteering(Vector3 _force, float _torque)
+        {
+            force = _force;
+            torque = _torque;
+        }
+
+        public DynoSteering()
+        {
+
+        }
     }
 }

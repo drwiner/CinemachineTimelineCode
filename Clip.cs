@@ -79,7 +79,7 @@ namespace ClipNamespace
             director.SetReferenceValue(cpa.sourceGameObject.exposedName, ato);
         }
 
-        public static GameObject makeCustomizedTransform(Vector3 pos, float orientation)
+        public static GameObject MakeCustomizedTransform(Vector3 pos, float orientation)
         {
             GameObject t = new GameObject();
             t.transform.position = pos;
@@ -87,14 +87,14 @@ namespace ClipNamespace
             return t;
         }
 
-        public static void assignClipAttributes(TimelineClip origin, TimelineClip new_clip, string Name)
+        public static void AssignClipAttributes(TimelineClip origin, TimelineClip new_clip, string Name)
         {
             new_clip.start = origin.start;
             new_clip.duration = origin.duration;
             new_clip.displayName = Name;
         }
 
-        public static float mapToRange(float radians)
+        public static float MapToRange(float radians)
         {
             float targetRadians = radians;
             while (targetRadians <= -Mathf.PI)
@@ -139,6 +139,15 @@ namespace ClipNamespace
             director.SetReferenceValue(cpa.sourceGameObject.exposedName, ato);
         }
 
+        public void SteerBind(SteeringAsset sa, GameObject boid, Vector3 startSteer, Vector3 endSteer, bool depart, bool arrive)
+        {
+            sa.Boid.exposedName = UnityEditor.GUID.Generate().ToString();
+            sa.arrive = arrive;
+            sa.depart = depart;
+            sa.startPos = startSteer;
+            sa.endPos = endSteer;
+            director.SetReferenceValue(sa.Boid.exposedName, boid);
+        }
 
         public void SimpleLerpClip(GameObject agent, Transform startPos, Transform goalPos)
         {
@@ -151,9 +160,19 @@ namespace ClipNamespace
             LerpMoveObjectAsset lerp_clip = lerpClip.asset as LerpMoveObjectAsset;
             //goalPos.rotation = Quaternion.Euler(0f, orientation, 0f);
             TransformBind(lerp_clip, agent, 
-                Clip.makeCustomizedTransform(startPos.position, orientation).transform,
-                Clip.makeCustomizedTransform(goalPos.position, orientation).transform);
+                Clip.MakeCustomizedTransform(startPos.position, orientation).transform,
+                Clip.MakeCustomizedTransform(goalPos.position, orientation).transform);
 
+        }
+
+        public void SteerClip(GameObject go, Vector3 startPos, Vector3 goalPos, bool depart, bool arrival)
+        {
+            var steerClip = TrackAttributes.steerTrackManager.CreateClip(start, duration, display);
+            steerClip.start = start;
+            steerClip.duration = duration;
+            SteeringAsset steer_clip = steerClip.asset as SteeringAsset;
+            //go.GetComponent<SteerClip>
+            SteerBind(steer_clip, go, startPos, goalPos, depart, arrival);
         }
 
     }

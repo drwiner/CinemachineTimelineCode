@@ -4,9 +4,9 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using SteeringNamespace;
 
-public class SteeringPlayable : PlayableBehaviour
+public class DroneSteeringPlayable : PlayableBehaviour
 {
-    private DynoBehavior_TimelineControl _Controller;
+    private DroneAIController _droneController;
     private GameObject _gameObject;
     private Vector3 _steerTo;
     private Vector3 _steerFrom;
@@ -22,17 +22,16 @@ public class SteeringPlayable : PlayableBehaviour
         _gameObject = gameObject;
         _steerTo = lerpMoveTo;
         _steerFrom = lerpMoveFrom;
-        _Controller = _gameObject.GetComponent<DynoBehavior_TimelineControl>();
+        _droneController = _gameObject.GetComponent<DroneAIController>();
         _arrival = arriving;
         _departure = departing;
     }
 
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
-        if (!_Controller.isDone())
-            _Controller.steering = true;
-
-        //Debug.Log(_gameObject.transform.position);
+        Debug.Log(_gameObject.transform.position);
+        //if (!_droneController.isDone())
+        //    _droneController.steering = true;
     }
 
 
@@ -41,10 +40,10 @@ public class SteeringPlayable : PlayableBehaviour
         if (_gameObject != null)
         {
             _originalPosition = _gameObject.transform.position;
-            //Debug.Log(_gameObject.transform.position);
+            
             _gameObject.transform.position = _steerFrom;
-            //Debug.Log(_gameObject.transform.position);
-            _Controller.Steer(_steerFrom, _steerTo, _departure, _arrival);
+            Debug.Log(_gameObject.transform.position);
+            _droneController.Steer(_steerFrom, _steerTo, _arrival, _departure);
             _originalRotation = _gameObject.transform.rotation;
         }
     }

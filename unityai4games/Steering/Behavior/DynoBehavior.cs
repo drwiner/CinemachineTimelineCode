@@ -36,9 +36,7 @@ namespace SteeringNamespace
             ds_force = arrive.getSteering();
             ds_torque = align.getSteering();
 
-            ds = new DynoSteering();
-            ds.force = ds_force.force;
-            ds.torque = ds_torque.torque;
+            ds = new DynoSteering(ds_force.force, ds_torque.torque);
 
             // Update Kinematic Steering
             kso = char_RigidBody.updateSteering(ds, Time.deltaTime);

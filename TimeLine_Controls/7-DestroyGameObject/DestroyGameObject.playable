@@ -11,13 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 337831424, guid: 844f815391db42d49455cbf1a7bfc434, type: 3}
   m_Name: DestroyGameObject
   m_EditorClassIdentifier: 
-  m_Id: 0
   m_NextId: 5
   m_Tracks:
   - {fileID: 114614045201706542}
   m_FixedDuration: 0
   m_EditorSettings:
-    fps: 60
+    m_Framerate: 60
   m_DurationMode: 0
 --- !u!114 &114045283236350360
 MonoBehaviour:
@@ -60,7 +59,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Locked: 0
   m_Muted: 0
-  m_InlineAnimationCurveHeight: 100
   m_CustomPlayableFullTypename: 
   m_AnimClip: {fileID: 0}
   m_Parent: {fileID: 11400000}
@@ -117,13 +115,13 @@ MonoBehaviour:
     m_BlendOutCurveMode: 0
     m_ExposedParameterNames: []
     m_AnimationCurves: {fileID: 0}
-    m_ID: -1639825527
     m_Recordable: 0
     m_PostExtrapolationMode: 0
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: DestroyObjectAsset
+    m_Version: 1
   - m_Start: 3.5833333333333335
     m_ClipIn: 0
     m_Asset: {fileID: 114407545441997040}
@@ -175,13 +173,13 @@ MonoBehaviour:
     m_BlendOutCurveMode: 0
     m_ExposedParameterNames: []
     m_AnimationCurves: {fileID: 0}
-    m_ID: -730572647
     m_Recordable: 0
     m_PostExtrapolationMode: 0
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: DestroyObjectAsset
+    m_Version: 1
   - m_Start: 6.033333333331333
     m_ClipIn: 0
     m_Asset: {fileID: 114045283236350360}
@@ -233,13 +231,13 @@ MonoBehaviour:
     m_BlendOutCurveMode: 0
     m_ExposedParameterNames: []
     m_AnimationCurves: {fileID: 0}
-    m_ID: -1665818831
     m_Recordable: 0
     m_PostExtrapolationMode: 0
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
     m_DisplayName: DestroyObjectAsset
+    m_Version: 1
 --- !u!114 &114809316832337782
 MonoBehaviour:
   m_ObjectHideFlags: 1
