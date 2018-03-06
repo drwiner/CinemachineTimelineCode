@@ -5,13 +5,13 @@
 		"start_pos_name": "cartoonsky",
 		"end_pos_name": "bloodfire",
 		"start": 0,
-		"duration": 3.5,
+		"duration": 5.5,
 		"type": "nav_cam",
 		"start_dist_offset": 0,
-		"end_dist_offset": 7.5,
+		"end_dist_offset": 5.5,
 		"aim_target": "Drone",
 		"orient": "90", 
-		"scale": "Waist",
+		"scale": "Long",
 		"fab_step_name": "steer(Drone, cartoonsky, bloodfire)",
 		"fab_start": 0
 

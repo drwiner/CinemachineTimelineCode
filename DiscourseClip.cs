@@ -197,6 +197,10 @@ namespace ClipNamespace
 
         public PlayableTrack ntrack;
 
+        private Vector3 agentStartPosition, agentMidPosition, agentEndPosition;
+
+        private GameObject focusTarget;
+
         public float orient;
  
         public NavCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
@@ -223,25 +227,29 @@ namespace ClipNamespace
             Vector3 dest_minus_start = (ending_location.transform.position - starting_location.transform.position).normalized;
             orientation = Mathf.Atan2(dest_minus_start.x, -dest_minus_start.z) * Mathf.Rad2Deg - 90f;
 
-            Vector3 goal_direction = degToVector3(orient + orientation);
-            
-            Vector3 agent_starting_position = starting_location.transform.position + dest_minus_start * start_disc_offset;
-            Vector3 agent_middle_position = agent_starting_position + dest_minus_start * (end_disc_offset / 2);
+            var goal_direction = degToVector3(orient + orientation);
+            agentStartPosition = starting_location.transform.position + dest_minus_start * start_disc_offset;
+            agentEndPosition = starting_location.transform.position + dest_minus_start * end_disc_offset;
+            agentMidPosition = agentStartPosition + (agentEndPosition - agentStartPosition)/2;
+            Debug.Log(agentStartPosition.ToString() + agentEndPosition.ToString() + agentMidPosition.ToString());
+            focusTarget = new GameObject();
+            focusTarget.transform.position = agentMidPosition;
+            var bc = focusTarget.AddComponent<BoxCollider>();
+            bc.size = agent.GetComponent<BoxCollider>().size;
 
-
-            float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
+            float camDist = CinematographyAttributes.CalcCameraDistance(focusTarget, frame_type);
 
             Debug.Log("camera Distance: " + camDist.ToString());
             Debug.Log("goalDirection: " + (orient + orientation).ToString());
 
             cbod.FocusDistance = camDist;
 
-            var camHeight = .75f * agent.GetComponent<BoxCollider>().size.y - agent_middle_position.y;
+            var camHeight = .75f * bc.size.y;
 
             // position of camera's height depends on angle
-            host_go.transform.position = agent_middle_position + (goal_direction * camDist) + new Vector3(0f, camHeight, 0f); ;
+            host_go.transform.position = agentMidPosition + (goal_direction * camDist) + new Vector3(0f, camHeight, 0f); ;
                 //+ new Vector3(0f, target_go.transform.position.y, 0f);
-            host_go.transform.rotation.SetLookRotation(agent_starting_position);
+            host_go.transform.rotation.SetLookRotation(agentMidPosition);
 
             if (json["follow_target"] != null)
             {
