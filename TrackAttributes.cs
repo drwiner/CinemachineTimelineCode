@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TrackAttributes {
+public class TrackAttributes  {
     public static TextSwitcherTrack discTextTrack;
     public static TextSwitcherTrack fabTextTrack;
     public static Text discText;

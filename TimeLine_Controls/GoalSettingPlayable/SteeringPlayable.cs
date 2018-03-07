@@ -20,6 +20,7 @@ public class SteeringPlayable : PlayableBehaviour
 
     public void Initialize(GameObject gameObject, Vector3 lerpMoveFrom, Vector3 lerpMoveTo, bool departing, bool arriving, bool isMaster)
     {
+        //Debug.Log("INIT");
         _gameObject = gameObject;
         _steerTo = lerpMoveTo;
         _steerFrom = lerpMoveFrom;

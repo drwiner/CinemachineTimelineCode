@@ -1,6 +1,6 @@
 [
 	{
-		"name": "DroneMoves", 
+		"name": "SphereSteer", 
 		
 		"start_pos_name": "cartoonsky",
 		"end_pos_name": "bloodfire",
@@ -9,16 +9,16 @@
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
-		"aim_target": "Drone",
+		"aim_target": "Sphere",
 		"orient": "270", 
 		"scale": "Long",
-		"fab_step_name": "steer(Drone, cartoonsky, bloodfire)",
+		"fab_step_name": "steer(Sphere, cartoonsky, bloodfire)",
 		"fab_start": 0
 
     },
 
 	{
-		"name": "DroneMovesAGAIN", 
+		"name": "SphereSteer1", 
 		
 		"start_pos_name": "cartoonsky",
 		"end_pos_name": "bloodfire",
@@ -27,17 +27,17 @@
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
-		"aim_target": "Drone",
+		"aim_target": "Sphere1",
 		"orient": "90", 
 		"scale": "Long",
 		"fab_step_name": "steer(Drone, cartoonsky, bloodfire)",
-		"fab_start": 2
+		"fab_start": 6
 
     },
 
 
 	{
-		"name": "DroneMovesAGAIN", 
+		"name": "SphereSteer2", 
 		
 		"start_pos_name": "cartoonsky",
 		"end_pos_name": "bloodfire",
@@ -46,17 +46,17 @@
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
-		"aim_target": "Drone",
+		"aim_target": "Sphere",
 		"orient": "180", 
-		"scale": "Long",
+		"scale": "Waist",
 		"fab_step_name": "steer(Drone, cartoonsky, bloodfire)",
-		"fab_start": 5
+		"fab_start": 6
 
     },
 
 
 	{
-		"name": "DroneMovesAGAIN", 
+		"name": "SphereSteer3", 
 		
 		"start_pos_name": "cartoonsky",
 		"end_pos_name": "bloodfire",
@@ -65,11 +65,11 @@
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
-		"aim_target": "Drone",
+		"aim_target": "Sphere1",
 		"orient": "0", 
 		"scale": "Long",
-		"fab_step_name": "steer(Drone, cartoonsky, bloodfire)",
-		"fab_start": 8
+		"fab_step_name": "steer(Sphere1, cartoonsky, bloodfire)",
+		"fab_start": 12
 
     }
 	

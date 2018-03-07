@@ -16,6 +16,7 @@ public class SteeringAsset : PlayableAsset
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
+        Debug.Log("PLAYABLE INIT");
         var playable = ScriptPlayable<SteeringPlayable>.Create(graph);
         var dronePlayable = playable.GetBehaviour();
 

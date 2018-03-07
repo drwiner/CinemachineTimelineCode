@@ -27,6 +27,7 @@ namespace SteeringNamespace
         //private DynoSteering ds_torque;
 
         public bool steering = false;
+        private bool initiatedExternally = false;
         public Vector3 currentGoal;
 
         public float goalRadius = 0.5f;
@@ -42,7 +43,18 @@ namespace SteeringNamespace
         private float torque;
 
         // Use this for initialization
-        void Start()
+        //void Awake()
+        //{
+        //    PD = GameObject.FindGameObjectWithTag("FabulaTimeline").GetComponent<PlayableDirector>();
+        //    SP = GetComponent<SteeringParams>();
+        //    KinematicBody = GetComponent<Kinematic>();
+        //    SteerList = new List<List<SteeringPlayable>>();
+        //    //SteerList.Add(new List<SteeringPlayable>());
+        //    LockedList = new List<bool>();
+        //    //LockedList.Add(false);
+        //}
+
+        public void InitiateExternally()
         {
             PD = GameObject.FindGameObjectWithTag("FabulaTimeline").GetComponent<PlayableDirector>();
             SP = GetComponent<SteeringParams>();
@@ -50,7 +62,7 @@ namespace SteeringNamespace
             SteerList = new List<List<SteeringPlayable>>();
             //SteerList.Add(new List<SteeringPlayable>());
             LockedList = new List<bool>();
-            //LockedList.Add(false);
+            initiatedExternally = true;
         }
 
         public bool isDone()
@@ -178,6 +190,7 @@ namespace SteeringNamespace
 
         public int Register(SteeringPlayable P, bool isMaster) 
         {
+            
             var whichList = SteerList.Count-1;
             if (whichList < 0)
             {
@@ -211,15 +224,22 @@ namespace SteeringNamespace
         // Update is called once per frame
         void Update()
         {
+            if (!initiatedExternally)
+            {
+                throw new System.Exception();
+            }
             if (steering)
             {
                 seekTask();
                 alignTask();
 
                 //steering = false;
-                kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
-                transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
-                transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
+                if (force != Vector3.zero || torque != 0)
+                {
+                    kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
+                    transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
+                    transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
+                }
             }
         }
     }

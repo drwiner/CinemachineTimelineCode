@@ -1,0 +1,51 @@
+[
+    {
+        "end_pos_name": "bloodfire", 
+        "duration": 5.0, 
+        "start": 0, 
+        "gameobject_name": "Sphere", 
+        "start_pos_name": "cartoonsky", 
+        "method_used": "nav_act", 
+        "step_num": "1", 
+        "name": "steer(Sphere, cartoonsky, bloodfire)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	{
+        "end_pos_name": "grey", 
+        "duration": 10.0, 
+        "start": 3, 
+        "gameobject_name": "Sphere", 
+        "start_pos_name": "bloodfire", 
+        "method_used": "nav_act", 
+        "step_num": "2", 
+        "name": "steer(Sphere, bloodfire, grey)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    }.
+	{
+        "end_pos_name": "bloodfire", 
+        "duration": 10, 
+        "start": 0, 
+        "gameobject_name": "Sphere1", 
+        "start_pos_name": "grey", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(Sphere, bloodfire, grey)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    }
+	.
+	{
+        "end_pos_name": "cartoonsky", 
+        "duration": 5, 
+        "start": 8, 
+        "gameobject_name": "Sphere1", 
+        "start_pos_name": "bloodfire", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(Sphere, bloodfire, grey)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    }
+]

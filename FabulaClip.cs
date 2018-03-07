@@ -36,6 +36,7 @@ namespace ClipNamespace
             starting_location = GameObject.Find(json["start_pos_name"]);
             agent = GameObject.Find(json["gameobject_name"]);
 
+
             animation_string = json["animation_name"];
             step_id = json["step_id"];
             step_num = json["step_num"];
@@ -170,6 +171,10 @@ namespace ClipNamespace
         public AISteerFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
             : base(json, p_timeline, p_director)
         {
+
+            var TC = agent.GetComponent<DynoBehavior_TimelineControl>();
+            TC.InitiateExternally();
+
             ending_location = GameObject.Find(json["end_pos_name"].Value);
 
             ClipInfo CI = new ClipInfo(p_director, start, duration, Name);
