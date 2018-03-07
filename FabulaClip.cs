@@ -124,7 +124,7 @@ namespace ClipNamespace
         private Stack<Node> Path;
         private PlayableTrack ntrack;
 
-
+        
         public SteerFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director) 
             : base(json, p_timeline, p_director)
         {
@@ -144,6 +144,7 @@ namespace ClipNamespace
             foreach (Node p in Path)
             {
                 ClipInfo CI = new ClipInfo(p_director, start + n*eachSeg, eachSeg, Name);
+                
                 CI.SimpleLerpClip(agent, lastNode.transform, p.transform);
                 lastNode = p;
                 n++;
@@ -165,7 +166,6 @@ namespace ClipNamespace
     public class AISteerFabulaClip : FabulaClip
     {
         public GameObject ending_location;
-        private Vector3 startNode, goalNode;
 
         public AISteerFabulaClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
             : base(json, p_timeline, p_director)
@@ -173,21 +173,27 @@ namespace ClipNamespace
             ending_location = GameObject.Find(json["end_pos_name"].Value);
 
             ClipInfo CI = new ClipInfo(p_director, start, duration, Name);
-            CI.SteerClip(agent, starting_location.transform.position, ending_location.transform.position, false, true);
+
+            // Here, we need to indicate that this is a master or not. 
+            CI.SteerClip(agent, starting_location.transform.position, ending_location.transform.position, false, true, true);
 
             // number of segs should based on total path / slow radius
-            int numSegs = 3;
             var lastPosition = starting_location.transform.position;
             var distance = ending_location.transform.position - lastPosition;
+
+            var KB = agent.GetComponent<Kinematic>();
+            var SP = agent.GetComponent<SteeringParams>();
+
             var slowRadius = agent.GetComponent<DynoBehavior_TimelineControl>().slowRadius;
-            numSegs = (int)Mathf.Ceil(distance.magnitude / slowRadius);
+            int numSegs = (int)Mathf.Ceil(distance.magnitude / slowRadius);
             var eachSeg = duration / numSegs;
 
             var directionSeg = distance / numSegs;
             for (int n = 0; n < numSegs; n++)
             {
+                var p = SimulateSteering(starting_location.transform.position, ending_location.transform.position, SP, n * eachSeg);
 
-                var p = lastPosition + directionSeg;
+                //var p = lastPosition + directionSeg;
 
                 if (n == 0)
                 {
@@ -195,9 +201,19 @@ namespace ClipNamespace
                     continue;
                 }
                 CI = new ClipInfo(p_director, start + n * eachSeg, eachSeg, Name + n.ToString());
-                CI.SteerClip(agent, p, ending_location.transform.position, true, true);
+
+                CI.SteerClip(agent, lastPosition, ending_location.transform.position, true, true, false);
                 lastPosition = p;
             }
+        }
+
+        public Vector3 SimulateSteering(Vector3 startNode, Vector3 endNode, SteeringParams SP, float time)
+        {
+
+            var direction = endNode - startNode;
+            var _velc = (direction).normalized * SP.MAXSPEED;
+
+            return startNode + _velc * time;
         }
     }
 
@@ -220,7 +236,7 @@ namespace ClipNamespace
 
             // test 
             ClipInfo CI = new ClipInfo(p_director, start, duration, Name);
-            CI.SteerClip(agent, starting_location.transform.position, ending_location.transform.position, true, true);
+            CI.SteerClip(agent, starting_location.transform.position, ending_location.transform.position, true, true, true);
             // for each segment
             //for (int n = 0;  n < numSegs; n++)
             //{

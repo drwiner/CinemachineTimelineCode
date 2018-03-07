@@ -139,13 +139,14 @@ namespace ClipNamespace
             director.SetReferenceValue(cpa.sourceGameObject.exposedName, ato);
         }
 
-        public void SteerBind(SteeringAsset sa, GameObject boid, Vector3 startSteer, Vector3 endSteer, bool depart, bool arrive)
+        public void SteerBind(SteeringAsset sa, GameObject boid, Vector3 startSteer, Vector3 endSteer, bool depart, bool arrive, bool isMaster)
         {
             sa.Boid.exposedName = UnityEditor.GUID.Generate().ToString();
             sa.arrive = arrive;
             sa.depart = depart;
             sa.startPos = startSteer;
             sa.endPos = endSteer;
+            sa.master = isMaster;
             director.SetReferenceValue(sa.Boid.exposedName, boid);
         }
 
@@ -165,14 +166,14 @@ namespace ClipNamespace
 
         }
 
-        public void SteerClip(GameObject go, Vector3 startPos, Vector3 goalPos, bool depart, bool arrival)
+        public void SteerClip(GameObject go, Vector3 startPos, Vector3 goalPos, bool depart, bool arrival, bool isMaster)
         {
             var steerClip = TrackAttributes.steerTrackManager.CreateClip(start, duration, display);
             steerClip.start = start;
             steerClip.duration = duration;
             SteeringAsset steer_clip = steerClip.asset as SteeringAsset;
             //go.GetComponent<SteerClip>
-            SteerBind(steer_clip, go, startPos, goalPos, depart, arrival);
+            SteerBind(steer_clip, go, startPos, goalPos, depart, arrival, isMaster);
         }
 
     }

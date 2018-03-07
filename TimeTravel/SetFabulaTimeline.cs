@@ -27,7 +27,7 @@ public class SetFabulaTimeline : MonoBehaviour {
         while (ft < pd.time)
         {
             pd.time -= .1f;
-            pd.Evaluate();
+            //pd.Evaluate();
         }
     }
 
@@ -36,7 +36,7 @@ public class SetFabulaTimeline : MonoBehaviour {
         while (ft > pd.time)
         {
             pd.time += .1f;
-            pd.Evaluate();
+            //pd.Evaluate();
         }
     }
 
@@ -57,6 +57,7 @@ public class SetFabulaTimeline : MonoBehaviour {
         fab_time = (float)pd.time;
         if (pd.state != PlayState.Playing)
         {
+            //Debug.Log("test this one");
             pd.Evaluate();
             pd.Play();
         }

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23582530460978956}
   - component: {fileID: 65976588128181606}
   - component: {fileID: 114495645888236180}
-  - component: {fileID: 114963022282490164}
+  - component: {fileID: 114815962733670708}
   - component: {fileID: 114498301373782930}
   m_Layer: 0
   m_Name: Sphere
@@ -106,13 +106,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1974585903736612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c83a55c54ee7f0f4e999f46270465128, type: 3}
+  m_Script: {fileID: 11500000, guid: 94a1ebff0f3d70748b4a0b12f242934c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAXSPEED: 3
-  MAXANGULAR: 6
-  MAXACCEL: 6
-  MAXROTATION: 3
+  position: {x: 0, y: 0, z: 0}
 --- !u!114 &114498301373782930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,17 +118,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1974585903736612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987a46892cf18cb42815b3806d9fdf00, type: 3}
+  m_Script: {fileID: 11500000, guid: a5b780fc61da4c94a9cdc4e226759c16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  steering: 0
-  currentGoal: {x: 0, y: 0, z: 0}
-  goalRadius: 1
-  slowRadius: 5
-  angularSlowRadius: 0.5
-  arriveTime: 0.25
-  alignTime: 0.25
---- !u!114 &114963022282490164
+  MAXSPEED: 3
+  MAXANGULAR: 6
+  MAXACCEL: 6
+  MAXROTATION: 3
+--- !u!114 &114815962733670708
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -139,7 +133,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1974585903736612}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e009bcc4ed2bb0b4790493fd7158f821, type: 3}
+  m_Script: {fileID: 11500000, guid: 12feab4ff99a3cf47a7028ae90c083f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
+  steering: 0
+  currentGoal: {x: 0, y: 0, z: 0}
+  goalRadius: 0.5
+  slowRadius: 2.5
+  angularSlowRadius: 1.2
+  arriveTime: 0.25
+  alignTime: 0.25

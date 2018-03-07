@@ -10,7 +10,7 @@ public class SteeringAsset : PlayableAsset
 {
 
     public ExposedReference<GameObject> Boid;
-    public bool arrive, depart;
+    public bool arrive, depart, master;
     public Vector3 startPos, endPos;
     //public ExposedReference<SteerClipParams> SteerParams;
 
@@ -26,7 +26,7 @@ public class SteeringAsset : PlayableAsset
         //var steerParams = SteerParams.Resolve(playable.GetGraph().GetResolver());
 
         //dronePlayable.Initialize(boid, steerParams.startPos, steerParams.endPos, steerParams.depart, steerParams.arrive);
-        dronePlayable.Initialize(boid, startPos, endPos, depart, arrive);
+        dronePlayable.Initialize(boid, startPos, endPos, depart, arrive, master);
         return playable;
     }
 }

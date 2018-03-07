@@ -152,6 +152,11 @@ namespace IceBoltNamespace
 
         }
 
+        public bool CheckTimeTravel()
+        {
+            return false;
+        }
+
 
     }
 }

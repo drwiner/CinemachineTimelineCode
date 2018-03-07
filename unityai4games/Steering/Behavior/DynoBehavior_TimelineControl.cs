@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace SteeringNamespace
 {
@@ -12,11 +13,15 @@ namespace SteeringNamespace
         private Kinematic KinematicBody;
         private KinematicSteering ks;
         private SteeringParams SP;
+        private PlayableDirector PD;
 
         private KinematicSteeringOutput kso;
         private DynoSeek seek;
         private DynoArrive arrive;
         private DynoAlign align;
+
+        private List<List<SteeringPlayable>> SteerList;
+        private List<bool> LockedList;
 
         //private DynoSteering ds_force;
         //private DynoSteering ds_torque;
@@ -27,8 +32,8 @@ namespace SteeringNamespace
         public float goalRadius = 0.5f;
         public float slowRadius = 2.5f;
         public float angularSlowRadius = 1.2f;
-        public float arriveTime = 1f;
-        public float alignTime = 1f;
+        public float arriveTime = .25f;
+        public float alignTime = .25f;
 
         private Action seekTask;
         private Action alignTask;
@@ -39,8 +44,13 @@ namespace SteeringNamespace
         // Use this for initialization
         void Start()
         {
+            PD = GameObject.FindGameObjectWithTag("FabulaTimeline").GetComponent<PlayableDirector>();
             SP = GetComponent<SteeringParams>();
             KinematicBody = GetComponent<Kinematic>();
+            SteerList = new List<List<SteeringPlayable>>();
+            //SteerList.Add(new List<SteeringPlayable>());
+            LockedList = new List<bool>();
+            //LockedList.Add(false);
         }
 
         public bool isDone()
@@ -145,10 +155,59 @@ namespace SteeringNamespace
                 // instantaneously set orientation and velocity
                 KinematicBody.setVelocity(currentVelocity);
                 KinematicBody.setOrientation(KinematicBody.getNewOrientation(currentVelocity));
+                transform.position = new Vector3(KinematicBody.position.x, transform.position.y, KinematicBody.position.z);
+                transform.rotation = Quaternion.Euler(0f, KinematicBody.getOrientation() * Mathf.Rad2Deg - 90f, 0f);
             }
 
             steering = true;
         }
+
+        public void InformMasterIsPlaying(int whichList, bool isPlaying)
+        {
+            LockedList[whichList] = isPlaying;
+        }
+
+        public bool CheckMasterIsPlaying(int whichList)
+        {
+            if (LockedList[whichList])
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public int Register(SteeringPlayable P, bool isMaster) 
+        {
+            var whichList = SteerList.Count-1;
+            if (whichList < 0)
+            {
+                whichList = 0;
+            }
+
+            if (isMaster)
+            {
+                var newList = new List<SteeringPlayable>();
+                newList.Add(P);
+                SteerList.Add(newList);
+                LockedList.Add(false);
+                if (SteerList.Count == 1)
+                {
+                    return 0;
+                }
+                return whichList + 1;
+            }
+            
+            if (SteerList[whichList] == null)
+            {
+                Debug.Log("master should always get added first");
+                throw new System.Exception();
+            }
+            SteerList[whichList].Add(P);
+            return whichList;
+        }
+
+        //public void RegisterPlayableToList
+
         // Update is called once per frame
         void Update()
         {
