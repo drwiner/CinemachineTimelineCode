@@ -141,6 +141,9 @@ namespace ClipNamespace
             cbmcp.m_AmplitudeGain = 0.5f;
             cbmcp.m_FrequencyGain = 1f;
 
+            //var clearShot = host_go.AddComponent<CinemachineClearShot>();
+            
+            //clearShot.ChildCameras
         }
 
         public virtual void AssignCameraPosition(JSONNode json)
@@ -170,6 +173,21 @@ namespace ClipNamespace
         {
             float rads = MapToRange(degs * Mathf.Deg2Rad);
             return new Vector3(Mathf.Cos(rads), 0f, Mathf.Sin(rads));
+        }
+
+        public static float FindNearPlane(Vector3 origin, Vector3 direction, float dist)
+        {
+            var n = 1;
+            while (true)
+            {
+                Debug.Log("ray casting");
+                n++;
+                if (!Physics.Raycast(origin, -direction, dist - n))
+                {
+                    break;
+                }
+            }
+           return n;
         }
 
     }
@@ -266,6 +284,13 @@ namespace ClipNamespace
                 camera_origin.transform.position = host_go.transform.position;
                 TransformBind(lerp_clip, host_go, camera_origin.transform, camera_destination.transform);
             }
+
+            //var fwd = host_go.transform.TransformDirection(Vector3.forward);
+
+            if (Physics.Raycast(target_go.transform.position, -goal_direction, camDist-2))
+            {
+                cva.m_Lens.NearClipPlane = FindNearPlane(target_go.transform.position, goal_direction, camDist);
+            }
         }
 
         public override void CreateTextClip(JSONNode json)
@@ -305,14 +330,15 @@ namespace ClipNamespace
 
             float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
 
-            Debug.Log("camera Distance: " + camDist.ToString());
-            Debug.Log("goalDirection: " + (orient).ToString());
-
             cbod.FocusDistance = camDist;
-
-            host_go.transform.position = target_go.transform.position + DegToVector3(orient+ agentOrient) * camDist;
+            var goalDirection = DegToVector3(orient + agentOrient);
+            host_go.transform.position = target_go.transform.position + goalDirection * camDist;
             host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
 
+            if (Physics.Raycast(target_go.transform.position, -goalDirection, camDist - 2))
+            {
+                cva.m_Lens.NearClipPlane = FindNearPlane(target_go.transform.position, goalDirection, camDist);
+            }
         }
 
     }
@@ -362,10 +388,14 @@ namespace ClipNamespace
             Debug.Log("goalDirection: " + (orient).ToString());
 
             cbod.FocusDistance = camDist;
-
-            host_go.transform.position = target_go.transform.position + DegToVector3(orient + agentOrient) * camDist;
+            var goalDirection = DegToVector3(orient + agentOrient);
+            host_go.transform.position = target_go.transform.position + goalDirection * camDist;
             host_go.transform.rotation.SetLookRotation(starting_location.transform.position);
 
+            if (Physics.Raycast(target_go.transform.position, -goalDirection, camDist - 2))
+            {
+                cva.m_Lens.NearClipPlane = FindNearPlane(target_go.transform.position, goalDirection, camDist);
+            }
         }
 
     }
