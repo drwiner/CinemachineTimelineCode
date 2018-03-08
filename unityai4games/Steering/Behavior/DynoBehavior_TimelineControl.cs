@@ -91,8 +91,8 @@ namespace SteeringNamespace
                 targetSpeed = SP.MAXSPEED * distance / slowRadius;
             }
 
-            var targetVelocity = direction;
-            targetVelocity.Normalize();
+            var targetVelocity = direction.normalized;
+            //targetVelocity.Normalize();
             targetVelocity = targetVelocity * targetSpeed;
 
             force = targetVelocity - KinematicBody.getVelocity();
@@ -157,6 +157,7 @@ namespace SteeringNamespace
             seekTask = () => Seek(arrive);
             alignTask = Align;
 
+            transform.position = origin;
             KinematicBody.position = transform.position;
 
             if (departed)
@@ -237,9 +238,17 @@ namespace SteeringNamespace
                 //steering = false;
                 if (force != Vector3.zero || torque != 0)
                 {
+                    
                     kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
                     transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
                     transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
+                }
+                else
+                {
+                    if ((currentGoal - transform.position).magnitude > goalRadius)
+                    {
+                        KinematicBody.setVelocity(Vector3.zero);
+                    }
                 }
             }
         }

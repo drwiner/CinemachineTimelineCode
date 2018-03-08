@@ -1431,18 +1431,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801829194281666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12feab4ff99a3cf47a7028ae90c083f5, type: 3}
+  m_Script: {fileID: 11500000, guid: e009bcc4ed2bb0b4790493fd7158f821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  steering: 0
-  currentGoal: {x: 0, y: 0, z: 0}
-  goalRadius: 0.25
-  slowRadius: 2.5
-  angularSlowRadius: 1.2
-  arriveTime: 0.25
-  alignTime: 0.25
-  force: {x: 0, y: 0, z: 0}
-  torque: 0
+  position: {x: 0, y: 0, z: 0}
 --- !u!114 &114443791980722754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1451,13 +1443,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801829194281666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5b780fc61da4c94a9cdc4e226759c16, type: 3}
+  m_Script: {fileID: 11500000, guid: c83a55c54ee7f0f4e999f46270465128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAXSPEED: 4
+  MAXSPEED: 3.5
   MAXANGULAR: 6
   MAXACCEL: 8
-  MAXROTATION: 3
+  MAXROTATION: 2
 --- !u!114 &114652070583596078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1477,10 +1469,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801829194281666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94a1ebff0f3d70748b4a0b12f242934c, type: 3}
+  m_Script: {fileID: 11500000, guid: 987a46892cf18cb42815b3806d9fdf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
+  steering: 0
+  currentGoal: {x: 0, y: 0, z: 0}
+  goalRadius: 0.5
+  slowRadius: 2.5
+  angularSlowRadius: 1.2
+  arriveTime: 0.25
+  alignTime: 0.25
+  force: {x: 0, y: 0, z: 0}
+  torque: 0
 --- !u!114 &114803294298178836
 MonoBehaviour:
   m_ObjectHideFlags: 1
