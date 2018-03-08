@@ -249,7 +249,7 @@ namespace ClipNamespace
             agentStartPosition = starting_location.transform.position + dest_minus_start * start_disc_offset;
             agentEndPosition = starting_location.transform.position + dest_minus_start * end_disc_offset;
             agentMidPosition = agentStartPosition + (agentEndPosition - agentStartPosition)/2;
-            Debug.Log(agentStartPosition.ToString() + agentEndPosition.ToString() + agentMidPosition.ToString());
+            //Debug.Log(agentStartPosition.ToString() + agentEndPosition.ToString() + agentMidPosition.ToString());
             focusTarget = new GameObject();
             focusTarget.transform.position = agentMidPosition;
             var bc = focusTarget.AddComponent<BoxCollider>();
@@ -257,8 +257,8 @@ namespace ClipNamespace
 
             float camDist = CinematographyAttributes.CalcCameraDistance(focusTarget, frame_type);
 
-            Debug.Log("camera Distance: " + camDist.ToString());
-            Debug.Log("goalDirection: " + (orient + orientation).ToString());
+            //Debug.Log("camera Distance: " + camDist.ToString());
+            //Debug.Log("goalDirection: " + (orient + orientation).ToString());
 
             cbod.FocusDistance = camDist;
 

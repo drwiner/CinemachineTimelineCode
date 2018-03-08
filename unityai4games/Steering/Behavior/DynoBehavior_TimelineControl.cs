@@ -39,8 +39,8 @@ namespace SteeringNamespace
         private Action seekTask;
         private Action alignTask;
 
-        private Vector3 force;
-        private float torque;
+        public Vector3 force;
+        public float torque;
 
         // Use this for initialization
         //void Awake()
@@ -230,6 +230,7 @@ namespace SteeringNamespace
             }
             if (steering)
             {
+                //Debug.Log(transform.name + force.ToString());
                 seekTask();
                 alignTask();
 

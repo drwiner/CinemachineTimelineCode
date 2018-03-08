@@ -1,0 +1,52 @@
+[
+    {
+        "end_pos_name": "bloodfire", 
+        "duration": 5.0, 
+        "start": 0, 
+        "gameobject_name": "PurpDrone", 
+        "start_pos_name": "cartoonsky", 
+        "method_used": "nav_act", 
+        "step_num": "1", 
+        "name": "steer(PurpDrone, cartoonsky, bloodfire)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	{
+        "end_pos_name": "bloodfire", 
+        "duration": 10, 
+        "start": 0, 
+        "gameobject_name": "GreenDrone", 
+        "start_pos_name": "grey", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(GreenDrone, grey, bloodfire)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	{
+        "end_pos_name": "cartoonsky", 
+        "duration": 3, 
+        "start": 10, 
+        "gameobject_name": "GreenDrone", 
+        "start_pos_name": "bloodfire", 
+        "method_used": "nav_act", 
+        "step_num": "2", 
+        "name": "steer(GreenDrone, bloodfire, cartoonsky)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	
+	
+	{
+        "end_pos_name": "grey", 
+        "duration": 10, 
+        "start": 5, 
+        "gameobject_name": "PurpDrone", 
+        "start_pos_name": "bloodfire", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(PurpDrone, bloodfire, grey)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    }
+]

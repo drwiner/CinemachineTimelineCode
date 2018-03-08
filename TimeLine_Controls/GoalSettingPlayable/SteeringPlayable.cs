@@ -41,7 +41,7 @@ public class SteeringPlayable : PlayableBehaviour
         {
             if (Mathf.Abs(info.frameId - initialFrameId) < 5)
             {
-                Debug.Log("master is playing");
+                //Debug.Log("master is playing");
                 _Controller.InformMasterIsPlaying(_whichList, true);
                 //accumulated++;
                 //if (accumulated > 5)
@@ -73,17 +73,17 @@ public class SteeringPlayable : PlayableBehaviour
                 
                 accumulated = 0;
             }
-            else
-            {
-                Debug.Log("child will not play");
-            }
+            //else
+            //{
+            //    //Debug.Log("child will not play");
+            //}
         }
     }
     public override void OnBehaviourPause(Playable playable, FrameData info)
     {
         if (_isMaster)
         {
-            Debug.Log("master not playing");
+            //Debug.Log("master not playing");
             _Controller.InformMasterIsPlaying(_whichList, false);
         }
 

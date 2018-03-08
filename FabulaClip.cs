@@ -186,7 +186,7 @@ namespace ClipNamespace
             var lastPosition = starting_location.transform.position;
             var distance = ending_location.transform.position - lastPosition;
 
-            var KB = agent.GetComponent<Kinematic>();
+            //var KB = agent.GetComponent<Kinematic>();
             var SP = agent.GetComponent<SteeringParams>();
 
             var slowRadius = agent.GetComponent<DynoBehavior_TimelineControl>().slowRadius;
