@@ -1,0 +1,123 @@
+[
+	{
+		"name": "Anglehigh", 
+		
+		"start_pos_name": "cartoonsky",
+		"start": 0,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : 30,
+		"scale": "Full",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+
+	{
+		"name": "Anglelow", 
+		"start_pos_name": "cartoonsky",
+		"start": 4,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : -30,
+		"scale": "Full",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+	{
+		"name": "Anglehigh", 
+		
+		"start_pos_name": "cartoonsky",
+		"start": 8,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : 30,
+		"scale": "Long",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+
+	{
+		"name": "Anglelow", 
+		"start_pos_name": "cartoonsky",
+		"start": 12,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : -30,
+		"scale": "Long",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+	{
+		"name": "Anglehigh", 
+		
+		"start_pos_name": "cartoonsky",
+		"start": 16,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : 30,
+		"scale": "ExtremeLong",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+
+	{
+		"name": "Anglelow", 
+		"start_pos_name": "cartoonsky",
+		"start": 20,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : -30,
+		"scale": "ExtremeLong",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+	{
+		"name": "Anglehigh", 
+		
+		"start_pos_name": "cartoonsky",
+		"start": 24,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : 30,
+		"scale": "Waist",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    },
+
+	{
+		"name": "Anglelow", 
+		"start_pos_name": "cartoonsky",
+		"start": 28,
+		"duration": 4,
+		"type": "simple_cam",
+		"aim_target": "PurpDrone",
+		"orient": "0", 
+		"angle" : -30,
+		"scale": "Waist",
+		"fab_step_name": "steer(PurpDrone, cartoonsky, bloodfire)",
+		"fab_start": 0
+
+    }
+	
+]

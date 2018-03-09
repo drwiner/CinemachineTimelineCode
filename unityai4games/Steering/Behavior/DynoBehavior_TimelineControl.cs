@@ -233,7 +233,8 @@ namespace SteeringNamespace
         {
             if (!initiatedExternally)
             {
-                throw new System.Exception();
+                steering = false;
+                //throw new System.Exception();
             }
             if (steering)
             {

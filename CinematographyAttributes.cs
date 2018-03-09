@@ -62,6 +62,32 @@ namespace Cinematography
             return distanceToCamera;
         }
 
+        public static float SolveForY(Vector3 targetPos, Vector3 currentCamPos, float alpha)
+        {
+            Debug.Log(alpha);
+            // If the shot is a medium angle it is on the same y-plane as the target.
+            if (alpha == 0) return targetPos.y;
+
+            // Otherwise, find the length of the triangle's base by finding the (x,z) distance between the camera and target.
+            var baseLength = Mathf.Abs(targetPos.x - currentCamPos.x) + Mathf.Abs(targetPos.z - currentCamPos.z);
+
+
+            var newAlpha =  baseLength * Mathf.Tan(Mathf.Deg2Rad * alpha);
+            Debug.Log(newAlpha);
+            return newAlpha;
+            //if (alpha < 0)
+            //{
+            //    var tanalpha = Mathf.Tan(Mathf.Deg2Rad * alpha);
+
+            //    // Next, find the tangent of the shot angle converted to radians.
+            //    return baseLength * Mathf.Tan(Mathf.Deg2Rad * alpha);
+            //}
+
+            //var tanAlpha = Mathf.Tan(Mathf.Deg2Rad * alpha);
+            //Debug.Log(tanAlpha);
+            //return baseLength * tanAlpha;
+        }
+
     }
 
     // Work originally by Brandon Thorne (brthorne@ncsu.edu)

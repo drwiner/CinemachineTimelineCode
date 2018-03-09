@@ -308,13 +308,15 @@ namespace ClipNamespace
     {
         public float orient;
         private float agentOrient = 0f;
+        //private float camDist;
 
         public SimpleCustomDiscourseClip(JSONNode json, TimelineAsset p_timeline, PlayableDirector p_director)
             : base(json, p_timeline, p_director)
         {
 
-
             AssignCameraPosition(json);
+
+            AssignCameraHeight(json);
 
             // specialize and bind
             var cinemachineShot = film_track_clip.asset as CinemachineShot;
@@ -328,7 +330,7 @@ namespace ClipNamespace
             if (json["agentOrient"] != null)
                 agentOrient = json["agentOrient"].AsFloat;
 
-            float camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
+            var camDist = CinematographyAttributes.CalcCameraDistance(target_go, frame_type);
 
             cbod.FocusDistance = camDist;
             var goalDirection = DegToVector3(orient + agentOrient);
@@ -339,6 +341,13 @@ namespace ClipNamespace
             {
                 cva.m_Lens.NearClipPlane = FindNearPlane(target_go.transform.position, goalDirection, camDist);
             }
+        }
+
+        public void AssignCameraHeight(JSONNode json)
+        {
+            var alpha = json["angle"].AsFloat;
+            var height = CinematographyAttributes.SolveForY(target_go.transform.position, host_go.transform.position, alpha);
+            host_go.transform.position = new Vector3(host_go.transform.position.x, host_go.transform.position.y+height, host_go.transform.position.z);
         }
 
     }
