@@ -9,16 +9,12 @@ namespace SteeringNamespace
 
     public class DynoBehavior_TimelineControl : MonoBehaviour
     {
-
-        private Kinematic KinematicBody;
-        private KinematicSteering ks;
+ 
+        public Kinematic KinematicBody;
         private SteeringParams SP;
         private PlayableDirector PD;
 
         private KinematicSteeringOutput kso;
-        private DynoSeek seek;
-        private DynoArrive arrive;
-        private DynoAlign align;
 
         private List<List<SteeringPlayable>> SteerList;
         private List<bool> LockedList;
@@ -29,6 +25,7 @@ namespace SteeringNamespace
         public bool steering = false;
         private bool initiatedExternally = false;
         public Vector3 currentGoal;
+        public Vector3 targetVelocity;
 
         public float goalRadius = 0.5f;
         public float slowRadius = 2.5f;
@@ -41,6 +38,8 @@ namespace SteeringNamespace
 
         public Vector3 force;
         public float torque;
+        public float tiltAmountForward;
+        public float tiltAmountSideways;
 
         // Use this for initialization
         //void Awake()
@@ -78,6 +77,7 @@ namespace SteeringNamespace
             if (distance < goalRadius)
             {
                 force = Vector3.zero;
+                tiltAmountForward = 0f;
                 return;
             }
 
@@ -89,9 +89,12 @@ namespace SteeringNamespace
             else
             {
                 targetSpeed = SP.MAXSPEED * distance / slowRadius;
+                
             }
 
-            var targetVelocity = direction.normalized;
+            tiltAmountForward = targetSpeed;
+
+            targetVelocity = direction.normalized;
             //targetVelocity.Normalize();
             targetVelocity = targetVelocity * targetSpeed;
 
@@ -119,6 +122,7 @@ namespace SteeringNamespace
             if (rotationSize < goalRadius)
             {
                 torque = 0f;
+                tiltAmountSideways = 0f;
                 return;
             }
 
@@ -132,6 +136,8 @@ namespace SteeringNamespace
             {
                 targetRotation = SP.MAXROTATION * rotationSize / slowRadius;
             }
+
+            tiltAmountSideways = targetRotation;
 
             // Final target rotation combines speed (already in variable) with rotation direction
             targetRotation = targetRotation * rotation / rotationSize;
@@ -231,25 +237,31 @@ namespace SteeringNamespace
             }
             if (steering)
             {
+                
                 //Debug.Log(transform.name + force.ToString());
                 seekTask();
                 alignTask();
-
+                kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
+                transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
+                transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
                 //steering = false;
-                if (force != Vector3.zero || torque != 0)
-                {
+                //if (force != Vector3.zero || torque != 0)
+                //{
                     
-                    kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
-                    transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
-                    transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
-                }
-                else
-                {
-                    if ((currentGoal - transform.position).magnitude > goalRadius)
-                    {
-                        KinematicBody.setVelocity(Vector3.zero);
-                    }
-                }
+                   
+                //}
+                //else
+                //{
+                //    kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
+                //}
+                //else
+                //{
+                //    if ((currentGoal - transform.position).magnitude > goalRadius)
+                //    {
+                //        Debug.Log("THIS HAPPENED");
+                //        KinematicBody.setVelocity(Vector3.zero);
+                //    }
+                //}
             }
         }
     }

@@ -1446,9 +1446,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83a55c54ee7f0f4e999f46270465128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAXSPEED: 3.5
+  MAXSPEED: 4
   MAXANGULAR: 6
-  MAXACCEL: 8
+  MAXACCEL: 11
   MAXROTATION: 2
 --- !u!114 &114652070583596078
 MonoBehaviour:
@@ -1472,15 +1472,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987a46892cf18cb42815b3806d9fdf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  KinematicBody: {fileID: 0}
   steering: 0
   currentGoal: {x: 0, y: 0, z: 0}
-  goalRadius: 0.5
+  targetVelocity: {x: 0, y: 0, z: 0}
+  goalRadius: 0.05
   slowRadius: 2.5
   angularSlowRadius: 1.2
   arriveTime: 0.25
   alignTime: 0.25
   force: {x: 0, y: 0, z: 0}
   torque: 0
+  tiltAmountForward: 0
+  tiltAmountSideways: 0
 --- !u!114 &114803294298178836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1493,7 +1497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upForce: 0
-  playerControlEnabled: 1
+  playerControlEnabled: 0
 --- !u!120 &120593161653778688
 LineRenderer:
   m_ObjectHideFlags: 1
