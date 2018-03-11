@@ -1,0 +1,81 @@
+[
+    {
+        "end_pos_name": "L2a", 
+        "duration": 5.0, 
+        "start": 0, 
+        "gameobject_name": "GreenDrone", 
+        "start_pos_name": "L1", 
+        "method_used": "nav_act", 
+        "step_num": "1", 
+        "name": "steer(GreenDrone, L1, L2a)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	{
+        "end_pos_name": "L2b", 
+        "duration": 4, 
+        "start": 5, 
+        "gameobject_name": "GreenDrone", 
+        "start_pos_name": "L2a", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(GreenDrone, L2a, L2b)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	{
+        "end_pos_name": "L3", 
+        "duration": 4, 
+        "start": 9, 
+        "gameobject_name": "GreenDrone", 
+        "start_pos_name": "L2b", 
+        "method_used": "nav_act", 
+        "step_num": "2", 
+        "name": "steer(GreenDrone, L2b, L3)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	
+	
+	{
+        "end_pos_name": "L4a", 
+        "duration": 4, 
+        "start": 4, 
+        "gameobject_name": "PurpDrone", 
+        "start_pos_name": "L5", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(PurpDrone, L5, L4a)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	
+	
+	{
+        "end_pos_name": "L4b", 
+        "duration": 4, 
+        "start": 8, 
+        "gameobject_name": "PurpDrone", 
+        "start_pos_name": "L4a", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(PurpDrone, L4a, L4b)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    },
+	
+	
+	{
+        "end_pos_name": "L4c", 
+        "duration": 4, 
+        "start": 12, 
+        "gameobject_name": "PurpDrone", 
+        "start_pos_name": "L4b", 
+        "method_used": "nav_act", 
+        "step_num": "3", 
+        "name": "steer(PurpDrone, L4b, L4c)", 
+        "type": "AISteer", 
+        "step_id": "addc"
+    }
+	
+]

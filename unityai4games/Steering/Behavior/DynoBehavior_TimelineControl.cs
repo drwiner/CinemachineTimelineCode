@@ -241,9 +241,11 @@ namespace SteeringNamespace
                 
                 //Debug.Log(transform.name + force.ToString());
                 seekTask();
+                
                 alignTask();
                 kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
                 transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
+                //if (KinematicBody.getVelocity().magnitude > .1f)
                 transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
                 //steering = false;
                 //if (force != Vector3.zero || torque != 0)
