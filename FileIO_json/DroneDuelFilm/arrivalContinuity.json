@@ -5,13 +5,13 @@
 		"start_pos_name": "L1",
 		"end_pos_name": "L2a",
 		"start": 0,
-		"duration": 3,
+		"duration": 2.5,
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
 		"aim_target": "GreenDrone",
-		"orient": "0", 
-		"scale": "Long",
+		"orient": "90", 
+		"scale": "Full",
 		"fab_step_name": "steer(GreenDrone, L1, L2a)",
 		"fab_start": 0
 
@@ -22,8 +22,8 @@
 		
 		"start_pos_name": "L2a",
 		"end_pos_name": "L2b",
-		"start": 3,
-		"duration": 3,
+		"start": 2.5,
+		"duration": 4,
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
@@ -31,7 +31,7 @@
 		"orient": "90", 
 		"scale": "Waist",
 		"fab_step_name": "steer(GreenDrone, L2a, L2b)",
-		"fab_start": 4
+		"fab_start": 3
 
     },
 
@@ -41,8 +41,8 @@
 		
 		"start_pos_name": "L2b",
 		"end_pos_name": "L3",
-		"start": 6,
-		"duration": 3,
+		"start": 6.5,
+		"duration": 4,
 		"type": "nav_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
@@ -50,7 +50,7 @@
 		"orient": "90", 
 		"scale": "Waist",
 		"fab_step_name": "steer(GreenDrone, L2b, L3)",
-		"fab_start": 9
+		"fab_start": 10
 
     },
 
@@ -60,16 +60,16 @@
 		
 		"start_pos_name": "L5",
 		"end_pos_name": "L4a",
-		"start": 9,
-		"duration": 6,
+		"start": 10.5,
+		"duration": 3.5,
 		"type": "simple_cam",
 		"start_dist_offset": 0,
 		"end_dist_offset": 5.5,
 		"aim_target": "PurpDrone",
-		"orient": "0", 
+		"orient": "180", 
 		"scale": "Full",
 		"fab_step_name": "steer(PurpDrone, L5, L4a)",
-		"fab_start": 1
+		"fab_start": 4.5
 
     },
 
@@ -78,7 +78,7 @@
 		"name": "Arrival5", 
 		
 		"start_pos_name": "L4b",
-		"start": 15,
+		"start": 14,
 		"duration": 3,
 		"type": "simple_cam",
 		"start_dist_offset": 0,
@@ -86,7 +86,7 @@
 		"orient": "-90", 
 		"scale": "Waist",
 		"fab_step_name": "steer(PurpDrone, L4a, L4b)",
-		"fab_start": 6
+		"fab_start": 7
 
     },
 
@@ -96,7 +96,7 @@
 		
 		"start_pos_name": "L4b",
 		"end_pos_name": "L4c",
-		"start": 18,
+		"start": 17,
 		"duration": 3,
 		"type": "nav_cam",
 		"start_dist_offset": 3,
@@ -105,7 +105,7 @@
 		"orient": "-90", 
 		"scale": "Waist",
 		"fab_step_name": "steer(PurpDrone, L4b, L4c)",
-		"fab_start": 8
+		"fab_start": 11
 
     }
 	

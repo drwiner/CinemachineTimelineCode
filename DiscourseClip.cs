@@ -212,34 +212,28 @@ namespace ClipNamespace
         {
             Debug.Log("startingClearShotConstruction");
             var hostClone = GameObject.Instantiate(host_go);
-            
+
             host_go.GetComponent<CinemachineVirtualCamera>().enabled = false;
             host_go.GetComponent<CinemachineCameraBody>().enabled = false;
             var ccs = host_go.AddComponent<CinemachineClearShot>();
             ccs.m_MinDuration = 1.5f;
             ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
-           
+
             var ccollider = host_go.AddComponent<CinemachineCollider>();
             ccollider.m_Damping = 5;
             //ccollider.m_
             //ccollider.m_Strategy = CinemachineCollider.ResolutionStrategy.
             var origPos = host_go.transform.position;
 
-
+            //var variantAmount = 5f;
             var clearShotPositions = new List<Vector3>() {
                     origPos,
-                    new Vector3(origPos.x - 2f, origPos.y, origPos.z),
-                    new Vector3(origPos.x + 2f, origPos.y, origPos.z),
-                    new Vector3(origPos.x, origPos.y, origPos.z + 2f),
-                    new Vector3(origPos.x, origPos.y, origPos.z - 2f),
-                    new Vector3(origPos.x + 2f, origPos.y, origPos.z + 2f),
-                    new Vector3(origPos.x + 2f, origPos.y, origPos.z - 2f),
-                    new Vector3(origPos.x - 2f, origPos.y, origPos.z + 2f),
-                    new Vector3(origPos.x - 2f, origPos.y, origPos.z - 2f),
-                    new Vector3(origPos.x - 6f, origPos.y, origPos.z),
-                    new Vector3(origPos.x + 6f, origPos.y, origPos.z),
-                    new Vector3(origPos.x, origPos.y, origPos.z + 6f),
-                    new Vector3(origPos.x, origPos.y, origPos.z - 6f)
+                    //new Vector3(origPos.x - variantAmount, origPos.y, origPos.z + variantAmount),
+                    //new Vector3(origPos.x - variantAmount, origPos.y, origPos.z - variantAmount),
+                    //new Vector3(origPos.x - variantAmount, origPos.y, origPos.z),
+                    //new Vector3(origPos.x + variantAmount, origPos.y, origPos.z),
+                    //new Vector3(origPos.x, origPos.y, origPos.z + variantAmount),
+                    //new Vector3(origPos.x, origPos.y, origPos.z - variantAmount)
             };
 
             var cvaList = new CinemachineVirtualCamera[clearShotPositions.Count];

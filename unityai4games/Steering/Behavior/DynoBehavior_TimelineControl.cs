@@ -170,7 +170,7 @@ namespace SteeringNamespace
             {
                 // current Velocity is the position + directino * max speed
                 var direction = currentGoal - transform.position;
-                var currentVelocity = (transform.position + direction).normalized * SP.MAXSPEED;
+                var currentVelocity = direction.normalized * SP.MAXSPEED;
                 // instantaneously set orientation and velocity
                 KinematicBody.setVelocity(currentVelocity);
                 KinematicBody.setOrientation(KinematicBody.getNewOrientation(currentVelocity));

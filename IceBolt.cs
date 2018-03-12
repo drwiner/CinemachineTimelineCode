@@ -29,9 +29,10 @@ namespace IceBoltNamespace
 
         public bool useGraph = true;
         private TileGraph TG;
+        private bool timelinesPrepped = false;
 
         // Use this for initialization
-        void Awake()
+        public bool PopulateTimelines()
         {
             // read clips
             Debug.Log("Reading Clips");
@@ -73,15 +74,28 @@ namespace IceBoltNamespace
             // read clips
             ReadFabClipList(fab_clips_as_json.text);
             ReadDiscClipList(disc_clips_as_json.text);
+
+            disc_director.playableAsset = disc_timeline;
+            fab_director.playableAsset = fab_timeline;
+            return true;
         }
 
-        void Start()
+        public void PlayTimelines()
         {
+            //if (!timelinesPrepped)
+            //{
+            //    Awake();
+            //}
+            
 
             disc_director.Play(disc_timeline);
             fab_director.Play(fab_timeline);
-
         }
+
+        //void Start()
+        //{
+        //    PlayTimelines();
+        //}
 
         public void ReadFabClipList(string clips_as_json)
         {
