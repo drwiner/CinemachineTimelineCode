@@ -31,9 +31,10 @@ namespace SteeringNamespace
         public Vector3 targetVelocity;
 
         // steering parameters
-        public float goalRadius = 0.5f;
         public float slowRadius = 2.5f;
+        public float goalRadius = 0.25f;
         public float angularSlowRadius = 1.2f;
+        public float angularGoalRadius = 0.05f;
         public float arriveTime = .25f;
         public float alignTime = .25f;
 
@@ -130,7 +131,7 @@ namespace SteeringNamespace
             rotation = Kinematic.mapToRange(rotation);
             var rotationSize = Mathf.Abs(rotation);
 
-            if (rotationSize < goalRadius)
+            if (rotationSize < angularGoalRadius)
             {
                 torque = 0f;
                 tiltAmountSideways = 0f;
@@ -139,7 +140,7 @@ namespace SteeringNamespace
 
             float targetRotation;
             // if we're outside the slow Radius
-            if (rotationSize > slowRadius)
+            if (rotationSize > angularSlowRadius)
             {
                 targetRotation = SP.MAXROTATION;
             }
@@ -175,9 +176,11 @@ namespace SteeringNamespace
             seekTask = () => Seek(arrive);
             alignTask = Align;
 
-            Mathf.SmoothDamp(transform.position.x, origin.x, ref positionRefx, 0.25f);
-            Mathf.SmoothDamp(transform.position.z, origin.z, ref positionRefz, 0.25f);
-            //Mathf.SmoothDamp(transform.position, origin, ref positionRef, 0.25f);
+            Mathf.Lerp(transform.position.x, origin.x,  1f);
+            Mathf.Lerp(transform.position.z, origin.z,  1f);
+
+            //Mathf.SmoothDamp(transform.position.x, origin.x, ref positionRefx, 1f);
+            //Mathf.SmoothDamp(transform.position.z, origin.z, ref positionRefz, 1f);
             //transform.position = origin;
             KinematicBody.position = transform.position;
 
@@ -254,6 +257,7 @@ namespace SteeringNamespace
             }
             if (steering)
             {
+                //Debug.Log(gameObject.name + " " + transform.position);
                 
                 //Debug.Log(transform.name + force.ToString());
                 seekTask();

@@ -1,7 +1,7 @@
 [
     {
         "end_pos_name": "L2a", 
-        "duration": 5.0, 
+        "duration": 5.5, 
         "start": 0, 
         "gameobject_name": "GreenDrone", 
         "start_pos_name": "L1", 
@@ -14,7 +14,7 @@
 	{
         "end_pos_name": "L2b", 
         "duration": 4, 
-        "start": 5, 
+        "start": 5.5, 
         "gameobject_name": "GreenDrone", 
         "start_pos_name": "L2a", 
         "method_used": "nav_act", 
@@ -26,7 +26,7 @@
 	{
         "end_pos_name": "L3", 
         "duration": 4, 
-        "start": 9, 
+        "start": 9.5, 
         "gameobject_name": "GreenDrone", 
         "start_pos_name": "L2b", 
         "method_used": "nav_act", 

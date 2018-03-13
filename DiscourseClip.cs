@@ -51,10 +51,12 @@ namespace ClipNamespace
 
             fab_start = json["fab_start"].AsFloat;
 
-            film_track_clip = TrackAttributes.FilmTrackManager.CreateClip(start, duration, Name);
+            //NOTE: ordering of tracks matters. Prefer TimeTravel before camera shot
 
             // create the time travel on fabula timeline
             CreateTimeClip();
+
+            film_track_clip = TrackAttributes.FilmTrackManager.CreateClip(start, duration, Name);
 
             // create the target that the camera aims at
             CreateTarget(json);

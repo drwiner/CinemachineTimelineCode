@@ -51,10 +51,7 @@ namespace IceBoltNamespace
             CinematographyAttributes.lensFovData = ProCamsLensDataTable.Instance.GetFilmFormat("35mm 16:9 Aperture (1.78:1)").GetLensKitData(0)._fovDataset;
             CinematographyAttributes.standardNoise = Instantiate(Resources.Load("Handheld_tele_mild", typeof(NoiseSettings))) as NoiseSettings;
 
-            // Load Film Track Manager
-            TrackAttributes.FilmTrackManager = new CinemachineTrackManager(disc_timeline);
-            main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
-            disc_director.SetGenericBinding(TrackAttributes.FilmTrackManager.currentTrack, main_camera_object);
+           
 
             // Load Location Graph for pathfinding - only used by Steer typed fabula clips
             if (useGraph)
@@ -62,8 +59,15 @@ namespace IceBoltNamespace
                 TrackAttributes.TG = GameObject.FindGameObjectWithTag("LocationHost").GetComponent<TileGraph>();
                 TrackAttributes.TG.InitGraph();
             }
-            // Load other Track Attributes
+            // Load other Time Track Attribute
             TrackAttributes.TimeTrackManager = new TrackManager(disc_timeline, "timeTravel");
+
+            // Load Film Track Manager
+            TrackAttributes.FilmTrackManager = new CinemachineTrackManager(disc_timeline); 
+            main_camera_object = GameObject.FindGameObjectWithTag("MainCamera");
+            disc_director.SetGenericBinding(TrackAttributes.FilmTrackManager.currentTrack, main_camera_object);
+
+            // Load other Other Track Attributes
             TrackAttributes.LerpTrackManager = new PlayableTrackManager(fab_timeline, "Lerp Track");
             TrackAttributes.steerTrackManager = new SteerTrackManager(fab_timeline, "Steer Track");
             TrackAttributes.discTextTrack = disc_timeline.CreateTrack<TextSwitcherTrack>(null, "text_track");

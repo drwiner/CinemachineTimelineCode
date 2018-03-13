@@ -216,7 +216,7 @@ namespace ClipNamespace
             TimelineClip tc;
             tc = currentTrack.CreateDefaultClip();
 
-            tc.start = start + 0.06f;
+            tc.start = start + .015f;// .06f;
             tc.duration = duration;
             tc.displayName = displayName;
 
