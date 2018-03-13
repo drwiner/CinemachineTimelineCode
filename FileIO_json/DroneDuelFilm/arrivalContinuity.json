@@ -69,7 +69,7 @@
 		"orient": "180", 
 		"scale": "Full",
 		"fab_step_name": "steer(PurpDrone, L5, L4a)",
-		"fab_start": 4.5
+		"fab_start": 4
 
     },
 

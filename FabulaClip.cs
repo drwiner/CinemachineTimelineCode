@@ -106,8 +106,8 @@ namespace ClipNamespace
 
             // control track - animate
             control_track_clip = ctrack.CreateDefaultClip();
-            control_track_clip.start = start + 0.06f;
-            control_track_clip.duration = duration - 0.06f;
+            control_track_clip.start = start; //+ 0.06f;
+            control_track_clip.duration = duration;// - 0.06f;
             control_track_clip.displayName = Name;
             controlAnim = control_track_clip.asset as ControlPlayableAsset;
             AnimateBind(controlAnim, animTimelineObject);

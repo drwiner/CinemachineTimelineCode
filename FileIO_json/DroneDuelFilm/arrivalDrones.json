@@ -40,7 +40,7 @@
 	{
         "end_pos_name": "L4a", 
         "duration": 4, 
-        "start": 4, 
+        "start": 2, 
         "gameobject_name": "PurpDrone", 
         "start_pos_name": "L5", 
         "method_used": "nav_act", 

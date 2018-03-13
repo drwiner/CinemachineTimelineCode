@@ -123,7 +123,13 @@ namespace ClipNamespace
 
             // create Cinemachine component on host
             cva = host_go.AddComponent<CinemachineVirtualCamera>();
+
+
+            //cva.GetCinemachineComponent<CameraState>();
             cc = cva.AddCinemachineComponent<CinemachineComposer>();
+            cc.m_HorizontalDamping = 10;
+            cc.m_VerticalDamping = 10;
+            cc.m_LookaheadTime = 0.2f;
             cc.m_DeadZoneWidth = 0.25f;
             cc.m_SoftZoneWidth = 0.5f;
             //cva.m_Lens.FieldOfView = CinematographyAttributes.calcFov(frame_type);
@@ -134,6 +140,7 @@ namespace ClipNamespace
             cbod.IndexOfFStop = CinematographyAttributes.fStops[framing_data.DefaultFStop];
             // Lens
             cbod.IndexOfLens = CinematographyAttributes.lenses[framing_data.DefaultFocalLength];
+            cbod.FocusTransform = target_go.transform;
             
             // create small amount of noise
             cbmcp = cva.AddCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
@@ -217,7 +224,9 @@ namespace ClipNamespace
             host_go.GetComponent<CinemachineCameraBody>().enabled = false;
             var ccs = host_go.AddComponent<CinemachineClearShot>();
             ccs.m_MinDuration = 1.5f;
-            ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
+            ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+            //ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
+            //ccs.m_DefaultBlend.m_Time = .75f;
 
             var ccollider = host_go.AddComponent<CinemachineCollider>();
             ccollider.m_Damping = 5;

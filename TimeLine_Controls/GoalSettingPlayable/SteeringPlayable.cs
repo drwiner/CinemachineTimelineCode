@@ -34,8 +34,12 @@ public class SteeringPlayable : PlayableBehaviour
 
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
-        if (!_Controller.isDone())
-            _Controller.steering = true;
+
+        if (!_Controller.IsDone())
+        {
+            //Debug.Log("Keep Playing " + _gameObject.name);
+            _Controller.playingClip = true;
+        }
 
         if (_isMaster && !_Controller.CheckMasterIsPlaying(_whichList))
         {

@@ -10,34 +10,45 @@ namespace SteeringNamespace
     public class DynoBehavior_TimelineControl : MonoBehaviour
     {
  
-        public Kinematic KinematicBody;
+        // Get Componoents
         private SteeringParams SP;
         private PlayableDirector PD;
 
-        private KinematicSteeringOutput kso;
-
+        // organization of tracks into hierarchical segments
         private List<List<SteeringPlayable>> SteerList;
         private List<bool> LockedList;
 
         //private DynoSteering ds_force;
         //private DynoSteering ds_torque;
 
+        // bool switches
         public bool steering = false;
+        public bool playingClip = false;
         private bool initiatedExternally = false;
+
+        // clip attributes
         public Vector3 currentGoal;
         public Vector3 targetVelocity;
 
+        // steering parameters
         public float goalRadius = 0.5f;
         public float slowRadius = 2.5f;
         public float angularSlowRadius = 1.2f;
         public float arriveTime = .25f;
         public float alignTime = .25f;
 
+        // tasks to perform every frame
         private Action seekTask;
         private Action alignTask;
 
+        // KinematicBody reads force and torque and returns kso
+        public Kinematic KinematicBody;
+        // calculated each frame
         public Vector3 force;
         public float torque;
+        private KinematicSteeringOutput kso;
+
+        // animation parameters (calculated each frame)
         public float tiltAmountForward;
         public float tiltAmountSideways;
 
@@ -64,7 +75,7 @@ namespace SteeringNamespace
             initiatedExternally = true;
         }
 
-        public bool isDone()
+        public bool IsDone()
         {
             return false;
         }
@@ -154,6 +165,7 @@ namespace SteeringNamespace
             }
         }
 
+        private float positionRefx, positionRefz;
         public void Steer(Vector3 origin, Vector3 target, bool departed, bool arrive)
         {
             // assume position already set
@@ -163,7 +175,10 @@ namespace SteeringNamespace
             seekTask = () => Seek(arrive);
             alignTask = Align;
 
-            transform.position = origin;
+            Mathf.SmoothDamp(transform.position.x, origin.x, ref positionRefx, 0.25f);
+            Mathf.SmoothDamp(transform.position.z, origin.z, ref positionRefz, 0.25f);
+            //Mathf.SmoothDamp(transform.position, origin, ref positionRef, 0.25f);
+            //transform.position = origin;
             KinematicBody.position = transform.position;
 
             if (departed)
@@ -179,6 +194,7 @@ namespace SteeringNamespace
             }
 
             steering = true;
+            playingClip = true;
         }
 
         public void InformMasterIsPlaying(int whichList, bool isPlaying)
@@ -241,30 +257,21 @@ namespace SteeringNamespace
                 
                 //Debug.Log(transform.name + force.ToString());
                 seekTask();
-                
-                alignTask();
+
+                // Strategy to prevent sudden re-allignment. 
+                if (playingClip)
+                {
+                    alignTask();
+                    //Debug.Log("aligning " + transform.name);
+                }
+
                 kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
                 transform.position = new Vector3(kso.position.x, transform.position.y, kso.position.z);
-                //if (KinematicBody.getVelocity().magnitude > .1f)
+
                 transform.rotation = Quaternion.Euler(0f, kso.orientation * Mathf.Rad2Deg, 0f);
-                //steering = false;
-                //if (force != Vector3.zero || torque != 0)
-                //{
-                    
-                   
-                //}
-                //else
-                //{
-                //    kso = KinematicBody.updateSteering(new DynoSteering(force, torque), Time.deltaTime);
-                //}
-                //else
-                //{
-                //    if ((currentGoal - transform.position).magnitude > goalRadius)
-                //    {
-                //        Debug.Log("THIS HAPPENED");
-                //        KinematicBody.setVelocity(Vector3.zero);
-                //    }
-                //}
+                playingClip = false;
+
+               
             }
         }
     }
