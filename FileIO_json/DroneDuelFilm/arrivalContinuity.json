@@ -97,7 +97,7 @@
 		"start_pos_name": "L4b",
 		"end_pos_name": "L4c",
 		"start": 17,
-		"duration": 3,
+		"duration": 6,
 		"type": "nav_cam",
 		"start_dist_offset": 3,
 		"end_dist_offset": 7.5,

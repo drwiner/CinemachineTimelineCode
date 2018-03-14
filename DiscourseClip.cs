@@ -225,10 +225,12 @@ namespace ClipNamespace
             host_go.GetComponent<CinemachineVirtualCamera>().enabled = false;
             host_go.GetComponent<CinemachineCameraBody>().enabled = false;
             var ccs = host_go.AddComponent<CinemachineClearShot>();
-            ccs.m_MinDuration = 1.5f;
-            ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+            ccs.m_LookAt = target_go.transform;
+            //ccs.m_ShowDebugText = true;
+            ccs.m_MinDuration = 10.5f;
+            ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseIn;
             //ccs.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
-            //ccs.m_DefaultBlend.m_Time = .75f;
+            ccs.m_DefaultBlend.m_Time = .75f;
 
             var ccollider = host_go.AddComponent<CinemachineCollider>();
             ccollider.m_Damping = 5;
@@ -236,30 +238,30 @@ namespace ClipNamespace
             //ccollider.m_Strategy = CinemachineCollider.ResolutionStrategy.
             var origPos = host_go.transform.position;
 
-            //var variantAmount = 5f;
+            var variantAmount = 5f;
             var clearShotPositions = new List<Vector3>() {
                     origPos,
-                    //new Vector3(origPos.x - variantAmount, origPos.y, origPos.z + variantAmount),
-                    //new Vector3(origPos.x - variantAmount, origPos.y, origPos.z - variantAmount),
-                    //new Vector3(origPos.x - variantAmount, origPos.y, origPos.z),
-                    //new Vector3(origPos.x + variantAmount, origPos.y, origPos.z),
-                    //new Vector3(origPos.x, origPos.y, origPos.z + variantAmount),
-                    //new Vector3(origPos.x, origPos.y, origPos.z - variantAmount)
+                    new Vector3(origPos.x - variantAmount, origPos.y, origPos.z + variantAmount),
+                    new Vector3(origPos.x - variantAmount, origPos.y, origPos.z - variantAmount),
+                    new Vector3(origPos.x - variantAmount, origPos.y, origPos.z),
+                    new Vector3(origPos.x + variantAmount, origPos.y, origPos.z),
+                    new Vector3(origPos.x, origPos.y, origPos.z + variantAmount),
+                    new Vector3(origPos.x, origPos.y, origPos.z - variantAmount)
             };
 
             var cvaList = new CinemachineVirtualCamera[clearShotPositions.Count];
             
             for (int i = 0; i < clearShotPositions.Count; i++)
             {
-                cvaList[i] = CreateClearShot(hostClone, clearShotPositions[i]);
+                cvaList[i] = CreateClearShotChild(hostClone, clearShotPositions[i]);
             }
             ccs.m_ChildCameras = cvaList;
             cvaList[0].m_Priority = 11;
-
+            hostClone.SetActive(false);
             Debug.Log("endingClearShotConstruction");
         }
 
-        private CinemachineVirtualCamera CreateClearShot(GameObject hostClone, Vector3 variantPosition)
+        private CinemachineVirtualCamera CreateClearShotChild(GameObject hostClone, Vector3 variantPosition)
         {
             var clearCam = GameObject.Instantiate(hostClone);
             clearCam.transform.parent = host_go.transform;

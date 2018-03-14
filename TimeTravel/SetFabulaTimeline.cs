@@ -53,7 +53,7 @@ public class SetFabulaTimeline : MonoBehaviour {
             Rewind(new_time);
         }
 
-        Debug.Log("setFabTime: " + pd.time + " and: " + PlayState.Playing.ToString());
+        Debug.Log("setFabTime: " + pd.time + " and: " + pd.state);
         fab_time = (float)pd.time;
         if (pd.state != PlayState.Playing)
         {
@@ -63,6 +63,7 @@ public class SetFabulaTimeline : MonoBehaviour {
             pd.RebuildGraph();
             //Debug.Log("result: " + pd.time);
             pd.Play();
+            Debug.Log("Playing");
         }
         
     }

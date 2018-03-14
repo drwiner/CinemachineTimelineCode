@@ -35,7 +35,7 @@ namespace SteeringNamespace
         public float goalRadius = 0.25f;
         public float angularSlowRadius = 1.2f;
         public float angularGoalRadius = 0.05f;
-        public float arriveTime = .25f;
+        public float arriveTime = .75f;
         public float alignTime = .25f;
 
         // tasks to perform every frame
@@ -106,9 +106,9 @@ namespace SteeringNamespace
 
             tiltAmountForward = targetSpeed;
 
-            targetVelocity = direction.normalized;
+            //targetVelocity = direction.normalized;
             //targetVelocity.Normalize();
-            targetVelocity = targetVelocity * targetSpeed;
+            targetVelocity = direction.normalized * targetSpeed;
 
             force = targetVelocity - KinematicBody.getVelocity();
             force = force / arriveTime;

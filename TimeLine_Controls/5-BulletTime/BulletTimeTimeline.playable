@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 114854868214024324}
   m_FixedDuration: 0
   m_EditorSettings:
-    fps: 60
+    m_Framerate: 60
   m_DurationMode: 0
 --- !u!114 &114206593749102746
 MonoBehaviour:
@@ -200,7 +200,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: BulletTimeAsset
     m_Version: 1
-  - m_Start: 3.316666666666667
+  - m_Start: 3.4330952088038127
     m_ClipIn: 0
     m_Asset: {fileID: 114485944720795482}
     m_UnderlyingAsset: {fileID: 114206593749102746}
